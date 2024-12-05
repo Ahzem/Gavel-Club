@@ -1,0 +1,32 @@
+.about-section {
+  margin-bottom: 4rem;
+}
+
+.about-section__title {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.about-section__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.about-mission {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-values__item {
+  text-align: center;
+  padding: 2rem;
+}
+
+.about-leadership__card {
+  text-align: center;
+}
