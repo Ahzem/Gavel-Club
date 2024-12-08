@@ -1,0 +1,112 @@
+.membership-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 65, 101, 0.03) 0%,
+    rgba(119, 36, 50, 0.03) 100%
+  );
+}
+
+.membership-hero {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent-1)
+  );
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.membership-hero__container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  text-align: center;
+  color: var(--color-white);
+}
+
+.membership-hero__title {
+  font-size: clamp(3rem, 6vw, 4rem);
+  margin-top: var(--space-lg);
+}
+
+.membership-hero__description {
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.membership-form {
+  margin-top: -60px;
+  padding: 0 var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.membership-form__container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.membership-form__wrapper {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 24px;
+  padding: var(--space-xl);
+  box-shadow: var(--glass-shadow);
+}
+
+.membership-form__status {
+  text-align: center;
+  padding: var(--space-sm);
+  border-radius: 12px;
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
+  z-index: 10;
+}
+
+.membership-form__status--open {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 0, 0.1),
+    rgba(0, 200, 0, 0.1)
+  );
+  color: #008000;
+}
+
+.membership-form__status--closed {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 0, 0.1),
+    rgba(200, 0, 0, 0.1)
+  );
+  color: #ff0000;
+}
+
+.membership-form__iframe {
+  width: 100%;
+  height: 800px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-white);
+}
+
+@media (max-width: 768px) {
+  .membership-hero {
+    height: 50vh;
+  }
+
+  .membership-form {
+    margin-top: -40px;
+    padding: 0 var(--space-lg);
+  }
+
+  .membership-form__iframe {
+    height: 600px;
+  }
+}

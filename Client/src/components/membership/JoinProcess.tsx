@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Badge } from '../ui/badge';
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -26,22 +25,30 @@ const steps = [
 
 export function JoinProcess() {
   return (
-    <section className="">
-      <div className="">
-        <h2 className="">How to Join</h2>
-        <div className="">
-          {steps.map((step) => (
-            <Card key={step.id}>
-              <CardHeader>
-                <Badge variant="secondary" className="">
-                  Step {step.id}
-                </Badge>
-                <CardTitle>{step.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="">{step.description}</p>
-              </CardContent>
-            </Card>
+    <section className="join-section">
+      <div className="join-section__container">
+        <motion.h2 
+          className="join-section__title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          How to Join
+        </motion.h2>
+        <div className="join-timeline">
+          {steps.map((step, index) => (
+            <motion.div 
+              key={step.id}
+              className="join-step"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <div className="join-step__number">{step.id}</div>
+              <div className="join-step__content">
+                <h3 className="join-step__title">{step.title}</h3>
+                <p className="join-step__description">{step.description}</p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
