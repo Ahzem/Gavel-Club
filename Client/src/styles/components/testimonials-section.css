@@ -17,6 +17,7 @@
   .testimonial-card {
     position: relative;
     background: var(--glass-background);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: var(--glass-blur);
     border-radius: 20px;
     padding: var(--space-xl);
