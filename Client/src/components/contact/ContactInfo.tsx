@@ -1,43 +1,60 @@
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
 export function ContactInfo() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Contact Information</CardTitle>
-      </CardHeader>
-      <CardContent className="">
-        <div className="">
-          <MapPin className="" />
-          <div>
-            <h3 className="">Address</h3>
-            <p className="">
-              Institute of Technology, University of Moratuwa
-              <br />
-              Diyagama, Homagama
-              <br />
+    <section className="contact-info">
+      <h2 className="contact-info__title">Contact Information</h2>
+      <div className="contact-info__grid">
+        <motion.div 
+          className="contact-info__item"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className="contact-info__icon-wrapper">
+            <MapPin className="contact-info__icon" />
+          </div>
+          <div className="contact-info__content">
+            <h3 className="contact-info__label">Address</h3>
+            <p className="contact-info__text">
+              Institute of Technology, University of Moratuwa<br />
+              Diyagama, Homagama<br />
               Sri Lanka
             </p>
           </div>
-        </div>
-        <div className="">
-          <Mail className="" />
-          <div>
-            <h3 className="">Email</h3>
-            <p className="">
-              gavelclub@itum.mrt.ac.lk
-            </p>
+        </motion.div>
+
+        <motion.div 
+          className="contact-info__item"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="contact-info__icon-wrapper">
+            <Mail className="contact-info__icon" />
           </div>
-        </div>
-        <div className="">
-          <Phone className="" />
-          <div>
-            <h3 className="">Phone</h3>
-            <p className="">+94 11 2XXX XXX</p>
+          <div className="contact-info__content">
+            <h3 className="contact-info__label">Email</h3>
+            <p className="contact-info__text">gavelclub@itum.mrt.ac.lk</p>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </motion.div>
+
+        <motion.div 
+          className="contact-info__item"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="contact-info__icon-wrapper">
+            <Phone className="contact-info__icon" />
+          </div>
+          <div className="contact-info__content">
+            <h3 className="contact-info__label">Phone</h3>
+            <p className="contact-info__text">+94 11 2XXX XXX</p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }

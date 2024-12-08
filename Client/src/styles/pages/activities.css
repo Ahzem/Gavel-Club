@@ -29,14 +29,11 @@
   margin-top: var(--space-xl);
 }
 
-/* Calendar Section */
-.calendar-section {
-  padding: var(--space-2xl) 0;
-}
-
 .calendar-section__container {
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -40px 0 50px 0;
   padding: 0 var(--space-xl);
 }
 
@@ -196,7 +193,11 @@
 }
 
 .gallery-seemore__link {
-  background: linear-gradient(135deg, var(--color-accent-1), var(--color-primary));
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-1),
+    var(--color-primary)
+  );
   color: var(--color-white);
   border: none;
   padding: var(--space-md) var(--space-xl);

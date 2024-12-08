@@ -39,7 +39,7 @@ export default function Hero() {
           >
             <button
               className="hero__button hero__button--join"
-              onClick={() => (window.location.href = "/join")}
+              onClick={() => (window.location.href = "/membership")}
             >
               Join Now
             </button>

@@ -21,9 +21,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xl);
+  gap: var(--space-md);
   text-align: center;
-  padding-top: var(--space-2xl);
+  padding-top: 4rem;
 }
 
 .hero__title {
@@ -90,6 +90,7 @@
 }
 
 .hero__logo__with__name {
+  margin-top: 2rem;
   width: clamp(300px, 40vw, 400px);
   transition: transform 0.3s ease;
 }

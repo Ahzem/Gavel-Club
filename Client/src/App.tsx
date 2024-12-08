@@ -12,7 +12,7 @@ import "./styles/pages/home.css";
 import "./styles/pages/about.css";
 import "./styles/pages/about-sections.css";
 import "./styles/pages/membership-sections.css";
-// import './styles/pages/contact.css';
+import "./styles/pages/contacts.css";
 import "./styles/pages/membership.css";
 import "./styles/pages/activities.css";
 import "./styles/components/header.css";
