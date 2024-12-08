@@ -261,25 +261,102 @@
 }
 
 @media (max-width: 768px) {
-    .map-section__frame {
-      height: 300px;
+    .contact-section__container {
+        grid-template-columns: 1fr;
     }
     
-    .contact-info__item {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    .contact-info {
+        order: 2;
     }
-  .contact-section__container {
-    grid-template-columns: 1fr;
-  }
+    
+    .contact-form {
+        order: 1;
+    }
 
-  .contact-section {
-    margin-top: -40px;
-    padding: 0 var(--space-lg);
-  }
+    .contact-hero {
+        height: 50vh;
+    }
 
-  .map-section__frame {
-    height: 300px;
-  }
+    .contact-hero__container {
+        padding: 0 var(--space-lg);
+    }
+
+    .contact-hero__title {
+        font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    .contact-hero__description {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+    }
+
+    .contact-info__grid {
+        flex-direction: column;
+    }
+
+    .contact-info__item {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+
+    .contact-info__icon-wrapper {
+        padding: var(--space-sm);
+    }
+
+    .contact-info__icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .contact-info__content {
+        flex: 1;
+    }
+
+    .contact-info__label {
+        font-size: 1rem;
+    }
+
+    .contact-info__text {
+        font-size: 0.9rem;
+    }
+
+    .contact-form {
+        padding: var(--space-xl);
+    }
+
+    .contact-form__title {
+        font-size: 1.5rem;
+    }
+
+    .contact-form__group {
+        margin-bottom: var(--space-lg);
+    }
+
+    .contact-form__label {
+        font-size: 1rem;
+    }
+
+    .contact-form__input,
+    .contact-form__textarea {
+        padding: var(--space-md);
+    }
+
+    .contact-form__textarea {
+        min-height: 150px;
+    }
+
+    .contact-form__button {
+        padding: var(--space-md) var(--space-xl);
+    }
+
+    .map-section__container {
+        padding: 0 var(--space-lg);
+    }
+
+    .map-section__title {
+        font-size: 2rem;
+    }
+
+    .map-section__frame {
+        height: 400px;
+    }
 }

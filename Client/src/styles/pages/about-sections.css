@@ -294,4 +294,85 @@
   .history-timeline {
     padding-left: var(--space-lg);
   }
+
+  .history-timeline__item::before {
+    top: 1.5rem;
+    left: -4px;
+    width: 6px;
+    height: 6px;
+  }
+
+  .history-timeline__year {
+    font-size: 1.2rem;
+  }
+
+  .history-timeline__milestone {
+    font-size: 1rem;
+  }
+
+  .history-timeline__description {
+    font-size: 0.9rem;
+  }
+
+  .leader-card__avatar-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .leader-card__name {
+    font-size: 1.2rem;
+  }
+
+  .leader-card__role {
+    font-size: 0.9rem;
+  }
+
+  .leader-card__description {
+    font-size: 0.9rem;
+  }
+
+  .mission-section__container {
+    padding: 0 var(--space-lg);
+  }
+
+  .values-section__container {
+    padding: 0 var(--space-lg);
+  }
+
+  .history-section__container {
+    padding: 0 var(--space-lg);
+  }
+
+  .leadership-section__container {
+    padding: 0 var(--space-lg);
+  }
+
+  .mission-section__content,
+  .values-card,
+  .history-timeline__item,
+  .leader-card {
+    padding: var(--space-lg);
+  }
+
+  .mission-section__icon-wrapper,
+  .values-card__icon-wrapper,
+  .history-timeline__item::before,
+  .leader-card__avatar-wrapper {
+    padding: var(--space-sm);
+  }
+
+  .mission-section__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .values-card__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .leader-card__avatar {
+    width: 80px;
+    height: 80px;
+  }
 }

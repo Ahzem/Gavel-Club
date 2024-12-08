@@ -174,14 +174,87 @@
     grid-template-columns: 1fr;
   }
 
-  .join-timeline {
-    padding-left: var(--space-lg);
-  }
-
   .join-step__number {
     left: -30px;
     width: 30px;
     height: 30px;
     font-size: 0.9rem;
   }
+
+    .faq-item__question {
+        font-size: 1rem;
+    }
+
+    .faq-item__answer {
+        padding: 0 var(--space-md) var(--space-md);
+    }
+
+    .faq-item__icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .faq-section {
+        padding: var(--space-xl);
+    }
+
+    .faq-section__title {
+        margin-bottom: var(--space-xl);
+    }
+
+    .faq-list {
+        max-width: 600px;
+    }
+
+    .faq-item {
+        margin-bottom: var(--space-sm);
+    }
+
+    .join-section {
+        padding: var(--space-xl) 0;
+    }
+
+    .join-section__title {
+        margin-bottom: var(--space-xl);
+    }
+
+    .join-timeline {
+        padding-left: var(--space-xl);
+    }
+
+    .join-step {
+        margin: var(--space-md);
+    }
+
+    .join-step__number {
+        left: -30px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .benefits-section {
+        padding: var(--space-xl) 0;
+    }
+
+    .benefits-section__title {
+        margin-bottom: var(--space-xl);
+    }
+
+    .benefits-grid {
+        gap: var(--space-lg);
+    }
+
+    .benefit-card {
+        padding: var(--space-lg);
+    }
+
+    .benefit-card__icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .benefit-card__icon {
+        width: 24px;
+        height: 24px;
+    }
 }

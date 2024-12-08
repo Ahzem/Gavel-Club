@@ -113,14 +113,13 @@
 
 @media (max-width: 768px) {
   .nav-menu {
-    display: none;
+    visibility: hidden;
     position: fixed;
     top: calc(80px + 1.5rem);
     left: 5%;
     width: 90%;
-    height: 50px;
     border-radius: 16px;
-    background: var(--glass-background);
+    background: white;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: var(--glass-blur);
     padding: var(--space-lg);
@@ -131,7 +130,7 @@
   }
 
   .nav-menu.open {
-    display: flex;
+    visibility: visible;
   }
 
   .mobile-menu-button {
