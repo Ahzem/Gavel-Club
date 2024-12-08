@@ -239,10 +239,7 @@
 
 .workshop-card {
   position: relative;
-  background: linear-gradient(var(--glass-background), var(--glass-background))
-      padding-box,
-    linear-gradient(135deg, var(--color-accent-1), var(--color-primary))
-      border-box;
+  background: var(--glass-background);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: var(--glass-blur);
   border-radius: 16px;
@@ -257,7 +254,7 @@
 }
 
 .workshop-meta__icon {
-  color: var(--color-accent-1);
+  color: var(--color-accent-2-dark);
 }
 
 .workshop-card:hover {
@@ -276,7 +273,7 @@
 }
 
 .workshop-card__description {
-  color: var(--color-accent-2);
+  color: var(--color-accent-2-dark);
   font-size: 0.9rem;
 }
 
@@ -314,4 +311,50 @@
   .workshops-section {
     padding: var(--space-xl) var(--space-lg);
   }
+
+    .gallery-card__image {
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-card:hover .gallery-card__image {
+        transform: scale(1);
+    }
+
+
+    .gallery-seemore {
+        margin-top: var(--space-xl);
+    }
+
+    .gallery-seemore__link {
+        padding: var(--space-md) var(--space-lg);
+    }
+
+    .workshop-card {
+        padding: var(--space-lg);
+    }
+
+    .workshop-meta__item {
+        padding: var(--space-sm) var(--space-lg);
+    }
+
+    .workshop-card__title {
+        font-size: 1.25rem;
+    }
+
+    .workshop-card__description {
+        font-size: 0.9rem;
+    }
+
+    .workshop-meta__item {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .workshop-meta__icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .workshop-meta__item {
+        border-radius: 8px;
+    }
 }

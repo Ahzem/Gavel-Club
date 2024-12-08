@@ -77,7 +77,7 @@ export function Footer() {
                 rel="noopener noreferrer"
               >
                 <Github size={16} />
-                Your Name
+                Ahzem
               </a>
               <a
                 href="mailto:muhammadhahzem1422@gmail.com"

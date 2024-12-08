@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { SITE_CONFIG } from "../../lib/constants";
 import { NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -47,10 +48,13 @@ export function Header() {
         <button
           className="mobile-menu-button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >
-          <span className="material-icons">
-            {isMenuOpen ? "close" : "menu"}
-          </span>
+          {isMenuOpen ? (
+            <X className="mobile-menu-icon" size={24} />
+          ) : (
+            <Menu className="mobile-menu-icon" size={24} />
+          )}
         </button>
         <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
           {links.map((link) => (

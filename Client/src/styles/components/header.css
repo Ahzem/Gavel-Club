@@ -111,6 +111,15 @@
   padding: var(--space-sm);
 }
 
+.mobile-menu-icon {
+  color: var(--color-primary);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-button:hover .mobile-menu-icon {
+  transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
   .nav-menu {
     visibility: hidden;
@@ -127,6 +136,7 @@
     align-items: center;
     gap: var(--space-lg);
     border-bottom: 1px solid var(--color-gray-200);
+    box-shadow: var(--glass-shadow);
   }
 
   .nav-menu.open {
