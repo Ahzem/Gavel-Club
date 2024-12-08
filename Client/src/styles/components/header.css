@@ -1,9 +1,9 @@
 .nav {
   position: fixed;
-  top: 1.5rem;
+  top: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  height: 70px;
+  height: 65px;
   width: 90%;
   max-width: 1400px;
   background: var(--glass-background);

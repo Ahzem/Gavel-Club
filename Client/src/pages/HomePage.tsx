@@ -1,8 +1,8 @@
-import { Hero } from '../components/home/Hero';
-import { Events } from '../components/home/Events';
-import { Team } from '../components/home/Team';
-import { Testimonials } from '../components/home/Testimonials';
-import { motion } from 'framer-motion';
+import Hero from "../components/home/Hero";
+import { Events } from "../components/home/Events";
+import { Team } from "../components/home/Team";
+import { Testimonials } from "../components/home/Testimonials";
+import { motion } from "framer-motion";
 
 export function HomePage() {
   return (
@@ -13,7 +13,7 @@ export function HomePage() {
       transition={{ duration: 0.5 }}
     >
       <Hero />
-      <motion.section 
+      <motion.section
         className="section"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -22,7 +22,7 @@ export function HomePage() {
       >
         <Events />
       </motion.section>
-      <motion.section 
+      <motion.section
         className="section"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export function HomePage() {
       >
         <Team />
       </motion.section>
-      <motion.section 
+      <motion.section
         className="section"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -1,44 +1,41 @@
-import { SITE_CONFIG } from "../../lib/constants";
 import { motion } from "framer-motion";
-import heroBrand from '../../assets/gavel2.png';
+import { SITE_CONFIG } from "../../lib/constants";
+import logowithname from "../../assets/logowithname.png";
 
-export function Hero() {
-
+export default function Hero() {
   return (
     <section className="hero">
       <div className="hero__container">
-        <motion.div
+        <motion.div 
           className="hero__content"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
-          <motion.div
-            className="hero__title-wrapper"
+          <motion.h1 
+            className="hero__title"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h1 className="hero__title">
               <span>Empowering</span>
               <span>Future Leaders</span>
-            </h1>
-          </motion.div>
+          </motion.h1>
 
-          <motion.p
+          <motion.p 
             className="hero__description"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Join us in shaping tomorrow's technology leaders at the Institute of
-            Technology, University of Moratuwa
+            {SITE_CONFIG.description}
           </motion.p>
-          <motion.div
+
+          <motion.div 
             className="hero__buttons"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
           >
             <button
               className="hero__button hero__button--join"
@@ -53,16 +50,17 @@ export function Hero() {
               Watch Video
             </button>
           </motion.div>
+
           <motion.div
             className="hero__branding"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
           >
             <img
-              src={heroBrand}
+              src={logowithname}
               alt={SITE_CONFIG.name}
-              className="hero__logo"
+              className="hero__logo__with__name"
             />
           </motion.div>
         </motion.div>

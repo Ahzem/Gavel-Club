@@ -11,6 +11,7 @@ import './styles/hero.css';
 import './styles/pages/home.css';
 import './styles/pages/about.css';
 import './styles/components/header.css';
+import './styles/components/events.css';
 import './styles/components/button.css';
 import './styles/components/card.css';
 import './styles/components/avatar.css';
