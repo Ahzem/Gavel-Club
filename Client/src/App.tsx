@@ -23,6 +23,8 @@ import "./styles/components/card.css";
 import "./styles/components/avatar.css";
 import "./styles/components/sheet.css";
 import "./styles/components/navigation.css";
+import "./styles/components/team-section.css";
+import "./styles/components/testimonials-section.css";
 
 document.body.style.background =
   "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)";

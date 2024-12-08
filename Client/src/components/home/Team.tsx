@@ -1,13 +1,11 @@
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { CardContent, CardHeader, CardTitle } from '../ui/card';
-import { teamMembers } from '../../lib/data';
-import { motion } from 'framer-motion';
+import { teamMembers } from "../../lib/data";
+import { motion } from "framer-motion";
 
 export function Team() {
   return (
     <section className="section">
       <div className="section__container">
-        <motion.div 
+        <motion.div
           className="section__header"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -27,21 +25,21 @@ export function Team() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <div className="team-card">
-                <CardHeader>
+                <div>
                   <div className="team-card__header">
-                    <Avatar className="team-card__avatar">
-                      <AvatarImage src={item.image} alt={item.name} />
-                      <AvatarFallback>{item.name[0]}</AvatarFallback>
-                    </Avatar>
+                    <div className="team-card__avatar">
+                      <img src={item.image} alt={item.name} />
+                      <div>{item.name[0]}</div>
+                    </div>
                     <div className="team-card__info">
-                      <CardTitle className="team-card__name">{item.name}</CardTitle>
+                      <h2 className="team-card__name">{item.name}</h2>
                       <p className="team-card__role">{item.role}</p>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
+                </div>
+                <div>
                   <p className="team-card__bio">{item.bio}</p>
-                </CardContent>
+                </div>
               </div>
             </motion.div>
           ))}

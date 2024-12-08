@@ -1,5 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { CardContent, CardHeader } from '../ui/card';
 import { testimonials } from '../../lib/data';
 import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
@@ -30,21 +28,21 @@ export function Testimonials() {
             >
               <div className="testimonial-card">
                 <Quote className="testimonial-card__quote" />
-                <CardContent className="testimonial-card__content">
+                <div className="testimonial-card__content">
                   <p className="testimonial-card__text">{item.content}</p>
-                </CardContent>
-                <CardHeader className="testimonial-card__header">
+                </div>
+                <div className="testimonial-card__header">
                   <div className="testimonial-card__author">
-                    <Avatar className="testimonial-card__avatar">
-                      <AvatarImage src={item.image} alt={item.name} />
-                      <AvatarFallback>{item.name[0]}</AvatarFallback>
-                    </Avatar>
+                    <div className="testimonial-card__avatar">
+                      <img src={item.image} alt={item.name} />
+                      <div>{item.name[0]}</div>
+                    </div>
                     <div className="testimonial-card__info">
                       <p className="testimonial-card__name">{item.name}</p>
                       <p className="testimonial-card__role">{item.role}</p>
                     </div>
                   </div>
-                </CardHeader>
+                </div>
               </div>
             </motion.div>
           ))}
