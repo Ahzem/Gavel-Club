@@ -13,7 +13,7 @@ import "./styles/pages/about.css";
 import "./styles/pages/about-sections.css";
 // import './styles/pages/contact.css';
 // import './styles/pages/membership.css';
-// import './styles/pages/activities.css';
+import "./styles/pages/activities.css";
 import "./styles/components/header.css";
 import "./styles/components/events.css";
 import "./styles/components/button.css";

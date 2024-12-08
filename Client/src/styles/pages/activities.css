@@ -1,0 +1,316 @@
+/* activities.css */
+.activities-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 65, 101, 0.03) 0%,
+    rgba(119, 36, 50, 0.03) 100%
+  );
+}
+
+/* Hero Section */
+.activities-hero {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent-1)
+  );
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.activities-hero__title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: var(--color-white);
+  text-align: center;
+  margin-top: var(--space-xl);
+}
+
+/* Calendar Section */
+.calendar-section {
+  padding: var(--space-2xl) 0;
+}
+
+.calendar-section__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--space-xl);
+}
+
+.calendar-card {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  transition: transform 0.3s ease;
+}
+
+.calendar-card:hover {
+  transform: translateY(-5px);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.calendar-header__icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-accent-1);
+}
+
+.calendar-header__title {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+.calendar-header__subtitle {
+  color: var(--color-accent-2);
+  font-size: 0.9rem;
+}
+
+.calendar-events {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  padding: var(--space-xl);
+}
+
+.calendar-events__title {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.calendar-events__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.calendar-event-card {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--glass-border);
+}
+
+.calendar-event-card__title {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.calendar-event-card__description {
+  color: var(--color-accent-2);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-sm);
+}
+
+.calendar-event-card__location {
+  color: var(--color-accent-1);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Gallery Section */
+.gallery-section {
+  padding: var(--space-2xl) 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 65, 101, 0.05),
+    rgba(119, 36, 50, 0.05)
+  );
+}
+
+.gallery-section__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.gallery-section__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-xl);
+}
+
+.gallery-card {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+}
+
+.gallery-card__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.gallery-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-card:hover .gallery-card__image {
+  transform: scale(1.1);
+}
+
+.gallery-seemore {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-2xl);
+}
+
+.gallery-seemore__link {
+  background: linear-gradient(135deg, var(--color-accent-1), var(--color-primary));
+  color: var(--color-white);
+  border: none;
+  padding: var(--space-md) var(--space-xl);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-seemore__link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Workshops Section */
+.workshops-section {
+  padding: var(--space-2xl) 0;
+}
+
+.workshops-section__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+}
+
+.workshops-section__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.workshops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-xl);
+}
+
+.workshop-card {
+  position: relative;
+  background: linear-gradient(var(--glass-background), var(--glass-background))
+      padding-box,
+    linear-gradient(135deg, var(--color-accent-1), var(--color-primary))
+      border-box;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  transition: transform 0.3s ease;
+}
+
+.workshop-meta__item {
+  background: rgba(255, 255, 255, 0.5);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 8px;
+}
+
+.workshop-meta__icon {
+  color: var(--color-accent-1);
+}
+
+.workshop-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--glass-shadow);
+}
+
+.workshop-card__header {
+  margin-bottom: var(--space-lg);
+}
+
+.workshop-card__title {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.workshop-card__description {
+  color: var(--color-accent-2);
+  font-size: 0.9rem;
+}
+
+.workshop-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.workshop-meta__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-accent-1);
+  font-size: 0.9rem;
+}
+
+.workshop-meta__icon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid,
+  .workshops-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-section,
+  .gallery-section,
+  .workshops-section {
+    padding: var(--space-xl) var(--space-lg);
+  }
+}
