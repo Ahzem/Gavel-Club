@@ -5,57 +5,87 @@
   justify-content: center;
   padding: var(--space-sm) var(--space-lg);
   border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-background);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: var(--glass-blur);
+  border: 1px solid transparent;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
   overflow: hidden;
+  user-select: none;
 }
 
-.btn::before {
-  content: '';
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 65, 101, 0.2);
+}
+
+.btn--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.btn__ripple {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: 0.6s;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
-.btn:hover::before {
-  transform: translateX(100%);
+.btn__spinner {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
 }
 
 .btn--primary {
-  background: rgba(0, 65, 101, 0.7);
+  background: var(--color-primary);
   color: white;
 }
 
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
 .btn--secondary {
-  background: rgba(169, 178, 177, 0.7);
+  background: var(--color-secondary);
   color: var(--color-primary);
 }
 
 .btn--ghost {
   background: transparent;
-  border: 1px solid var(--color-primary);
   color: var(--color-primary);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: rgba(0, 65, 101, 0.1);
 }
 
 .btn--outline {
   background: transparent;
-  border: 1px solid var(--color-primary);
+  border: 1px solid currentColor;
   color: var(--color-primary);
+}
+
+.btn--outline:hover:not(:disabled) {
+  background: rgba(0, 65, 101, 0.1);
 }
 
 .btn--sm {
@@ -66,4 +96,17 @@
 .btn--lg {
   padding: var(--space-md) var(--space-xl);
   font-size: 1.125rem;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
