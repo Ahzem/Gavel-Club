@@ -1,4 +1,3 @@
-import { Card, CardContent } from '../ui/card';
 import { motion } from 'framer-motion';
 
 const milestones = [
@@ -26,25 +25,25 @@ const milestones = [
 
 export function History() {
   return (
-    <section className="">
-      <div className="">
-        <h2 className="">Our Journey</h2>
-        <div className="">
+    <section className="history-section">
+      <div className="history-section__container">
+        <h2 className="history-section__title">Our Journey</h2>
+        <div className="history-timeline">
           {milestones.map((milestone, index) => (
+            <div className="history-timeline__item">
             <motion.div
               key={milestone.year}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card>
-                <CardContent className="">
-                  <div className="">{milestone.year}</div>
-                  <h3 className="">{milestone.title}</h3>
-                  <p className="">{milestone.description}</p>
-                </CardContent>
-              </Card>
+              <div className="history-timeline__year">{milestone.year}</div>
+              <div className="history-timeline__content">
+                <h3 className="history-timeline__milestone">{milestone.title}</h3>
+                <p className="history-timeline__description">{milestone.description}</p>
+              </div>
             </motion.div>
+            </div>
           ))}
         </div>
       </div>

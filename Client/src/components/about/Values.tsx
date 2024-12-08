@@ -1,6 +1,5 @@
 import { Award, Heart, Users, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "../ui/card";
 
 const values = [
   {
@@ -27,27 +26,25 @@ const values = [
 
 export function Values() {
   return (
-    <section className="">
-      <div className="">
-        <h2 className="">Our Values</h2>
-        <div className="">
+    <section className="values-section">
+      <div className="values-section__container">
+        <h2 className="values-section__title">Our Values</h2>
+        <div className="values-section__grid">
           {values.map((value, index) => (
-            <motion.div
-              key={value.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card>
-                <CardContent className="">
-                  <div className="">
-                    <value.icon className="" />
-                  </div>
-                  <h3 className="">{value.title}</h3>
-                  <p className="">{value.description}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <div className="values-card">
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="values-card__icon-wrapper">
+                  <value.icon className="values-card__icon" />
+                </div>
+                <h3 className="values-card__title">{value.title}</h3>
+                <p className="values-card__text">{value.description}</p>
+              </motion.div>
+            </div>
           ))}
         </div>
       </div>
