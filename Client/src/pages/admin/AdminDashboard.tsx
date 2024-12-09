@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { EventsManagement } from "./EventsManagement";
 
 const DASHBOARD_ITEMS = [
   {
@@ -108,6 +109,7 @@ export function AdminDashboard() {
 
         <main className="admin-dashboard__main">
           {/* Content will be conditionally rendered based on activeSection */}
+          {activeSection === 'events' && <EventsManagement />}
         </main>
       </div>
     </motion.div>
