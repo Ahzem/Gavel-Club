@@ -1,67 +1,80 @@
 import { useState } from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { motion } from "framer-motion";
+import { FiCalendar } from "react-icons/fi";
 
 const galleryImages = [
   {
     id: "1",
     src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80",
     alt: "Public Speaking Workshop",
+    date: "2024-12-15",
   },
   {
     id: "2",
     src: "https://images.unsplash.com/photo-1544531585-9847b68c8c86?auto=format&fit=crop&q=80",
     alt: "Leadership Summit",
+    date: "2024-12-01",
   },
   {
     id: "3",
     src: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80",
     alt: "Networking Event",
+    date: "2024-12-25",
   },
   {
     id: "4",
     src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80",
     alt: "Award Ceremony",
+    date: "2024-13-21",
   },
   {
     id: "3",
     src: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80",
     alt: "Networking Event",
+    date: "2024-12-15",
   },
   {
     id: "4",
     src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80",
     alt: "Award Ceremony",
+    date: "2024-12-23",
   },
   {
     id: "1",
     src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80",
     alt: "Public Speaking Workshop",
+    date: "2024-12-15",
   },
   {
     id: "2",
     src: "https://images.unsplash.com/photo-1544531585-9847b68c8c86?auto=format&fit=crop&q=80",
     alt: "Leadership Summit",
+    date: "2024-12-01",
   },
   {
     id: "3",
     src: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80",
     alt: "Networking Event",
+    date: "2024-12-25",
   },
   {
     id: "4",
     src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80",
     alt: "Award Ceremony",
+    date: "2024-13-21",
   },
   {
     id: "3",
     src: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80",
     alt: "Networking Event",
+    date: "2024-12-15",
   },
   {
     id: "4",
     src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80",
     alt: "Award Ceremony",
+    date: "2024-12-23",
   },
 ];
 
@@ -97,6 +110,15 @@ export function Gallery() {
                     alt={image.alt}
                     className="gallery-card__image"
                   />
+                  <div className="gallery-card__overlay">
+                    <div className="gallery-card__content">
+                      <h3 className="gallery-card__title">{image.alt}</h3>
+                      <div className="gallery-card__date">
+                        <FiCalendar className="gallery-card__icon" />
+                        <span>{new Date(image.date).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  </div>
                 </AspectRatio>
               </div>
             </motion.div>
