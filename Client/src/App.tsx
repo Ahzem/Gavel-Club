@@ -39,7 +39,8 @@ import "./styles/components/navigation.css";
 import "./styles/components/team-section.css";
 import "./styles/components/testimonials-section.css";
 import "./styles/pages/admin-dashboard.css";
-import "./styles/components/admin/events-management.css"
+import "./styles/components/admin/events-management.css";
+import "./styles/components/admin/image-upload.css";
 
 document.body.style.background =
   "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)";

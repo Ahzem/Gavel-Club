@@ -1,0 +1,36 @@
+.image-upload__dropzone {
+  border: 2px dashed var(--color-gray-300);
+  border-radius: 8px;
+  padding: var(--space-xl);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-upload__dropzone:hover,
+.image-upload__dropzone--active {
+  border-color: var(--color-accent-1);
+  background: rgba(119, 36, 50, 0.05);
+}
+
+.image-upload__icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-accent-1);
+  margin-bottom: var(--space-sm);
+}
+
+.image-upload__hint {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-gray-300);
+  margin-top: var(--space-sm);
+}
+
+.image-upload__preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+}

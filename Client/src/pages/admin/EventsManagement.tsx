@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus, Edit2, Trash2, Calendar, Clock, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ImageUpload } from './ImageUpload';
 
 interface Event {
   id: string;
@@ -29,11 +30,14 @@ export function EventsManagement() {
     type: 'workshop',
     image: '',
     organizer: '',
+    status: 'upcoming',
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
 
     try {
@@ -169,14 +173,10 @@ export function EventsManagement() {
                   />
                 </div>
 
-                <div className="events-form__field events-form__field--full">
-                  <label htmlFor="image">Image URL *</label>
-                  <input
-                    type="url"
-                    id="image"
-                    value={formData.image}
-                    onChange={(e) => setFormData({...formData, image: e.target.value})}
-                    required
+                <div className="events-form__field--full">
+                  <label>Event Image</label>
+                  <ImageUpload
+                    onImageChange={(file) => setFormData(prev => ({ ...prev, image: file ? URL.createObjectURL(file) : '' }))}
                   />
                 </div>
               </div>
@@ -184,11 +184,20 @@ export function EventsManagement() {
               {error && <div className="events-form__error">{error}</div>}
 
               <div className="events-form__actions">
-                <button type="button" onClick={() => setIsFormOpen(false)}>
+                <button
+                  type="button"
+                  onClick={() => setIsFormOpen(false)}
+                  className="button button--secondary"
+                  disabled={loading}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="events-form__submit">
-                  Create Event
+                <button
+                  type="submit"
+                  className="button button--primary"
+                  disabled={loading}
+                >
+                  {loading ? 'Creating...' : 'Create Event'}
                 </button>
               </div>
             </form>
