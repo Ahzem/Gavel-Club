@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { BlogPost } from "../types/Blog";
 import { Link } from "react-router-dom";
 
-const MOCK_BLOGS: BlogPost[] = [
+export const MOCK_BLOGS: BlogPost[] = [
   {
     id: "1",
     title: "Getting Started with Public Speaking",
@@ -14,12 +14,20 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
     claps: 10,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "2",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
@@ -29,12 +37,20 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john-2.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
     claps: 20,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "3",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
@@ -44,12 +60,43 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
-    claps: 30,
+    claps: 10,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "4",
+    title: "Getting Started with Public Speaking",
+    slug: "getting-started-with-public-speaking",
+    excerpt:
+      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
+    content: "Full content here...",
+    coverImage: "/blog/public-speaking-2.jpg",
+    author: {
+      name: "John Doe",
+      avatar: "/avatars/john-2.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
+    },
+    publishedAt: "2024-03-20",
+    claps: 20,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
+  },
+  {
+    id: "5",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
@@ -59,12 +106,43 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
-    claps: 24,
+    claps: 10,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "6",
+    title: "Getting Started with Public Speaking",
+    slug: "getting-started-with-public-speaking",
+    excerpt:
+      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
+    content: "Full content here...",
+    coverImage: "/blog/public-speaking-2.jpg",
+    author: {
+      name: "John Doe",
+      avatar: "/avatars/john-2.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
+    },
+    publishedAt: "2024-03-20",
+    claps: 20,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
+  },
+  {
+    id: "7",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
@@ -74,12 +152,43 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
-    claps: 15,
+    claps: 10,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "8",
+    title: "Getting Started with Public Speaking",
+    slug: "getting-started-with-public-speaking",
+    excerpt:
+      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
+    content: "Full content here...",
+    coverImage: "/blog/public-speaking-2.jpg",
+    author: {
+      name: "John Doe",
+      avatar: "/avatars/john-2.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
+    },
+    publishedAt: "2024-03-20",
+    claps: 20,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
+  },
+  {
+    id: "9",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
@@ -89,84 +198,40 @@ const MOCK_BLOGS: BlogPost[] = [
     author: {
       name: "John Doe",
       avatar: "/avatars/john.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
-    claps: 12,
+    claps: 10,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
   {
-    id: "1",
+    id: "10",
     title: "Getting Started with Public Speaking",
     slug: "getting-started-with-public-speaking",
     excerpt:
       "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
     content: "Full content here...",
-    coverImage: "/blog/public-speaking.jpg",
+    coverImage: "/blog/public-speaking-2.jpg",
     author: {
       name: "John Doe",
-      avatar: "/avatars/john.jpg",
+      avatar: "/avatars/john-2.jpg",
+      bio: "Public Speaking Coach",
+      title: "Public Speaking Coach",
+      social: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      }
     },
     publishedAt: "2024-03-20",
-    claps: 8,
-  },
-  {
-    id: "1",
-    title: "Getting Started with Public Speaking",
-    slug: "getting-started-with-public-speaking",
-    excerpt:
-      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
-    content: "Full content here...",
-    coverImage: "/blog/public-speaking.jpg",
-    author: {
-      name: "John Doe",
-      avatar: "/avatars/john.jpg",
-    },
-    publishedAt: "2024-03-20",
-    claps: 5,
-  },
-  {
-    id: "1",
-    title: "Getting Started with Public Speaking",
-    slug: "getting-started-with-public-speaking",
-    excerpt:
-      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
-    content: "Full content here...",
-    coverImage: "/blog/public-speaking.jpg",
-    author: {
-      name: "John Doe",
-      avatar: "/avatars/john.jpg",
-    },
-    publishedAt: "2024-03-20",
-    claps: 3,
-  },
-  {
-    id: "1",
-    title: "Getting Started with Public Speaking",
-    slug: "getting-started-with-public-speaking",
-    excerpt:
-      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
-    content: "Full content here...",
-    coverImage: "/blog/public-speaking.jpg",
-    author: {
-      name: "John Doe",
-      avatar: "/avatars/john.jpg",
-    },
-    publishedAt: "2024-03-20",
-    claps: 1,
-  },
-  {
-    id: "1",
-    title: "Getting Started with Public Speaking",
-    slug: "getting-started-with-public-speaking",
-    excerpt:
-      "Learn the fundamentals of public speaking and how to overcome stage fright. This comprehensive guide will help you take your first steps...",
-    content: "Full content here...",
-    coverImage: "/blog/public-speaking.jpg",
-    author: {
-      name: "John Doe",
-      avatar: "/avatars/john.jpg",
-    },
-    publishedAt: "2024-03-20",
-    claps: 0,
+    claps: 20,
+    readTime: "5 min read",
+    tags: ["public speaking", "communication"],
   },
 ];
 
