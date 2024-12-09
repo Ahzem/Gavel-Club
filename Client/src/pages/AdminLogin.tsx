@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authApi } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { useDeviceCheck } from "../hooks/useDeviceCheck";
 
 export function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -7,26 +10,29 @@ export function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const isMobile = useDeviceCheck();
 
+  if (isMobile) {
+    return (
+      <div className="admin-login">
+        <div className="admin-login__mobile-message">
+          <h1>Access Restricted</h1>
+          <p>Admin login is only available on desktop and tablet devices.</p>
+        </div>
+      </div>
+    );
+  }
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
+      const data = await authApi.login(email, password);
       localStorage.setItem("adminToken", data.token);
+      login(data.token);
       navigate("/admin/dashboard");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');

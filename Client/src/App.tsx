@@ -1,14 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
+import React from "react";
 import { Layout } from "./components/layout/Layout";
 import { HomePage } from "./pages/HomePage";
 import { AboutPage } from "./pages/AboutPage";
 import { ActivitiesPage } from "./pages/ActivitiesPage";
 import { MembershipPage } from "./pages/MembershipPage";
 import { ContactPage } from "./pages/ContactPage";
-import { AnimatePresence } from "framer-motion";
 import { BlogsPage } from "./pages/BlogsPage";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { AdminLogin } from "./pages/AdminLogin";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import "./index.css";
 import "./styles/hero.css";
 import "./styles/pages/home.css";
@@ -31,28 +38,62 @@ import "./styles/components/sheet.css";
 import "./styles/components/navigation.css";
 import "./styles/components/team-section.css";
 import "./styles/components/testimonials-section.css";
+import "./styles/pages/admin-dashboard.css";
 
 document.body.style.background =
   "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)";
 
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/adminlogin");
+    }
+  }, [isAuthenticated, navigate]);
+
+  return isAuthenticated ? <>{children}</> : null;
+}
+
 function App() {
   return (
-    <Router>
-      <Layout>
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/activities" element={<ActivitiesPage />} />
-            <Route path="/membership" element={<MembershipPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/blog" element={<BlogsPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/adminlogin" element={<AdminLogin />} />
-          </Routes>
-        </AnimatePresence>
-      </Layout>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Admin routes without Header/Footer */}
+          <Route
+            path="/admin/*"
+            element={
+              <Layout hideNav>
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          
+          {/* Regular routes with Header/Footer */}
+          <Route
+            path="/*"
+            element={
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/activities" element={<ActivitiesPage />} />
+                  <Route path="/membership" element={<MembershipPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/blog" element={<BlogsPage />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
+                  <Route path="/adminlogin" element={<AdminLogin />} />
+                </Routes>
+              </Layout>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
