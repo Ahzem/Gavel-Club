@@ -1,7 +1,14 @@
 import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { DayPicker } from "react-day-picker";
+import { events } from "../../lib/data";
+import { ClassNames } from "react-day-picker";
 import '../../styles/components/calendar.css';
+
+// Extend the ClassNames type to include our custom modifier
+interface ExtendedClassNames extends ClassNames {
+  day_hasEvent?: string;
+}
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -11,34 +18,50 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  // Get all dates that have events
+  const eventDates = events.map(event => new Date(event.date));
+  
+  // Create modifier for days with events
+  const modifiers = {
+    hasEvent: (date: Date) =>
+      eventDates.some(
+        eventDate => eventDate.toDateString() === date.toDateString()
+      ),
+  };
+
+  const extendedClassNames: ExtendedClassNames = {
+    ...classNames,
+    months: "calendar__months",
+    month: "calendar__month",
+    caption: "calendar__header",
+    caption_label: "calendar__month-label",
+    nav: "calendar__nav",
+    nav_button: "calendar__nav-button",
+    nav_button_previous: "calendar__nav-button--prev",
+    nav_button_next: "calendar__nav-button--next",
+    table: "calendar__table",
+    head_row: "calendar__weekdays",
+    head_cell: "calendar__weekday",
+    row: "calendar__week",
+    cell: "calendar__cell",
+    day: "calendar__day",
+    day_selected: "calendar__day--selected",
+    day_today: "calendar__day--today",
+    day_outside: "calendar__day--outside",
+    day_disabled: "calendar__day--disabled",
+    day_hidden: "calendar__day--hidden",
+    day_range_middle: "calendar__day--range-middle",
+    day_hasEvent: "calendar__day--has-event" // Add custom class for events
+  };
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={`calendar ${className || ""}`}
-      classNames={{
-        months: "calendar__months",
-        month: "calendar__month",
-        caption: "calendar__header",
-        caption_label: "calendar__month-label",
-        nav: "calendar__nav",
-        nav_button: "calendar__nav-button",
-        nav_button_previous: "calendar__nav-button--prev",
-        nav_button_next: "calendar__nav-button--next",
-        table: "calendar__table",
-        head_row: "calendar__weekdays",
-        head_cell: "calendar__weekday",
-        row: "calendar__week",
-        cell: "calendar__cell",
-        day: "calendar__day",
-        day_range_start: "calendar__day--range-start",
-        day_range_end: "calendar__day--range-end",
-        day_selected: "calendar__day--selected",
-        day_today: "calendar__day--today",
-        day_outside: "calendar__day--outside",
-        day_disabled: "calendar__day--disabled",
-        day_range_middle: "calendar__day--range-middle",
-        day_hidden: "calendar__day--hidden",
-        ...classNames,
+      modifiers={modifiers}
+      classNames={extendedClassNames}
+      modifiersClassNames={{
+        hasEvent: "calendar__day--has-event"
       }}
       components={{
         IconLeft: () => <ChevronLeftIcon className="calendar__nav-icon" />,

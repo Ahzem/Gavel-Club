@@ -6,6 +6,8 @@ import { ActivitiesPage } from "./pages/ActivitiesPage";
 import { MembershipPage } from "./pages/MembershipPage";
 import { ContactPage } from "./pages/ContactPage";
 import { AnimatePresence } from "framer-motion";
+import { BlogsPage } from "./pages/BlogsPage";
+import { BlogPostPage } from "./pages/BlogPostPage";
 import "./index.css";
 import "./styles/hero.css";
 import "./styles/pages/home.css";
@@ -15,8 +17,10 @@ import "./styles/pages/membership-sections.css";
 import "./styles/pages/contacts.css";
 import "./styles/pages/membership.css";
 import "./styles/pages/activities.css";
+import "./styles/pages/blog.css";
 import "./styles/pages/footer.css";
 import "./styles/components/header.css";
+import "./styles/components/claps.css";
 import "./styles/components/events.css";
 import "./styles/components/button.css";
 import "./styles/components/card.css";
@@ -40,6 +44,8 @@ function App() {
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/membership" element={<MembershipPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/blog" element={<BlogsPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
           </Routes>
         </AnimatePresence>
       </Layout>

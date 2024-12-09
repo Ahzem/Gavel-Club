@@ -157,6 +157,34 @@
   visibility: hidden;
 }
 
+.calendar__day--has-event {
+  background: linear-gradient(135deg, var(--color-accent-1), var(--color-primary));
+  color: var(--color-white);
+  font-weight: 600;
+  position: relative;
+}
+
+.calendar__day--has-event::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-white);
+}
+
+.calendar__day--has-event:hover {
+  background: var(--color-accent-1);
+  transform: scale(1.1);
+}
+
+.calendar__day--has-event.calendar__day--selected {
+  background: var(--color-primary);
+}
+
 @media (min-width: 640px) {
   .calendar__months {
     flex-direction: row;

@@ -110,7 +110,6 @@
 .calendar-event-card__title {
   font-size: 1.1rem;
   color: var(--color-primary);
-  margin-bottom: var(--space-sm);
 }
 
 .calendar-event-card__description {

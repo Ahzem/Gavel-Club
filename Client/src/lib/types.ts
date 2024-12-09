@@ -22,3 +22,13 @@ export interface Testimonial {
   content: string;
   image: string;
 }
+
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  type: 'workshop' | 'meeting' | 'competition' | 'social';
+}

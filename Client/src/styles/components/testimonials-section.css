@@ -46,6 +46,9 @@
   }
   
   .testimonial-card__quote {
+    position: absolute;
+    top: -20px;
+    left: 5%;
     color: var(--color-accent-1);
     width: 40px;
     height: 40px;

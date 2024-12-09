@@ -10,8 +10,6 @@ const APPLICATION_STATUS = {
   closeDate: "2024-06-30",
 };
 
-// <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfPyjz18xCMgYUclGTlORvUP1xbWtvNsZ-UeJms_QvvM537cg/viewform?embedded=true" width="700" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-
 export function MembershipPage() {
   return (
     <motion.div
