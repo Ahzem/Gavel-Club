@@ -8,6 +8,7 @@ import { ContactPage } from "./pages/ContactPage";
 import { AnimatePresence } from "framer-motion";
 import { BlogsPage } from "./pages/BlogsPage";
 import { BlogPostPage } from "./pages/BlogPostPage";
+import { AdminLogin } from "./pages/AdminLogin";
 import "./index.css";
 import "./styles/hero.css";
 import "./styles/pages/home.css";
@@ -19,6 +20,7 @@ import "./styles/pages/membership.css";
 import "./styles/pages/activities.css";
 import "./styles/pages/blog.css";
 import "./styles/pages/footer.css";
+import "./styles/pages/AdminLogin.css";
 import "./styles/components/header.css";
 import "./styles/components/claps.css";
 import "./styles/components/events.css";
@@ -46,6 +48,7 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/blog" element={<BlogsPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/adminlogin" element={<AdminLogin />} />
           </Routes>
         </AnimatePresence>
       </Layout>

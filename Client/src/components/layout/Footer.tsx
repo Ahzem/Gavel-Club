@@ -63,7 +63,7 @@ export function Footer() {
           <div className="footer__section">
             <h3 className="footer__title">Portal</h3>
             <div className="footer__admin">
-              <a href="/admin" className="footer__admin-link">
+              <a href="/adminlogin" className="footer__admin-link">
                 <User size={16} />
                 Sign in as Admin
               </a>
