@@ -308,7 +308,7 @@ export function BlogsManagement() {
                       </div>
                       <div className="blog-form__field">
                         <label>Author Image</label>
-                        <p> Recommended size: 200x200px or Square Image</p>
+                        <p className="blog-form__help-text"> Recommended size: 200x200px or Square Image</p>
                         <ImageUpload
                           onImageChange={(file) =>
                             setFormData((prev) => ({

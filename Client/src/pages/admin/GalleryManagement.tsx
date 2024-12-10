@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Search, Trash2, Edit2, Image } from "lucide-react";
+import { Plus, Search, Trash2, Edit2, Image, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 
@@ -99,63 +99,78 @@ export function GalleryManagement() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <form onSubmit={handleSubmit} className="gallery-form">
-              <h2>{selectedImage ? "Edit Image" : "Add New Image"}</h2>
-
-              <div className="gallery-form__grid">
-                <div className="events-form__field events-form__field--full">
-                  <label>Upload Image</label>
-                  <p>Recommended size: 1200x800px (3:2)</p>
-                  <ImageUpload
-                    onImageChange={(file) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        src: file ? URL.createObjectURL(file) : "",
-                      }))
-                    }
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label>Alt Text</label>
-                  <input
-                    type="text"
-                    value={formData.alt}
-                    onChange={(e) =>
-                      setFormData({ ...formData, alt: e.target.value })
-                    }
-                    placeholder="Describe the image"
-                    required
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label>Capture Date</label>
-                  <input
-                    type="date"
-                    value={formData.captureDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, captureDate: e.target.value })
-                    }
-                    required
-                    placeholder="Capture Date"
-                  />
-                </div>
-
-                <div className="events-form__actions events-form__field--full">
-                  <button
-                    type="button"
-                    onClick={handleCloseForm}
-                    className="button button--secondary"
-                  >
-                    Cancel
-                  </button>
-                  <button type="submit" className="button button--primary">
-                    {selectedImage ? "Save Changes" : "Add Image"}
-                  </button>
-                </div>
+            <div className="gallery-form">
+              <div className="gallery-form__header">
+                <h2>{selectedImage ? "Edit Image" : "Add New Image"}</h2>
+                <button
+                  className="gallery-form__close"
+                  onClick={handleCloseForm}
+                  title="Close"
+                >
+                  <X size={24} />
+                </button>
               </div>
-            </form>
+              <form onSubmit={handleSubmit} className="gallery-form__content">
+                <div className="gallery-form__grid">
+                  <div className="events-form__field events-form__field--full">
+                    <label>Upload Image</label>
+                    <p className="gallery-form__help-text">
+                      Recommended size: 1200x800px (3:2)
+                    </p>
+                    <ImageUpload
+                      onImageChange={(file) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          src: file ? URL.createObjectURL(file) : "",
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label>Alt Text</label>
+                    <input
+                      type="text"
+                      value={formData.alt}
+                      onChange={(e) =>
+                        setFormData({ ...formData, alt: e.target.value })
+                      }
+                      placeholder="Describe the image"
+                      required
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label>Capture Date</label>
+                    <input
+                      type="date"
+                      value={formData.captureDate}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          captureDate: e.target.value,
+                        })
+                      }
+                      required
+                      placeholder="Capture Date"
+                    />
+                  </div>
+
+                  <div className="events-form__actions events-form__field--full">
+                    <button
+                      type="button"
+                      onClick={handleCloseForm}
+                      className="button button--secondary"
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="button button--primary">
+                      {selectedImage ? "Save Changes" : "Add Image"}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

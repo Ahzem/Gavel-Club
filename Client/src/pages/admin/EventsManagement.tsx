@@ -8,6 +8,7 @@ import {
   MapPin,
   Search,
   Filter,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
@@ -145,167 +146,179 @@ export function EventsManagement() {
       <AnimatePresence>
         {isFormOpen && (
           <motion.div
-            className="events-management__form-container"
+            className="event-form-overlay"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <form onSubmit={handleSubmit} className="events-form">
-              <div className="events-form__grid">
-                <div className="events-form__field">
-                  <label htmlFor="title">Event Title</label>
-                  <input
-                    type="text"
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="date">Date</label>
-                  <input
-                    type="date"
-                    id="date"
-                    value={formData.date}
-                    onChange={(e) =>
-                      setFormData({ ...formData, date: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="time">Time</label>
-                  <input
-                    type="time"
-                    id="time"
-                    value={formData.time}
-                    onChange={(e) =>
-                      setFormData({ ...formData, time: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="type">Event Type</label>
-                  <select
-                    id="type"
-                    value={formData.type}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        type: e.target.value as Event["type"],
-                      })
-                    }
-                    required
-                  >
-                    <option value="workshop">Workshop</option>
-                    <option value="meeting">Meeting</option>
-                    <option value="social">Social Event</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="location">Location</label>
-                  <input
-                    type="text"
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) =>
-                      setFormData({ ...formData, location: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="capacity">Capacity</label>
-                  <input
-                    type="number"
-                    id="capacity"
-                    value={formData.capacity}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        capacity: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label htmlFor="registrationUrl">Registration URL</label>
-                  <input
-                    type="url"
-                    id="registrationUrl"
-                    value={formData.registrationUrl}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        registrationUrl: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="events-form__field events-form__field--full">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    title="Description"
-                    value={formData.description}
-                    onChange={(e) => {
-                      const input = e.target.value;
-                      if (input.length <= 150) {
-                        setFormData({ ...formData, description: input });
+            <div className="event-form">
+              <div className="event-form__header">
+                <h2>Create New Event</h2>
+                <button
+                  title="Close Form"
+                  className="event-form__close"
+                  onClick={() => setIsFormOpen(false)}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <form onSubmit={handleSubmit} className="event-form__content">
+                <div className="events-form__grid">
+                  <div className="events-form__field">
+                    <label htmlFor="title">Event Title</label>
+                    <input
+                      type="text"
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
                       }
-                    }}
-                    maxLength={150}
-                    required
-                  />
-                  <div className="character-count">
-                    {formData.description?.length || 0}/150 characters
+                      required
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="date">Date</label>
+                    <input
+                      type="date"
+                      id="date"
+                      value={formData.date}
+                      onChange={(e) =>
+                        setFormData({ ...formData, date: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="time">Time</label>
+                    <input
+                      type="time"
+                      id="time"
+                      value={formData.time}
+                      onChange={(e) =>
+                        setFormData({ ...formData, time: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="type">Event Type</label>
+                    <select
+                      id="type"
+                      value={formData.type}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          type: e.target.value as Event["type"],
+                        })
+                      }
+                      required
+                    >
+                      <option value="workshop">Workshop</option>
+                      <option value="meeting">Meeting</option>
+                      <option value="social">Social Event</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="location">Location</label>
+                    <input
+                      type="text"
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="capacity">Capacity</label>
+                    <input
+                      type="number"
+                      id="capacity"
+                      value={formData.capacity}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          capacity: Number(e.target.value),
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label htmlFor="registrationUrl">Registration URL</label>
+                    <input
+                      type="url"
+                      id="registrationUrl"
+                      value={formData.registrationUrl}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          registrationUrl: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="events-form__field events-form__field--full">
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                      title="Description"
+                      value={formData.description}
+                      onChange={(e) => {
+                        const input = e.target.value;
+                        if (input.length <= 150) {
+                          setFormData({ ...formData, description: input });
+                        }
+                      }}
+                      maxLength={150}
+                      required
+                    />
+                    <div className="character-count">
+                      {formData.description?.length || 0}/150 characters
+                    </div>
+                  </div>
+
+                  <div className="events-form__field--full">
+                    <label>Event Image</label>
+                    <ImageUpload
+                      onImageChange={(file) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          image: file ? URL.createObjectURL(file) : "",
+                        }))
+                      }
+                    />
                   </div>
                 </div>
 
-                <div className="events-form__field--full">
-                  <label>Event Image</label>
-                  <ImageUpload
-                    onImageChange={(file) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        image: file ? URL.createObjectURL(file) : "",
-                      }))
-                    }
-                  />
+                {error && <div className="events-form__error">{error}</div>}
+
+                <div className="events-form__actions">
+                  <button
+                    type="button"
+                    onClick={() => setIsFormOpen(false)}
+                    className="button button--secondary"
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="button button--primary"
+                    disabled={loading}
+                  >
+                    {loading ? "Creating..." : "Create Event"}
+                  </button>
                 </div>
-              </div>
-
-              {error && <div className="events-form__error">{error}</div>}
-
-              <div className="events-form__actions">
-                <button
-                  type="button"
-                  onClick={() => setIsFormOpen(false)}
-                  className="button button--secondary"
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="button button--primary"
-                  disabled={loading}
-                >
-                  {loading ? "Creating..." : "Create Event"}
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

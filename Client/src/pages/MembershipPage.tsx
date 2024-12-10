@@ -4,7 +4,7 @@ import { JoinProcess } from "../components/membership/JoinProcess";
 import { FAQ } from "../components/membership/FAQ";
 
 const APPLICATION_STATUS = {
-  isOpen: false,
+  isOpen: true,
   formUrl:
     "https://docs.google.com/forms/d/e/1FAIpQLSdctGsNgsBv22Arq5WuqJ2mg_hRNNwf866p164mVxllIiSSaw/viewform?embedded=true",
   closeDate: "2024-06-30",

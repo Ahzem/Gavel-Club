@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Edit2, Trash2, Search, Users } from "lucide-react";
+import { Plus, Edit2, Trash2, Search, Users, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 
@@ -142,7 +142,7 @@ export function TeamManagement() {
         </div>
         <button
           title="Add Member"
-          className="team-management__add-btn"
+          className="events-management__add-btn"
           onClick={() => setIsFormOpen(true)}
         >
           <Plus size={20} />
@@ -153,119 +153,130 @@ export function TeamManagement() {
       <AnimatePresence>
         {isFormOpen && (
           <motion.div
-            className="team-management__modal"
+            className="team-form-overlay"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
-            <form onSubmit={handleSubmit} className="team-form">
-              <h3>{selectedMember ? "Edit Member" : "Add New Member"}</h3>
-              <div className="team-form__grid">
-                <div className="events-form__field">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    required
-                    placeholder="Full Name"
-                  />
-                </div>
-
-                <div className="events-form__field">
-                  <label>Position</label>
-                  <select
-                    title="Position"
-                    value={formData.position}
-                    onChange={(e) =>
-                      setFormData({ ...formData, position: e.target.value })
-                    }
-                    required
-                  >
-                    {POSITIONS.map((position) => (
-                      <option key={position} value={position}>
-                        {position}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="events-form__field">
-                  <label>Year</label>
-                  <select
-                    title="Year"
-                    value={formData.year}
-                    onChange={(e) =>
-                      setFormData({ ...formData, year: e.target.value })
-                    }
-                    required
-                  >
-                    {Array.from({ length: 5 }, (_, i) =>
-                      (new Date().getFullYear() - i).toString()
-                    ).map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="events-form__field events-form__field--full">
-                  <label>Thoughts (Testimonial)</label>
-                  <p>
-                    {" "}
-                    This will be displayed on Home page Testimonials Section
-                  </p>
-                  <textarea
-                    title="Thoughts"
-                    value={formData.thoughts}
-                    onChange={(e) => {
-                      const input = e.target.value;
-                      if (input.length <= 150) {
-                        setFormData({ ...formData, thoughts: input });
+            <div className="team-form">
+              <div className="team-form__header">
+                <h2>{selectedMember ? "Edit Member" : "Add New Member"}</h2>
+                <button
+                  title="Close Form"
+                  className="team-form__close"
+                  onClick={() => setIsFormOpen(false)}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <form onSubmit={handleSubmit} className="team-form__content">
+                <div className="team-form__grid">
+                  <div className="events-form__field">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
                       }
-                    }}
-                    maxLength={150}
-                    required
-                  />
-                  <div className="character-count">
-                    {formData.thoughts?.length || 0}/150 characters
+                      required
+                      placeholder="Full Name"
+                    />
+                  </div>
+
+                  <div className="events-form__field">
+                    <label>Position</label>
+                    <select
+                      title="Position"
+                      value={formData.position}
+                      onChange={(e) =>
+                        setFormData({ ...formData, position: e.target.value })
+                      }
+                      required
+                    >
+                      {POSITIONS.map((position) => (
+                        <option key={position} value={position}>
+                          {position}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="events-form__field">
+                    <label>Year</label>
+                    <select
+                      title="Year"
+                      value={formData.year}
+                      onChange={(e) =>
+                        setFormData({ ...formData, year: e.target.value })
+                      }
+                      required
+                    >
+                      {Array.from({ length: 5 }, (_, i) =>
+                        (new Date().getFullYear() - i).toString()
+                      ).map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="events-form__field events-form__field--full">
+                    <label>Thoughts (Testimonial)</label>
+                    <p>
+                      {" "}
+                      This will be displayed on Home page Testimonials Section
+                    </p>
+                    <textarea
+                      title="Thoughts"
+                      value={formData.thoughts}
+                      onChange={(e) => {
+                        const input = e.target.value;
+                        if (input.length <= 150) {
+                          setFormData({ ...formData, thoughts: input });
+                        }
+                      }}
+                      maxLength={150}
+                      required
+                    />
+                    <div className="character-count">
+                      {formData.thoughts?.length || 0}/150 characters
+                    </div>
+                  </div>
+
+                  <div className="events-form__field events-form__field--full">
+                    <label>Profile Image</label>
+                    <p> Recommended size: 200x200px or square (1:1) image</p>
+                    <ImageUpload
+                      onImageChange={(file) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          image: file ? URL.createObjectURL(file) : "",
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="events-form__actions events-form__field--full">
+                    <button
+                      type="button"
+                      onClick={handleCloseForm}
+                      className="button button--secondary"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      title="Submit"
+                      className="button button--primary"
+                    >
+                      {selectedMember ? "Save Changes" : "Add Member"}
+                    </button>
                   </div>
                 </div>
-
-                <div className="events-form__field events-form__field--full">
-                  <label>Profile Image</label>
-                  <p> Recommended size: 200x200px or square (1:1) image</p>
-                  <ImageUpload
-                    onImageChange={(file) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        image: file ? URL.createObjectURL(file) : "",
-                      }))
-                    }
-                  />
-                </div>
-
-                <div className="events-form__actions events-form__field--full">
-                  <button
-                    type="button"
-                    onClick={handleCloseForm}
-                    className="button button--secondary"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    title="Submit"
-                    className="button button--primary"
-                  >
-                    {selectedMember ? "Save Changes" : "Add Member"}
-                  </button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

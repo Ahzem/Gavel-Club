@@ -84,9 +84,10 @@
 
 .blog-form {
   background: var(--color-white);
-  width: 100%;
+  width: 80%;
   height: 100%;
   max-height: 95vh;
+  border-radius: 12px;
   overflow-y: auto;
   position: relative;
   padding: var(--space-xl);
@@ -121,6 +122,11 @@
 
 .blog-form__close:hover {
   background: var(--color-gray-100);
+}
+
+.blog-form__help-text {
+  font-size: 0.875rem;
+  color: var(--color-accent-2-dark);
 }
 
 .blog-form__content {
