@@ -258,7 +258,7 @@ export function TeamManagement() {
                   </button>
                   <button
                     type="submit"
-                    title="Cancel"
+                    title="Submit"
                     className="button button--primary"
                   >
                     {selectedMember ? "Save Changes" : "Add Member"}
@@ -298,6 +298,7 @@ export function TeamManagement() {
                   <td>
                     <div className="team-table__actions">
                       <button
+                        title="Edit Member"
                         onClick={() => handleEdit(member)}
                         className="team-table__action-btn"
                       >

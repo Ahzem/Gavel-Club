@@ -5,7 +5,7 @@ import {
   Calendar,
   Users,
   FileText,
-  MessageSquare,
+  ImageIcon,
   Phone,
   LogOut,
 } from "lucide-react";
@@ -15,6 +15,8 @@ import { EventsManagement } from "./EventsManagement";
 import { SITE_CONFIG } from "../../lib/constants";
 import { MembershipManagement } from "./MembershipManagement";
 import { TeamManagement } from "./TeamManagement";
+import { BlogsManagement } from "./BlogsManagement";
+import { GalleryManagement } from "./GalleryManagement";
 
 const DASHBOARD_ITEMS = [
   {
@@ -38,9 +40,9 @@ const DASHBOARD_ITEMS = [
     icon: FileText,
   },
   {
-    id: "testimonials",
-    label: "Testimonials",
-    icon: MessageSquare,
+    id: "gallery",
+    label: "Gallery",
+    icon: ImageIcon,
   },
   {
     id: "contact",
@@ -153,6 +155,8 @@ export function AdminDashboard() {
           {activeSection === "events" && <EventsManagement />}
           {activeSection === "membership" && <MembershipManagement />}
           {activeSection === "team" && <TeamManagement />}
+          {activeSection === "blogs" && <BlogsManagement />}
+          {activeSection === "gallery" && <GalleryManagement />}
         </main>
       </div>
     </motion.div>
