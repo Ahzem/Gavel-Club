@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Layout } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 import {
   Calendar,
   Users,
@@ -12,6 +12,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { EventsManagement } from "./EventsManagement";
+import { SITE_CONFIG } from "../../lib/constants";
 
 const DASHBOARD_ITEMS = [
   {
@@ -73,8 +74,17 @@ export function AdminDashboard() {
     >
       <div className="admin-dashboard__sidebar">
         <div className="admin-dashboard__logo">
-          <Layout className="admin-dashboard__logo-icon" />
-          <span>Admin Panel</span>
+          <img
+            src="/logo.png"
+            alt="Club Logo"
+            className="admin-dashboard__logo-img"
+          />
+          <div className="admin-dashboard__logo-text">
+            <span className="admin-dashboard__logo-title">
+              {SITE_CONFIG.name}
+            </span>
+            <span className="admin-dashboard__logo-subtitle">Admin Panel</span>
+          </div>
         </div>
 
         <nav className="admin-dashboard__nav">
@@ -94,10 +104,34 @@ export function AdminDashboard() {
           ))}
         </nav>
 
-        <button className="admin-dashboard__logout" onClick={handleLogout}>
-          <LogOut className="admin-dashboard__logout-icon" />
-          <span>Logout</span>
-        </button>
+        <div className="admin-dashboard__footer">
+          <button className="admin-dashboard__logout" onClick={handleLogout}>
+            <LogOut className="admin-dashboard__logout-icon" />
+            <span>Logout</span>
+          </button>
+
+          <div className="admin-dashboard__developer">
+            <div className="admin-dashboard__developer-links">
+              <a
+                href="https://github.com/Ahzem"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="admin-dashboard__developer-link"
+              >
+                <Github size={14} />
+              </a>
+              <a
+                href="mailto:muhammadhahzem1422@gmail.com"
+                className="admin-dashboard__developer-link"
+              >
+                <Mail size={14} />
+              </a>
+            </div>
+            <span className="admin-dashboard__developer-text">
+              Developed by Ahzem
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="admin-dashboard__content">
@@ -109,7 +143,7 @@ export function AdminDashboard() {
 
         <main className="admin-dashboard__main">
           {/* Content will be conditionally rendered based on activeSection */}
-          {activeSection === 'events' && <EventsManagement />}
+          {activeSection === "events" && <EventsManagement />}
         </main>
       </div>
     </motion.div>

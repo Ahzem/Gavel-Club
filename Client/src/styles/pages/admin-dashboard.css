@@ -22,10 +22,66 @@
 .admin-dashboard__logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   padding: var(--space-lg);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: var(--space-xl);
+}
+
+.admin-dashboard__logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.admin-dashboard__logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard__logo-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.admin-dashboard__logo-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.admin-dashboard__footer {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-dashboard__developer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.admin-dashboard__developer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.admin-dashboard__developer-link {
+  color: var(--color-white);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.admin-dashboard__developer-link:hover {
+  opacity: 1;
+}
+
+.admin-dashboard__developer-text {
+  font-size: 0.7rem;
+  opacity: 0.7;
 }
 
 .admin-dashboard__logo-icon {
@@ -70,7 +126,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-md) var(--space-lg);
+  padding: 0.7rem 4.75rem;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: transparent;

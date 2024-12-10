@@ -139,14 +139,6 @@ export function EventsManagement() {
             }
             placeholder="Start Date"
           />
-          <input
-            type="date"
-            value={filters.endDate}
-            onChange={(e) =>
-              setFilters({ ...filters, endDate: e.target.value })
-            }
-            placeholder="End Date"
-          />
         </div>
       </div>
 
@@ -161,7 +153,7 @@ export function EventsManagement() {
             <form onSubmit={handleSubmit} className="events-form">
               <div className="events-form__grid">
                 <div className="events-form__field">
-                  <label htmlFor="title">Event Title *</label>
+                  <label htmlFor="title">Event Title</label>
                   <input
                     type="text"
                     id="title"
@@ -174,7 +166,7 @@ export function EventsManagement() {
                 </div>
 
                 <div className="events-form__field">
-                  <label htmlFor="date">Date *</label>
+                  <label htmlFor="date">Date</label>
                   <input
                     type="date"
                     id="date"
@@ -187,7 +179,7 @@ export function EventsManagement() {
                 </div>
 
                 <div className="events-form__field">
-                  <label htmlFor="time">Time *</label>
+                  <label htmlFor="time">Time</label>
                   <input
                     type="time"
                     id="time"
@@ -200,7 +192,7 @@ export function EventsManagement() {
                 </div>
 
                 <div className="events-form__field">
-                  <label htmlFor="type">Event Type *</label>
+                  <label htmlFor="type">Event Type</label>
                   <select
                     id="type"
                     value={formData.type}
@@ -220,7 +212,7 @@ export function EventsManagement() {
                 </div>
 
                 <div className="events-form__field">
-                  <label htmlFor="location">Location *</label>
+                  <label htmlFor="location">Location</label>
                   <input
                     type="text"
                     id="location"
@@ -263,7 +255,7 @@ export function EventsManagement() {
                 </div>
 
                 <div className="events-form__field events-form__field--full">
-                  <label htmlFor="description">Description *</label>
+                  <label htmlFor="description">Description</label>
                   <textarea
                     id="description"
                     value={formData.description}
