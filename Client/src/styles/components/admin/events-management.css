@@ -144,7 +144,6 @@
   min-height: 120px;
 }
 
-/* Required Field Indicator */
 .events-form__field label[for*="title"]::after,
 .events-form__field label[for*="date"]::after,
 .events-form__field label[for*="time"]::after,
@@ -155,7 +154,6 @@
   margin-left: var(--space-xs);
 }
 
-/* Form Actions */
 .events-form__actions {
   display: flex;
   justify-content: flex-end;
@@ -199,7 +197,6 @@
   cursor: not-allowed;
 }
 
-/* Error Message */
 .events-form__error {
   padding: var(--space-md);
   background: rgba(255, 0, 0, 0.1);
@@ -209,7 +206,6 @@
   font-size: 0.9rem;
 }
 
-/* Form Grid Layout */
 .events-form__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -221,7 +217,6 @@
   grid-column: 1 / -1;
 }
 
-/* Select Dropdown Custom Style */
 .events-form__field select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");

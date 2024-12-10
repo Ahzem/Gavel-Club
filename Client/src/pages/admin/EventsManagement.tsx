@@ -257,14 +257,20 @@ export function EventsManagement() {
                 <div className="events-form__field events-form__field--full">
                   <label htmlFor="description">Description</label>
                   <textarea
-                    id="description"
+                    title="Description"
                     value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const input = e.target.value;
+                      if (input.length <= 150) {
+                        setFormData({ ...formData, description: input });
+                      }
+                    }}
+                    maxLength={150}
                     required
-                    rows={4}
                   />
+                  <div className="character-count">
+                    {formData.description?.length || 0}/150 characters
+                  </div>
                 </div>
 
                 <div className="events-form__field--full">

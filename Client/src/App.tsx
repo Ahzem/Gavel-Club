@@ -43,6 +43,7 @@ import "./styles/components/admin/events-management.css";
 import "./styles/components/admin/image-upload.css";
 import "./styles/components/admin/membership-management.css";
 import "./styles/components/special-event.css";
+import "./styles/components/admin/TeamManagement.css";
 
 document.body.style.background =
   "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)";

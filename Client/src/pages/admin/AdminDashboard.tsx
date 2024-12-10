@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { EventsManagement } from "./EventsManagement";
 import { SITE_CONFIG } from "../../lib/constants";
 import { MembershipManagement } from "./MembershipManagement";
+import { TeamManagement } from "./TeamManagement";
 
 const DASHBOARD_ITEMS = [
   {
@@ -151,6 +152,7 @@ export function AdminDashboard() {
           {/* Content will be conditionally rendered based on activeSection */}
           {activeSection === "events" && <EventsManagement />}
           {activeSection === "membership" && <MembershipManagement />}
+          {activeSection === "team" && <TeamManagement />}
         </main>
       </div>
     </motion.div>
