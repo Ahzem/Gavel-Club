@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Github, Mail } from "lucide-react";
+import { Github, Mail, UserPlus } from "lucide-react";
 import {
   Calendar,
   Users,
@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { EventsManagement } from "./EventsManagement";
 import { SITE_CONFIG } from "../../lib/constants";
+import { MembershipManagement } from "./MembershipManagement";
 
 const DASHBOARD_ITEMS = [
   {
@@ -24,6 +25,11 @@ const DASHBOARD_ITEMS = [
     id: "team",
     label: "Team Members",
     icon: Users,
+  },
+  {
+    id: "membership",
+    label: "Applications",
+    icon: UserPlus,
   },
   {
     id: "blogs",
@@ -144,6 +150,7 @@ export function AdminDashboard() {
         <main className="admin-dashboard__main">
           {/* Content will be conditionally rendered based on activeSection */}
           {activeSection === "events" && <EventsManagement />}
+          {activeSection === "membership" && <MembershipManagement />}
         </main>
       </div>
     </motion.div>

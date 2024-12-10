@@ -4,9 +4,9 @@ import { JoinProcess } from "../components/membership/JoinProcess";
 import { FAQ } from "../components/membership/FAQ";
 
 const APPLICATION_STATUS = {
-  isOpen: true,
+  isOpen: false,
   formUrl:
-    "https://docs.google.com/forms/d/e/1FAIpQLSfPyjz18xCMgYUclGTlORvUP1xbWtvNsZ-UeJms_QvvM537cg/viewform?embedded=true",
+    "https://docs.google.com/forms/d/e/1FAIpQLSdctGsNgsBv22Arq5WuqJ2mg_hRNNwf866p164mVxllIiSSaw/viewform?embedded=true",
   closeDate: "2024-06-30",
 };
 
@@ -40,6 +40,9 @@ export function MembershipPage() {
           </motion.p>
         </div>
       </section>
+
+      <Benefits />
+      <JoinProcess />
 
       <section className="membership-form">
         <div className="membership-form__container">
@@ -80,9 +83,6 @@ export function MembershipPage() {
           )}
         </div>
       </section>
-
-      <Benefits />
-      <JoinProcess />
       <FAQ />
     </motion.div>
   );
