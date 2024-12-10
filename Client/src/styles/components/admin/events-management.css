@@ -1,9 +1,78 @@
 .events-management {
-  padding: var(--space-lg);
+  padding: var(--space-xl);
 }
 
 .events-management__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--space-xl);
+}
+
+.events-management__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.events-management__subtitle {
+  color: var(--color-accent-2-dark);
+  font-size: 0.9rem;
+}
+
+.events-management__filters {
+  background: var(--color-white);
+  padding: var(--space-lg);
+  border-radius: 12px;
+  margin-bottom: var(--space-xl);
+  display: flex;
+  gap: var(--space-xl);
+  align-items: center;
+  box-shadow: var(--glass-shadow);
+}
+
+.events-management__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-gray-100);
+  border-radius: 8px;
+}
+
+.events-management__search input {
+  border: none;
+  background: none;
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 1rem;
+}
+
+.events-management__filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.events-management__filter-group select,
+.events-management__filter-group input {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background: var(--color-white);
+}
+
+.events-management__empty {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-accent-2-dark);
+  background: var(--color-gray-100);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .events-management__add-btn {
@@ -50,15 +119,47 @@
 }
 
 .events-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--space-xl);
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: var(--glass-shadow);
 }
 
-.events-table th,
+.events-table th {
+  background: var(--color-gray-100);
+  font-weight: 600;
+  text-align: left;
+}
+
 .events-table td {
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--space-lg);
+}
+
+.events-table__datetime,
+.events-table__location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-accent-2-dark);
+}
+
+.events-table__type {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.events-table__type--workshop {
+  background: rgba(0, 65, 101, 0.1);
+  color: var(--color-primary);
+}
+.events-table__type--meeting {
+  background: rgba(119, 36, 50, 0.1);
+  color: var(--color-accent-1);
+}
+.events-table__type--social {
+  background: rgba(169, 178, 177, 0.1);
+  color: var(--color-accent-2-dark);
 }
 
 .events-table__status {

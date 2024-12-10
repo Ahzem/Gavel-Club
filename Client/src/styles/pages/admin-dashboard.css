@@ -1,8 +1,7 @@
 .admin-dashboard {
-  display: grid;
-  grid-template-columns: 280px 1fr;
   min-height: 100vh;
   background: var(--color-gray-100);
+  position: relative;
 }
 
 .admin-dashboard__sidebar {
@@ -11,6 +10,13 @@
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .admin-dashboard__logo {
@@ -79,6 +85,9 @@
 
 .admin-dashboard__content {
   padding: var(--space-xl);
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
 }
 
 .admin-dashboard__header {
@@ -92,4 +101,21 @@
   border-radius: 12px;
   padding: var(--space-xl);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-dashboard__sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-dashboard__sidebar::-webkit-scrollbar-track {
+  background: var(--color-primary);
+}
+
+.admin-dashboard__sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.admin-dashboard__sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
