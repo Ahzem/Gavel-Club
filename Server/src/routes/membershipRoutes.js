@@ -7,12 +7,14 @@ const MembershipConfig = require('../models/MembershipConfig');
 const validateConfig = (req, res, next) => {
   const { formUrl, closeDate } = req.body;
   
-  if (!formUrl) {
-    return res.status(400).json({ message: 'Form URL is required' });
-  }
-  
-  if (!closeDate) {
-    return res.status(400).json({ message: 'Closing date is required' });
+  if (req.body.isOpen) {
+    if (!formUrl) {
+      return res.status(400).json({ message: 'Form URL is required' });
+    }
+    
+    if (!closeDate) {
+      return res.status(400).json({ message: 'Closing date is required' });
+    }
   }
   
   next();
