@@ -113,6 +113,7 @@
 }
 
 .calendar-event-card__description {
+  width: 500px;
   color: var(--color-accent-2);
   font-size: 0.9rem;
   margin-bottom: var(--space-sm);
@@ -161,6 +162,31 @@
 .calendar-events__empty-text {
   color: var(--color-accent-2-dark);
   font-size: 0.9rem;
+}
+
+.calendar-events__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  gap: var(--space-md);
+  color: var(--color-accent-2-dark);
+}
+
+.calendar-events__loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-accent-2-light);
+  border-top-color: var(--color-accent-1);
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Gallery Section */

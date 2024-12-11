@@ -185,6 +185,33 @@
   background: var(--color-primary);
 }
 
+.calendar-section__loading,
+.calendar-section__error {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-accent-2-dark);
+}
+
+.calendar-section__error {
+  color: var(--color-accent-1);
+}
+
+.calendar__day--has-event {
+  position: relative;
+}
+
+.calendar__day--has-event::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-accent-1);
+}
+
 @media (min-width: 640px) {
   .calendar__months {
     flex-direction: row;
