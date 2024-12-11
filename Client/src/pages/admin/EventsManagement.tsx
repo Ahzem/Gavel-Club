@@ -20,7 +20,7 @@ interface Event {
   time: string;
   location: string;
   description: string;
-  type: "workshop" | "meeting" | "social" | "other";
+  type: "educational meeting" | "fun activity" | "other";
   image: string;
   status: "upcoming" | "ongoing" | "completed";
   registrationUrl?: string;
@@ -37,7 +37,7 @@ export function EventsManagement() {
     time: "",
     location: "",
     description: "",
-    type: "workshop",
+    type: "educational meeting",
     image: "",
     organizer: "",
     status: "upcoming",
@@ -126,12 +126,10 @@ export function EventsManagement() {
             onChange={(e) => setFilters({ ...filters, type: e.target.value })}
           >
             <option value="all">All Types</option>
-            <option value="workshop">Workshop</option>
-            <option value="meeting">Meeting</option>
-            <option value="social">Social</option>
+            <option value="educational meeting">Educational meeting</option>
+            <option value="fun activity">Fun activity</option>
             <option value="other">Other</option>
           </select>
-
           <input
             type="date"
             value={filters.startDate}
@@ -216,9 +214,10 @@ export function EventsManagement() {
                       }
                       required
                     >
-                      <option value="workshop">Workshop</option>
-                      <option value="meeting">Meeting</option>
-                      <option value="social">Social Event</option>
+                      <option value="educational meeting">
+                        Educational meeting
+                      </option>
+                      <option value="fun activity">Fun activity</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
