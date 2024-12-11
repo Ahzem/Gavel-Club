@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Search, Trash2, Edit2, Image, X } from "lucide-react";
+import { Plus, Search, Trash2, Edit2, Image, X, Filter, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 import { useAuth } from "../../context/AuthContext";
@@ -22,10 +22,15 @@ export function GalleryManagement() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [formData, setFormData] = useState<GalleryFormData>({
     alt: "",
     captureDate: new Date().toISOString().split("T")[0],
+  });
+  const [filters, setFilters] = useState({
+    search: "",
+    dateRange: "all",
+    sortBy: "newest",
   });
 
   useEffect(() => {
@@ -112,31 +117,113 @@ export function GalleryManagement() {
     });
   };
 
-  const filteredImages = images.filter((image) =>
-    image.alt.toLowerCase().includes(search.toLowerCase())
-  );
+  const getFilteredImages = () => {
+    return images
+      .filter((image) => {
+        const matchesSearch = image.alt
+          .toLowerCase()
+          .includes(filters.search.toLowerCase());
+
+        if (filters.dateRange === "all") return matchesSearch;
+
+        const imageDate = new Date(image.captureDate);
+        const today = new Date();
+
+        switch (filters.dateRange) {
+          case "thisMonth":
+            return (
+              matchesSearch &&
+              imageDate.getMonth() === today.getMonth() &&
+              imageDate.getFullYear() === today.getFullYear()
+            );
+          case "thisYear":
+            return (
+              matchesSearch && imageDate.getFullYear() === today.getFullYear()
+            );
+          case "lastYear":
+            return (
+              matchesSearch &&
+              imageDate.getFullYear() === today.getFullYear() - 1
+            );
+          default:
+            return matchesSearch;
+        }
+      })
+      .sort((a, b) => {
+        if (filters.sortBy === "newest") {
+          return (
+            new Date(b.captureDate).getTime() -
+            new Date(a.captureDate).getTime()
+          );
+        } else {
+          return (
+            new Date(a.captureDate).getTime() -
+            new Date(b.captureDate).getTime()
+          );
+        }
+      });
+  };
+
+  const filteredImages = getFilteredImages();
 
   return (
     <div className="gallery-management">
       <div className="gallery-management__header">
-        <div className="gallery-management__filters">
-          <div className="gallery-management__search">
-            <Search size={20} />
-            <input
-              type="text"
-              placeholder="Search images..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+        <div className="gallery-management__title">
+          <h2>Gallery Management</h2>
+          <p className="gallery-management__subtitle">
+            Manage and organize your gallery images
+          </p>
         </div>
         <button
           className="gallery-management__add-btn"
           onClick={() => setIsFormOpen(true)}
         >
-          <Plus size={20} />
-          Add Image
+          <Plus size={20} /> Add Image
         </button>
+      </div>
+      <div className="gallery-management__filters">
+        <div className="gallery-management__search">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="Search by image description..."
+            value={filters.search}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, search: e.target.value }))
+            }
+          />
+        </div>
+
+        <div className="gallery-management__filter-group">
+          <Filter size={20} />
+          <select
+            title="Date Range"
+            value={filters.dateRange}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, dateRange: e.target.value }))
+            }
+            className="gallery-management__select"
+          >
+            <option value="all">All Time</option>
+            <option value="thisMonth">This Month</option>
+            <option value="thisYear">This Year</option>
+            <option value="lastYear">Last Year</option>
+          </select>
+
+          <Calendar size={20} />
+          <select
+            title="Sort by"
+            value={filters.sortBy}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, sortBy: e.target.value }))
+            }
+            className="gallery-management__select"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
       </div>
 
       <AnimatePresence>

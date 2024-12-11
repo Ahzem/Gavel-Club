@@ -1,34 +1,96 @@
 .gallery-management {
-  padding: var(--space-xl);
+  padding: var(--space-md);
+  min-height: 100vh;
 }
 
 .gallery-management__header {
+  padding: var(--space-lg) var(--space-lg);
+  margin-bottom: var(--space-xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-xl);
+}
+
+.gallery-management__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.gallery-management__subtitle {
+  color: var(--color-accent-2-dark);
+  font-size: 0.9rem;
 }
 
 .gallery-management__filters {
+  background: var(--color-white);
+  padding: var(--space-lg);
+  border-radius: 12px;
+  margin-bottom: var(--space-xl);
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-xl);
   align-items: center;
+  box-shadow: var(--glass-shadow);
 }
 
 .gallery-management__search {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
   background: var(--color-gray-100);
   border-radius: 8px;
-  width: 300px;
 }
 
 .gallery-management__search input {
   border: none;
   background: none;
   width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 1rem;
+}
+
+.gallery-management__filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.gallery-management__select {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  background: var(--color-white);
+  min-width: 150px;
+}
+
+.gallery-management__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.gallery-management__stat-card {
+  background: var(--color-white);
+  padding: var(--space-lg);
+  border-radius: 12px;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.gallery-management__stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.gallery-management__stat-label {
+  color: var(--color-accent-2-dark);
+  font-size: 0.9rem;
 }
 
 .gallery-management__add-btn {
