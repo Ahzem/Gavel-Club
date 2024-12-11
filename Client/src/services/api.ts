@@ -1,3 +1,5 @@
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export const authApi = {
   login: async (email: string, password: string) => {
     const response = await fetch('/api/auth/login', {
@@ -23,7 +25,7 @@ export const authApi = {
 export const eventsApi = {
   createEvent: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch('/api/events', {
+    const response = await fetch(`${BASE_URL}/api/events`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -33,8 +35,33 @@ export const eventsApi = {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to create event');
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to create event');
     }
     return response.json();
+  },
+
+  getAllEvents: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/events`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch events');
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      throw new Error('Failed to fetch events');
+    }
   }
 };

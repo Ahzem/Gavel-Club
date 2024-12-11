@@ -1,10 +1,41 @@
-import { useState } from "react";
-import { events } from "../../lib/data";
+import { useState, useEffect } from "react";
 import { CalendarIcon, MapPinIcon, ArrowRightIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { eventsApi } from "../../services/api";
+import { Event } from "../../lib/types";
 
 export function Events() {
   const [showAll, setShowAll] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedEvents = await eventsApi.getAllEvents();
+        // Filter for upcoming events only
+        const upcomingEvents = fetchedEvents
+          .filter((event: Event) => new Date(event.date) >= new Date())
+          .sort(
+            (a: Event, b: Event) => new Date(a.date).getTime() - new Date(b.date).getTime()
+          );
+        setEvents(upcomingEvents);
+      } catch {
+        setError("Failed to load events");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (isLoading)
+    return <div className="events-management__loading">Loading events...</div>;
+  if (error)
+    return <div className="events-management__error">Error: {error}</div>;
 
   // Filter upcoming events
   const upcomingEvents = events

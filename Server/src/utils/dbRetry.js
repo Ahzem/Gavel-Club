@@ -1,23 +1,21 @@
-const connectDB = require('../config/db');
+const mongoose = require("mongoose");
 
-const MAX_RETRIES = 5;
-const RETRY_DELAY = 5000; // 5 seconds
-
-async function connectWithRetry(retries = MAX_RETRIES) {
-  try {
-    await connectDB();
-  } catch (error) {
-    console.error(`Failed to connect to MongoDB. Retries left: ${retries}`);
-    if (retries > 0) {
-      console.log(`Retrying in ${RETRY_DELAY/1000} seconds...`);
-      setTimeout(() => {
-        connectWithRetry(retries - 1);
-      }, RETRY_DELAY);
-    } else {
-      console.error('Max retries reached. Exiting...');
-      process.exit(1);
-    }
+const connectWithRetry = async () => {
+  const url = process.env.DATABASE_URL;
+  
+  if (!url) {
+    console.error("DATABASE_URL is not defined in environment variables");
+    process.exit(1);
   }
-}
+
+  try {
+    const conn = await mongoose.connect(url);
+    console.log(`MongoDB connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error("MongoDB connection error:", error.message);
+    console.log("Retrying connection in 5 seconds...");
+    setTimeout(connectWithRetry, 5000);
+  }
+};
 
 module.exports = connectWithRetry;

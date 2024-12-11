@@ -1,10 +1,10 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const app = require("./app");
 const connectWithRetry = require("./src/utils/dbRetry");
 
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB with retry mechanism
 connectWithRetry();
 
 app.listen(PORT, () => {

@@ -24,7 +24,7 @@ const eventSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["Educational meeting", "Fun activity"],
+      enum: ["Educational meeting", "Fun activity", "other"],
       required: true,
     },
     image: {
@@ -39,9 +39,7 @@ const eventSchema = new mongoose.Schema(
     registrationUrl: String,
     capacity: Number,
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Event", eventSchema);

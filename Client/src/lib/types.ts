@@ -2,9 +2,19 @@ export interface Event {
   id: string;
   title: string;
   date: string;
-  description: string;
+  time: string;
   location: string;
-  image?: string;
+  description: string;
+  type: "Educational meeting" | "Fun activity" | "other";
+  image: {
+    url: string;
+    publicId: string;
+  };
+  status: "upcoming" | "ongoing" | "completed";
+  registrationUrl?: string;
+  capacity?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface TeamMember {
@@ -21,14 +31,4 @@ export interface Testimonial {
   role: string;
   content: string;
   image: string;
-}
-
-export interface Event {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  type: 'workshop' | 'meeting' | 'competition' | 'social';
 }

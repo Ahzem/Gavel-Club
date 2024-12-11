@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Plus,
   Edit2,
@@ -13,26 +13,10 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 import { eventsApi } from "../../services/api";
-
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  type: "Educational meeting" | "Fun activity" | "other";
-  image: {
-    url: string;
-    publicId: string;
-  };
-  status: "upcoming" | "ongoing" | "completed";
-  registrationUrl?: string;
-  capacity?: number;
-}
+import { Event } from "../../lib/types";
 
 interface EventFormData extends Omit<Partial<Event>, "image"> {
-  image?: File | { url: string; publicId: string; };
+  image?: File | { url: string; publicId: string };
 }
 
 export function EventsManagement() {
@@ -55,18 +39,37 @@ export function EventsManagement() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setIsLoading(true);
+      const fetchedEvents = await eventsApi.getAllEvents();
+      setEvents(fetchedEvents);
+    } catch {
+      setError("Failed to fetch events");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-  
+
     try {
       const formDataObj = new FormData();
-  
+
       // Format date properly for backend
-      const formattedDate = formData.date ? new Date(formData.date).toISOString() : '';
-  
+      const formattedDate = formData.date
+        ? new Date(formData.date).toISOString()
+        : "";
+
       // Handle all non-image fields
       Object.entries(formData).forEach(([key, value]) => {
         if (key === "date" && value) {
@@ -79,17 +82,22 @@ export function EventsManagement() {
       // Handle image upload
       if (formData.image instanceof File) {
         formDataObj.append("image", formData.image);
-      } else if (formData.image && 'url' in formData.image) {
+      } else if (formData.image && "url" in formData.image) {
         formDataObj.append("image", JSON.stringify(formData.image));
       }
-  
+
       // Ensure required fields are present
-      if (!formDataObj.get('title') || !formDataObj.get('date') || 
-          !formDataObj.get('time') || !formDataObj.get('location') ||
-          !formDataObj.get('description') || !formDataObj.get('type')) {
-        throw new Error('Please fill in all required fields');
+      if (
+        !formDataObj.get("title") ||
+        !formDataObj.get("date") ||
+        !formDataObj.get("time") ||
+        !formDataObj.get("location") ||
+        !formDataObj.get("description") ||
+        !formDataObj.get("type")
+      ) {
+        throw new Error("Please fill in all required fields");
       }
-  
+
       const newEvent = await eventsApi.createEvent(formDataObj);
       setEvents([...events, newEvent]);
       setIsFormOpen(false);
@@ -317,7 +325,7 @@ export function EventsManagement() {
                       onImageChange={(file) => {
                         setFormData((prev: EventFormData) => ({
                           ...prev,
-                          image: file || undefined
+                          image: file || undefined,
                         }));
                       }}
                     />
@@ -349,7 +357,9 @@ export function EventsManagement() {
         )}
       </AnimatePresence>
       <div className="events-management__list">
-        {filteredEvents.length > 0 ? (
+        {isLoading ? (
+          <div className="events-management__loading">Loading events...</div>
+        ) : filteredEvents.length > 0 ? (
           <table className="events-table">
             <thead>
               <tr>

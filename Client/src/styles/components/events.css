@@ -219,6 +219,20 @@
   transform: translateX(5px);
 }
 
+.events-management__loading {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-accent-2-dark);
+}
+
+.events-management__error {
+  color: var(--color-accent-1);
+  background: rgba(255, 0, 0, 0.1);
+  padding: var(--space-lg);
+  border-radius: 8px;
+  margin-bottom: var(--space-xl);
+}
+
 @media (max-width: 768px) {
   .events__grid {
     grid-template-columns: 1fr;
@@ -228,3 +242,4 @@
     margin-top: 0;
   }
 }
+
