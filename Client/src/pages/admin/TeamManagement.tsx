@@ -252,7 +252,7 @@ export function TeamManagement() {
                       onImageChange={(file) =>
                         setFormData((prev) => ({
                           ...prev,
-                          image: file ? URL.createObjectURL(file) : "",
+                          image: file || undefined
                         }))
                       }
                     />

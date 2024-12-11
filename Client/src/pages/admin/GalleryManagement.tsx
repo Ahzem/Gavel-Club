@@ -121,7 +121,7 @@ export function GalleryManagement() {
                       onImageChange={(file) =>
                         setFormData((prev) => ({
                           ...prev,
-                          src: file ? URL.createObjectURL(file) : "",
+                          src: file || undefined
                         }))
                       }
                     />
