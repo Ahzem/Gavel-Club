@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createEvent, getAllEvents } = require("../controllers/eventController");
+const { createEvent, getAllEvents, deleteEventById } = require("../controllers/eventController");
 const { protect } = require("../middleware/auth");
 const { upload } = require("../config/cloudinary");
 const { validate } = require("../middleware/validate");
@@ -16,5 +16,7 @@ router.post(
   validate(eventSchema),
   createEvent
 );
+
+router.delete("/:id", protect, deleteEventById);
 
 module.exports = router;

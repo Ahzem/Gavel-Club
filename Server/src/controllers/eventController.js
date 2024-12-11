@@ -40,7 +40,40 @@ const getAllEvents = async (req, res) => {
   }
 };
 
+const deleteEventById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    // Only attempt to delete image if it exists and has a publicId
+    if (event.image && event.image.publicId) {
+      try {
+        await cloudinary.uploader.destroy(event.image.publicId);
+      } catch (cloudinaryError) {
+        console.error("Cloudinary deletion error:", cloudinaryError);
+        // Continue with event deletion even if image deletion fails
+      }
+    }
+
+    // Use findByIdAndDelete instead of remove()
+    await Event.findByIdAndDelete(id);
+    
+    res.json({ message: "Event deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    res.status(500).json({ 
+      message: "Error deleting event",
+      error: error.message 
+    });
+  }
+};
+
 module.exports = {
   createEvent,
   getAllEvents,
+  deleteEventById,
 };

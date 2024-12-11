@@ -63,5 +63,46 @@ export const eventsApi = {
       console.error('Error fetching events:', error);
       throw new Error('Failed to fetch events');
     }
+  },
+
+  updateEvent: async (id: string, formData: FormData) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`${BASE_URL}/api/events/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to update event');
+    }
+    return response.json();
+  },
+
+  deleteEvent: async (id: string) => {
+    if (!id) {
+      throw new Error('Event ID is required');
+    }
+  
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`${BASE_URL}/api/events/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to delete event');
+    }
+  
+    return await response.json();
   }
 };

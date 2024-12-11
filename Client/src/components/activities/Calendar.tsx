@@ -105,7 +105,6 @@ export function Calendar() {
                   >
                     {selectedDateEvents.map((event) => (
                       <motion.div
-                        key={event.id}
                         className="calendar-event-card"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -118,14 +117,26 @@ export function Calendar() {
                           {event.description}
                         </p>
                         <div className="calendar-event-card__meta">
-                          <span className="calendar-event-card__time">
-                            <Clock size={16} />
-                            {event.time}
-                          </span>
-                          <span className="calendar-event-card__location">
-                            <MapPin size={16} />
-                            {event.location}
-                          </span>
+                          <div className="calendar-event-card__time-location">
+                            <span className="calendar-event-card__time">
+                              <Clock size={16} />
+                              {event.time}
+                            </span>
+                            <span className="calendar-event-card__location">
+                              <MapPin size={16} />
+                              {event.location}
+                            </span>
+                          </div>
+                          {event.registrationUrl && (
+                            <a
+                              href={event.registrationUrl}
+                              className="calendar-event-card__register"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Register Now
+                            </a>
+                          )}
                         </div>
                       </motion.div>
                     ))}

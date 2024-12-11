@@ -15,8 +15,17 @@ import { ImageUpload } from "./ImageUpload";
 import { eventsApi } from "../../services/api";
 import { Event } from "../../lib/types";
 
-interface EventFormData extends Omit<Partial<Event>, "image"> {
-  image?: File | { url: string; publicId: string };
+interface EventFormData {
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  type: "Educational meeting" | "Fun activity" | "other";
+  status: "upcoming" | "ongoing" | "completed";
+  capacity?: number;
+  registrationUrl?: string;
+  image?: File | { url: string; publicId: string } | null;
 }
 
 export function EventsManagement() {
@@ -30,6 +39,9 @@ export function EventsManagement() {
     description: "",
     type: "Educational meeting",
     status: "upcoming",
+    capacity: undefined,
+    registrationUrl: "",
+    image: null,
   });
   const [filters, setFilters] = useState({
     search: "",
@@ -40,6 +52,11 @@ export function EventsManagement() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [hasFormChanged, setHasFormChanged] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     fetchEvents();
@@ -65,45 +82,149 @@ export function EventsManagement() {
     try {
       const formDataObj = new FormData();
 
-      // Format date properly for backend
-      const formattedDate = formData.date
-        ? new Date(formData.date).toISOString()
-        : "";
-
-      // Handle all non-image fields
+      // Add all form fields to FormData
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === "date" && value) {
-          formDataObj.append(key, formattedDate);
-        } else if (key !== "image" && value !== undefined && value !== null) {
+        if (value !== undefined && value !== null && key !== "image") {
           formDataObj.append(key, String(value));
         }
       });
 
-      // Handle image upload
+      // Handle image separately
       if (formData.image instanceof File) {
         formDataObj.append("image", formData.image);
       } else if (formData.image && "url" in formData.image) {
         formDataObj.append("image", JSON.stringify(formData.image));
       }
 
-      // Ensure required fields are present
-      if (
-        !formDataObj.get("title") ||
-        !formDataObj.get("date") ||
-        !formDataObj.get("time") ||
-        !formDataObj.get("location") ||
-        !formDataObj.get("description") ||
-        !formDataObj.get("type")
-      ) {
-        throw new Error("Please fill in all required fields");
+      if (isEditing && selectedEvent?._id) {
+        const updatedEvent = await eventsApi.updateEvent(
+          selectedEvent._id,
+          formDataObj
+        );
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event._id === selectedEvent._id ? updatedEvent : event
+          )
+        );
+      } else {
+        const newEvent = await eventsApi.createEvent(formDataObj);
+        setEvents((prevEvents) => [...prevEvents, newEvent]);
       }
 
-      const newEvent = await eventsApi.createEvent(formDataObj);
-      setEvents([...events, newEvent]);
+      // Reset form
       setIsFormOpen(false);
-      setFormData({});
+      setFormData({
+        title: "",
+        date: "",
+        time: "",
+        location: "",
+        description: "",
+        type: "Educational meeting",
+        status: "upcoming",
+        capacity: undefined,
+        registrationUrl: "",
+        image: null,
+      });
+      setIsEditing(false);
+      setSelectedEvent(null);
+      setHasFormChanged(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFormChange = (changes: Partial<EventFormData>) => {
+    setFormData((prev) => {
+      const updated = { ...prev, ...changes };
+
+      // Check if form has changed from original data
+      if (selectedEvent) {
+        const hasChanged = Object.keys(updated).some((key) => {
+          if (key === "date") {
+            return (
+              new Date(updated[key] as string).toISOString().split("T")[0] !==
+              new Date(selectedEvent[key]).toISOString().split("T")[0]
+            );
+          }
+          return (
+            updated[key as keyof EventFormData] !==
+            selectedEvent[key as keyof Event]
+          );
+        });
+        setHasFormChanged(hasChanged);
+      }
+
+      return updated;
+    });
+  };
+
+  const handleDelete = async (eventId: string) => {
+    if (!eventId) {
+      setError("Invalid event ID");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await eventsApi.deleteEvent(eventId);
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event._id !== eventId)
+      );
+      setShowDeleteConfirm(false);
+      setEventToDelete(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete event");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteClick = (event: Event) => {
+    if (!event._id) {
+      setError("Invalid event selected");
+      return;
+    }
+    setEventToDelete(event);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleEdit = (event: Event) => {
+    if (!event._id) {
+      setError("Invalid event selected");
+      return;
+    }
+
+    setSelectedEvent(event);
+    setIsEditing(true);
+    setIsFormOpen(true);
+    setFormData({
+      title: event.title,
+      date: new Date(event.date).toISOString().split("T")[0],
+      time: event.time,
+      location: event.location,
+      description: event.description,
+      type: event.type,
+      status: event.status,
+      capacity: event.capacity,
+      registrationUrl: event.registrationUrl || "",
+      image: event.image,
+    });
+    setHasFormChanged(false);
+  };
+
+  const confirmDelete = async () => {
+    if (!eventToDelete?._id) {
+      setError("No event selected for deletion");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await handleDelete(eventToDelete._id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete event");
     } finally {
       setLoading(false);
     }
@@ -183,11 +304,28 @@ export function EventsManagement() {
           >
             <div className="event-form">
               <div className="event-form__header">
-                <h2>Create New Event</h2>
+                <h2>{isEditing ? "Edit Event" : "Create New Event"}</h2>
                 <button
                   title="Close Form"
                   className="event-form__close"
-                  onClick={() => setIsFormOpen(false)}
+                  onClick={() => {
+                    setIsFormOpen(false);
+                    setIsEditing(false);
+                    setSelectedEvent(null);
+                    setFormData({
+                      title: "",
+                      date: "",
+                      time: "",
+                      location: "",
+                      description: "",
+                      type: "Educational meeting",
+                      status: "upcoming",
+                      capacity: undefined,
+                      registrationUrl: "",
+                      image: null,
+                    });
+                    setHasFormChanged(false);
+                  }}
                 >
                   <X size={24} />
                 </button>
@@ -201,7 +339,7 @@ export function EventsManagement() {
                       id="title"
                       value={formData.title}
                       onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
+                        handleFormChange({ title: e.target.value })
                       }
                       required
                     />
@@ -214,7 +352,7 @@ export function EventsManagement() {
                       id="date"
                       value={formData.date}
                       onChange={(e) =>
-                        setFormData({ ...formData, date: e.target.value })
+                        handleFormChange({ date: e.target.value })
                       }
                       required
                     />
@@ -227,7 +365,7 @@ export function EventsManagement() {
                       id="time"
                       value={formData.time}
                       onChange={(e) =>
-                        setFormData({ ...formData, time: e.target.value })
+                        handleFormChange({ time: e.target.value })
                       }
                       required
                     />
@@ -239,9 +377,11 @@ export function EventsManagement() {
                       id="type"
                       value={formData.type}
                       onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          type: e.target.value as Event["type"],
+                        handleFormChange({
+                          type: e.target.value as
+                            | "Educational meeting"
+                            | "Fun activity"
+                            | "other",
                         })
                       }
                       required
@@ -261,7 +401,7 @@ export function EventsManagement() {
                       id="location"
                       value={formData.location}
                       onChange={(e) =>
-                        setFormData({ ...formData, location: e.target.value })
+                        handleFormChange({ location: e.target.value })
                       }
                       required
                     />
@@ -274,10 +414,7 @@ export function EventsManagement() {
                       id="capacity"
                       value={formData.capacity}
                       onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          capacity: Number(e.target.value),
-                        })
+                        handleFormChange({ capacity: Number(e.target.value) })
                       }
                     />
                   </div>
@@ -289,10 +426,7 @@ export function EventsManagement() {
                       id="registrationUrl"
                       value={formData.registrationUrl}
                       onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          registrationUrl: e.target.value,
-                        })
+                        handleFormChange({ registrationUrl: e.target.value })
                       }
                     />
                   </div>
@@ -305,7 +439,7 @@ export function EventsManagement() {
                       onChange={(e) => {
                         const input = e.target.value;
                         if (input.length <= 150) {
-                          setFormData({ ...formData, description: input });
+                          handleFormChange({ description: input });
                         }
                       }}
                       maxLength={150}
@@ -337,7 +471,13 @@ export function EventsManagement() {
                 <div className="events-form__actions">
                   <button
                     type="button"
-                    onClick={() => setIsFormOpen(false)}
+                    onClick={() => {
+                      setIsFormOpen(false);
+                      setIsEditing(false);
+                      setSelectedEvent(null);
+                      setFormData({});
+                      setHasFormChanged(false);
+                    }}
                     className="button button--secondary"
                     disabled={loading}
                   >
@@ -346,9 +486,15 @@ export function EventsManagement() {
                   <button
                     type="submit"
                     className="button button--primary"
-                    disabled={loading}
+                    disabled={loading || (isEditing && !hasFormChanged)}
                   >
-                    {loading ? "Creating..." : "Create Event"}
+                    {loading
+                      ? isEditing
+                        ? "Saving..."
+                        : "Creating..."
+                      : isEditing
+                      ? "Save Changes"
+                      : "Create Event"}
                   </button>
                 </div>
               </form>
@@ -408,12 +554,14 @@ export function EventsManagement() {
                       <button
                         className="events-table__action-btn"
                         title="Edit Event"
+                        onClick={() => handleEdit(event)}
                       >
                         <Edit2 size={16} />
                       </button>
                       <button
                         className="events-table__action-btn events-table__action-btn--delete"
                         title="Delete Event"
+                        onClick={() => handleDeleteClick(event)}
                       >
                         <Trash2 size={16} />
                       </button>
@@ -431,6 +579,36 @@ export function EventsManagement() {
           </div>
         )}
       </div>
+      {showDeleteConfirm && (
+        <motion.div
+          className="delete-confirm-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="delete-confirm-modal">
+            <h3>Delete Event</h3>
+            <p>
+              Are you sure you want to delete "{eventToDelete?.title}"? This
+              action cannot be undone.
+            </p>
+            <div className="delete-confirm-actions">
+              <button
+                className="button button--secondary"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setEventToDelete(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button className="button button--delete" onClick={confirmDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
