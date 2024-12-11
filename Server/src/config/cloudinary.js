@@ -8,7 +8,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+// Events storage configuration
+const eventStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "events",
@@ -16,6 +17,16 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+// Gallery storage configuration
+const galleryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "gallery",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
 
-module.exports = { upload, cloudinary };
+const uploadEvent = multer({ storage: eventStorage });
+const uploadGallery = multer({ storage: galleryStorage });
+
+module.exports = { uploadEvent, uploadGallery, cloudinary };

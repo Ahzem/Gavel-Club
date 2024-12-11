@@ -32,3 +32,13 @@ export interface Testimonial {
   content: string;
   image: string;
 }
+
+export interface GalleryImage {
+  _id: string;
+  src: {
+    url: string;
+    publicId: string;
+  };
+  alt: string;
+  captureDate: string;
+}

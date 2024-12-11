@@ -266,6 +266,25 @@
   );
 }
 
+.gallery-section__subtitle {
+  text-align: center;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  margin-bottom: var(--space-2xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+  .gallery-section__subtitle {
+    font-size: 1rem;
+    padding: 0 var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+}
+
 .gallery-section__container {
   max-width: 1200px;
   margin: 0 auto;
@@ -276,7 +295,7 @@
   font-size: clamp(2rem, 4vw, 3rem);
   color: var(--color-primary);
   text-align: center;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-md);
 }
 
 .gallery-grid {
@@ -606,5 +625,4 @@
   .button--delete {
     padding: var(--space-sm) var(--space-md);
   }
-  
 }
