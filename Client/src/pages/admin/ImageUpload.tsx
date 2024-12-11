@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Upload, X } from "lucide-react";
 
 interface ImageUploadProps {
-  onImageChange: (file: File | null) => void;
+  onImageChange: (file: File | { url: string; publicId: string; } | undefined) => void;
   currentImage?: string;
 }
 
@@ -29,7 +29,7 @@ export function ImageUpload({ onImageChange, currentImage }: ImageUploadProps) {
 
   const handleRemove = () => {
     setPreview(null);
-    onImageChange(null);
+    onImageChange(undefined);
   };
 
   return (

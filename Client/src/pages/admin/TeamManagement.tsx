@@ -224,7 +224,7 @@ export function TeamManagement() {
 
                   <div className="events-form__field events-form__field--full">
                     <label>Thoughts (Testimonial)</label>
-                    <p>
+                    <p className="gallery-form__help-text">
                       {" "}
                       This will be displayed on Home page Testimonials Section
                     </p>
@@ -247,7 +247,7 @@ export function TeamManagement() {
 
                   <div className="events-form__field events-form__field--full">
                     <label>Profile Image</label>
-                    <p> Recommended size: 200x200px or square (1:1) image</p>
+                    <p className="gallery-form__help-text"> Recommended size: 200x200px or square (1:1) image</p>
                     <ImageUpload
                       onImageChange={(file) =>
                         setFormData((prev) => ({

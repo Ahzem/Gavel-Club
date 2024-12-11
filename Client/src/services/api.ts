@@ -19,3 +19,22 @@ export const authApi = {
     return response.json();
   }
 };
+
+export const eventsApi = {
+  createEvent: async (formData: FormData) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('/api/events', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to create event');
+    }
+    return response.json();
+  }
+};

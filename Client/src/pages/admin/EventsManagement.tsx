@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
+import { eventsApi } from "../../services/api";
 
 interface Event {
   id: string;
@@ -20,26 +21,30 @@ interface Event {
   time: string;
   location: string;
   description: string;
-  type: "educational meeting" | "fun activity" | "other";
-  image: string;
+  type: "Educational meeting" | "Fun activity" | "other";
+  image: {
+    url: string;
+    publicId: string;
+  };
   status: "upcoming" | "ongoing" | "completed";
   registrationUrl?: string;
   capacity?: number;
-  organizer: string;
+}
+
+interface EventFormData extends Omit<Partial<Event>, "image"> {
+  image?: File | { url: string; publicId: string; };
 }
 
 export function EventsManagement() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formData, setFormData] = useState<Partial<Event>>({
+  const [formData, setFormData] = useState<EventFormData>({
     title: "",
     date: "",
     time: "",
     location: "",
     description: "",
-    type: "educational meeting",
-    image: "",
-    organizer: "",
+    type: "Educational meeting",
     status: "upcoming",
   });
   const [filters, setFilters] = useState({
@@ -50,30 +55,49 @@ export function EventsManagement() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
     try {
-      const response = await fetch("/api/events", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
+      const formDataObj = new FormData();
+  
+      // Format date properly for backend
+      const formattedDate = formData.date ? new Date(formData.date).toISOString() : '';
+  
+      // Handle all non-image fields
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "date" && value) {
+          formDataObj.append(key, formattedDate);
+        } else if (key !== "image" && value !== undefined && value !== null) {
+          formDataObj.append(key, String(value));
+        }
       });
 
-      if (!response.ok) throw new Error("Failed to create event");
-
-      const newEvent = await response.json();
+      // Handle image upload
+      if (formData.image instanceof File) {
+        formDataObj.append("image", formData.image);
+      } else if (formData.image && 'url' in formData.image) {
+        formDataObj.append("image", JSON.stringify(formData.image));
+      }
+  
+      // Ensure required fields are present
+      if (!formDataObj.get('title') || !formDataObj.get('date') || 
+          !formDataObj.get('time') || !formDataObj.get('location') ||
+          !formDataObj.get('description') || !formDataObj.get('type')) {
+        throw new Error('Please fill in all required fields');
+      }
+  
+      const newEvent = await eventsApi.createEvent(formDataObj);
       setEvents([...events, newEvent]);
       setIsFormOpen(false);
       setFormData({});
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -284,15 +308,18 @@ export function EventsManagement() {
                     </div>
                   </div>
 
-                  <div className="events-form__field--full">
+                  <div className="events-form__field events-form__field--full">
                     <label>Event Image</label>
+                    <p className="gallery-form__help-text">
+                      Recommended size: 1200x800px (3:2)
+                    </p>
                     <ImageUpload
-                      onImageChange={(file) =>
-                        setFormData((prev) => ({
+                      onImageChange={(file) => {
+                        setFormData((prev: EventFormData) => ({
                           ...prev,
-                          image: file ? URL.createObjectURL(file) : "",
-                        }))
-                      }
+                          image: file || undefined
+                        }));
+                      }}
                     />
                   </div>
                 </div>
@@ -335,8 +362,8 @@ export function EventsManagement() {
               </tr>
             </thead>
             <tbody>
-              {events.map((event) => (
-                <tr key={event.id}>
+              {events.map((event, index) => (
+                <tr key={event.id || index}>
                   <td>{event.title}</td>
                   <td>
                     <div className="events-table__datetime">

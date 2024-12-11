@@ -16,7 +16,6 @@ const eventSchema = Joi.object({
     .required(),
   registrationUrl: Joi.string().uri().allow(""),
   capacity: Joi.number().integer().min(1).allow(null),
-  organizer: Joi.string().required(),
 }).unknown(true);
 
 module.exports = {

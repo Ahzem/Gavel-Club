@@ -38,10 +38,6 @@ const eventSchema = new mongoose.Schema(
     },
     registrationUrl: String,
     capacity: Number,
-    organizer: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,
