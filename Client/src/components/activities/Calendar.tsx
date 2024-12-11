@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { eventsApi } from "../../services/api";
 import { Event } from "../../lib/types";
 import { motion, AnimatePresence } from "framer-motion";
+import { LoadingSpinner } from "../ui/LoadingSpinner";
 
 export function Calendar() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -84,8 +85,7 @@ export function Calendar() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="calendar-events__loading-spinner"></div>
-                <p>Loading events...</p>
+                <LoadingSpinner />
               </motion.div>
             ) : error ? (
               <div className="calendar-section__error">Error: {error}</div>
