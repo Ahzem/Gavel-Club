@@ -57,6 +57,7 @@ export function EventsManagement() {
   const [hasFormChanged, setHasFormChanged] = useState(false);
   const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Event | null>(null);
 
   useEffect(() => {
     fetchEvents();
@@ -312,6 +313,7 @@ export function EventsManagement() {
                     setIsFormOpen(false);
                     setIsEditing(false);
                     setSelectedEvent(null);
+                    setSelectedImage(null);
                     setFormData({
                       title: "",
                       date: "",
@@ -456,11 +458,19 @@ export function EventsManagement() {
                       Recommended size: 1200x800px (3:2)
                     </p>
                     <ImageUpload
+                      currentImage={selectedImage?.image?.url}
                       onImageChange={(file) => {
-                        setFormData((prev: EventFormData) => ({
-                          ...prev,
-                          image: file || undefined,
-                        }));
+                        if (file instanceof File) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            file: file,
+                          }));
+                        } else if (typeof file === "object" && "url" in file) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            src: file,
+                          }));
+                        }
                       }}
                     />
                   </div>
@@ -475,6 +485,7 @@ export function EventsManagement() {
                       setIsFormOpen(false);
                       setIsEditing(false);
                       setSelectedEvent(null);
+                      setSelectedImage(null);
                       setFormData({
                         title: "",
                         date: "",
@@ -565,7 +576,10 @@ export function EventsManagement() {
                       <button
                         className="events-table__action-btn"
                         title="Edit Event"
-                        onClick={() => handleEdit(event)}
+                        onClick={() => {
+                          handleEdit(event);
+                          setSelectedImage(event);
+                        }}
                       >
                         <Edit2 size={16} />
                       </button>

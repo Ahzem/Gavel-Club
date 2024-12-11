@@ -22,7 +22,6 @@ export function GalleryManagement() {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-  // const [search, setSearch] = useState("");
   const [formData, setFormData] = useState<GalleryFormData>({
     alt: "",
     captureDate: new Date().toISOString().split("T")[0],

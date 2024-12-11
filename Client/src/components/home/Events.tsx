@@ -73,7 +73,7 @@ export function Events() {
           ) : (
             displayedEvents.map((item, index) => (
               <motion.div
-                key={item.id}
+                key={item._id}
                 className="event__wrapper"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
