@@ -9,6 +9,7 @@ export function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const DEFAULT_IMAGE = "/public-speaking.jpg";
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -19,7 +20,8 @@ export function Events() {
         const upcomingEvents = fetchedEvents
           .filter((event: Event) => new Date(event.date) >= new Date())
           .sort(
-            (a: Event, b: Event) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            (a: Event, b: Event) =>
+              new Date(a.date).getTime() - new Date(b.date).getTime()
           );
         setEvents(upcomingEvents);
       } catch {
@@ -69,7 +71,13 @@ export function Events() {
               <div className="event-card">
                 <div
                   className="event-card__image"
-                  style={{ backgroundImage: `url(${item.image})` }}
+                  style={{
+                    backgroundImage: `url(${
+                      typeof item.image === "string"
+                        ? item.image
+                        : item.image?.url || DEFAULT_IMAGE
+                    })`,
+                  }}
                 />
                 <div className="event-card__content-wrapper">
                   <div className="event-card__date-badge">
@@ -94,7 +102,7 @@ export function Events() {
                     </span>
                   </div>
                   <p className="event-card__description">{item.description}</p>
-                  <button className="event-card__button">
+                  <button onClick={() => window.location.href = item.registrationUrl || '#'} className="event-card__button">
                     Learn More
                     <ArrowRightIcon className="event-card__button-icon" />
                   </button>

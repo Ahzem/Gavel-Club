@@ -158,9 +158,9 @@ export function EventsManagement() {
             onChange={(e) => setFilters({ ...filters, type: e.target.value })}
           >
             <option value="all">All Types</option>
-            <option value="educational meeting">Educational meeting</option>
-            <option value="fun activity">Fun activity</option>
-            <option value="other">Other</option>
+            <option value="Educational meeting">Educational meeting</option>
+            <option value="Fun activity">Fun activity</option>
+            <option value="other">other</option>
           </select>
           <input
             type="date"
@@ -246,11 +246,11 @@ export function EventsManagement() {
                       }
                       required
                     >
-                      <option value="educational meeting">
+                      <option value="Educational meeting">
                         Educational meeting
                       </option>
-                      <option value="fun activity">Fun activity</option>
-                      <option value="other">Other</option>
+                      <option value="Fun activity">Fun activity</option>
+                      <option value="other">other</option>
                     </select>
                   </div>
 
