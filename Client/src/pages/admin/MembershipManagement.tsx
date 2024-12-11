@@ -68,11 +68,7 @@ export function MembershipManagement() {
     setError("");
     setSuccess(false);
 
-    const currentToken = token; // from useAuth()
-    console.log("Current auth state:", {
-      isAuthenticated,
-      token: !!currentToken,
-    }); // Debug log
+    const currentToken = token;
 
     if (!currentToken) {
       setError("Please log in to update settings");
@@ -80,9 +76,34 @@ export function MembershipManagement() {
       return;
     }
 
+    // Validation based on isOpen status
+    if (config.isOpen) {
+      if (!config.formUrl.trim()) {
+        setError("Form URL is required when applications are open");
+        setLoading(false);
+        return;
+      }
+      if (!config.closeDate) {
+        setError("Closing date is required when applications are open");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // If applications are closed, reset form URL and close date
+    const configToSubmit = config.isOpen
+      ? config
+      : {
+          ...config,
+          formUrl: "",
+          closeDate: "",
+        };
+
     try {
-      await membershipApi.updateConfig(config, currentToken);
+      await membershipApi.updateConfig(configToSubmit, currentToken);
       setSuccess(true);
+      setOriginalConfig(configToSubmit);
+      setIsDirty(false);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save changes");
@@ -114,9 +135,9 @@ export function MembershipManagement() {
     setConfig(newConfig);
 
     // Check if any values are different from original
-    const hasChanges = (Object.keys(newConfig) as (keyof MembershipConfig)[]).some(
-      (key) => newConfig[key] !== originalConfig[key]
-    );
+    const hasChanges = (
+      Object.keys(newConfig) as (keyof MembershipConfig)[]
+    ).some((key) => newConfig[key] !== originalConfig[key]);
     setIsDirty(hasChanges);
   };
 
@@ -189,6 +210,7 @@ export function MembershipManagement() {
               <label className="mm-toggle__switch">
                 <input
                   type="checkbox"
+                  className="mm-form__checkbox"
                   checked={config.isOpen}
                   onChange={(e) =>
                     handleConfigChange({ isOpen: e.target.checked })
@@ -219,63 +241,67 @@ export function MembershipManagement() {
               </p>
             </div>
 
-            <div className="mm-form__grid">
-              <div className="mm-form__field">
-                <label className="mm-form__label">
-                  <LinkIcon size={16} />
-                  Google Form URL
-                </label>
-                <div className="mm-form__input-wrapper">
-                  <input
-                    type="url"
-                    value={config.formUrl}
-                    onChange={(e) => handleUrlChange(e.target.value)}
-                    placeholder="Paste Google Form URL here"
-                    className={`mm-form__input ${
-                      error ? "mm-form__input--error" : ""
-                    }`}
-                    required
-                  />
-                  {error && (
-                    <div className="mm-form__error">
-                      <AlertCircle size={16} />
-                      {error}
+            {config.isOpen && (
+              <>
+                <div className="mm-form__grid">
+                  <div className="mm-form__field">
+                    <label className="mm-form__label">
+                      <LinkIcon size={16} />
+                      Google Form URL
+                    </label>
+                    <div className="mm-form__input-wrapper">
+                      <input
+                        type="url"
+                        value={config.formUrl}
+                        onChange={(e) => handleUrlChange(e.target.value)}
+                        placeholder="Paste Google Form URL here"
+                        className={`mm-form__input ${
+                          error ? "mm-form__input--error" : ""
+                        }`}
+                        required
+                      />
+                      {error && (
+                        <div className="mm-form__error">
+                          <AlertCircle size={16} />
+                          {error}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
+                  </div>
 
-              <div className="mm-form__field">
-                <label className="mm-form__label">
-                  <Calendar size={16} />
-                  Closing Date
-                </label>
-                <input
-                  type="date"
-                  value={config.closeDate}
-                  onChange={(e) =>
-                    setConfig({ ...config, closeDate: e.target.value })
-                  }
-                  min={new Date().toISOString().split("T")[0]}
-                  className="mm-form__input"
-                  required
-                  placeholder="Closing Date"
-                />
-              </div>
-            </div>
+                  <div className="mm-form__field">
+                    <label className="mm-form__label">
+                      <Calendar size={16} />
+                      Closing Date
+                    </label>
+                    <input
+                      type="date"
+                      value={config.closeDate}
+                      onChange={(e) =>
+                        setConfig({ ...config, closeDate: e.target.value })
+                      }
+                      min={new Date().toISOString().split("T")[0]}
+                      className="mm-form__input"
+                      required
+                      placeholder="Closing Date"
+                    />
+                  </div>
+                </div>
+                {config.formUrl && (
+                  <div className="mm-preview">
+                    <h3 className="mm-preview__title">Form Preview</h3>
+                    <div className="mm-preview__frame">
+                      <iframe
+                        src={config.formUrl}
+                        className="mm-preview__iframe"
+                        title="Membership Application Form Preview"
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
-          {config.formUrl && (
-            <div className="mm-preview">
-              <h3 className="mm-preview__title">Form Preview</h3>
-              <div className="mm-preview__frame">
-                <iframe
-                  src={config.formUrl}
-                  className="mm-preview__iframe"
-                  title="Membership Application Form Preview"
-                />
-              </div>
-            </div>
-          )}
 
           {success && (
             <div className="mm-form__success">Settings saved successfully!</div>

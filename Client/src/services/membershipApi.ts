@@ -28,8 +28,6 @@ export const membershipApi = {
       throw new Error('No authentication token provided');
     }
 
-    console.log('Token being used:', token); // Debug log
-
     try {
       const response = await fetch(`${BASE_URL}/api/membership/config`, {
         method: 'POST',
