@@ -5,6 +5,7 @@ const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./src/routes/authRoutes");
 const eventRoutes = require("./src/routes/eventRoutes");
+const membershipRoutes = require('./src/routes/membershipRoutes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
+app.use('/api/membership', membershipRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

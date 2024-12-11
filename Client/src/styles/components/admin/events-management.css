@@ -1,5 +1,5 @@
 .events-management {
-  padding: var(--space-xl);
+  padding: var(--space-sm);
 }
 
 .events-management__header {
@@ -289,83 +289,156 @@
 }
 
 .events-table {
+  width: 100%;
   background: var(--color-white);
-  border-radius: 12px;
-  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+  border-spacing: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.events-table thead {
+  background: var(--color-primary);
 }
 
 .events-table th {
-  background: var(--color-gray-100);
+  color: var(--color-white);
   font-weight: 600;
-  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: var(--space-md) var(--space-md);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.events-table tr {
+  transition: background-color 0.2s ease;
+}
+
+.events-table tbody tr:hover {
+  background-color: var(--color-gray-100);
 }
 
 .events-table td {
-  padding: var(--space-lg);
+  padding: var(--space-md) var(--space-md);
+  border-bottom: 1px solid var(--color-gray-200);
+  font-size: 0.95rem;
+}
+
+.events-table td:first-child {
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
 .events-table__datetime,
 .events-table__location {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
   color: var(--color-accent-2-dark);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-gray-100);
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 
 .events-table__type {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
-.events-table__type--workshop {
+.events-table__type--Educational.meeting {
   background: rgba(0, 65, 101, 0.1);
   color: var(--color-primary);
 }
-.events-table__type--meeting {
-  background: rgba(119, 36, 50, 0.1);
-  color: var(--color-accent-1);
+
+.events-table__type--Fun.activity {
+  background: rgba(242, 223, 116, 0.2);
+  color: #8b7b2b;
 }
-.events-table__type--social {
-  background: rgba(169, 178, 177, 0.1);
+
+.events-table__type--other {
+  background: rgba(169, 178, 177, 0.15);
   color: var(--color-accent-2-dark);
 }
 
 .events-table__status {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: 4px;
-  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .events-table__status--upcoming {
-  background: rgba(0, 200, 0, 0.1);
-  color: green;
+  background: rgba(72, 187, 120, 0.1);
+  color: #2f855a;
 }
 
 .events-table__status--ongoing {
-  background: rgba(255, 165, 0, 0.1);
-  color: orange;
+  background: rgba(237, 137, 54, 0.1);
+  color: #c05621;
 }
 
 .events-table__status--completed {
-  background: rgba(128, 128, 128, 0.1);
-  color: gray;
+  background: rgba(113, 128, 150, 0.1);
+  color: #4a5568;
 }
 
 .events-table__actions {
   display: flex;
   gap: var(--space-sm);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.events-table tr:hover .events-table__actions {
+  opacity: 1;
 }
 
 .events-table__action-btn {
-  padding: var(--space-xs);
+  padding: var(--space-sm);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-accent-2-dark);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.events-table__action-btn:hover {
+  background: var(--color-gray-200);
+  transform: translateY(-1px);
 }
 
 .events-table__action-btn--delete {
   color: var(--color-accent-1);
+}
+
+.events-table__action-btn--delete:hover {
+  background: rgba(119, 36, 50, 0.1);
+}
+
+.events-management__empty {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-gray-100),
+    var(--color-white)
+  );
+  border: 2px dashed var(--color-gray-200);
+}
+
+.events-management__loading {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-accent-2-dark);
+  background: var(--color-gray-100);
+  border-radius: 12px;
+  font-size: 0.95rem;
 }

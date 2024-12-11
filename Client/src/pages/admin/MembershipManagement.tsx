@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Link as LinkIcon,
   Calendar,
   AlertCircle,
-//   Users,
-//   CheckCircle,
-//   XCircle,
+  //   Users,
+  //   CheckCircle,
+  //   XCircle,
 } from "lucide-react";
+import { membershipApi } from "../../services/membershipApi";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface MembershipConfig {
   isOpen: boolean;
@@ -32,11 +35,15 @@ export function MembershipManagement() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const { token, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [config, setConfig] = useState<MembershipConfig>({
     isOpen: true,
     formUrl: "",
     closeDate: new Date().toISOString().split("T")[0],
   });
+  const [isDirty, setIsDirty] = useState(false);
+  const [originalConfig, setOriginalConfig] = useState<typeof config>(config);
 
   const handleUrlChange = (url: string) => {
     const transformedUrl = transformGoogleFormUrl(url);
@@ -61,30 +68,72 @@ export function MembershipManagement() {
     setError("");
     setSuccess(false);
 
+    const currentToken = token; // from useAuth()
+    console.log("Current auth state:", {
+      isAuthenticated,
+      token: !!currentToken,
+    }); // Debug log
+
+    if (!currentToken) {
+      setError("Please log in to update settings");
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Validate form URL
-      if (!config.formUrl) {
-        throw new Error("Please enter a Google Form URL");
-      }
-
-      const response = await fetch("/api/membership/config", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(config),
-      });
-
-      if (!response.ok) throw new Error("Failed to update configuration");
-
+      await membershipApi.updateConfig(config, currentToken);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save changes");
+      if (err instanceof Error && err.message.includes("Not authorized")) {
+        logout();
+        navigate("/adminlogin");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await membershipApi.getConfig();
+        setConfig(data);
+        setOriginalConfig(data); // Store original state
+        setIsDirty(false); // Reset dirty state
+      } catch {
+        setError("Failed to load configuration");
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  const handleConfigChange = (changes: Partial<typeof config>) => {
+    const newConfig = { ...config, ...changes };
+    setConfig(newConfig);
+
+    // Check if any values are different from original
+    const hasChanges = (Object.keys(newConfig) as (keyof MembershipConfig)[]).some(
+      (key) => newConfig[key] !== originalConfig[key]
+    );
+    setIsDirty(hasChanges);
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="mm-container">
+        <div className="mm-header">
+          <div className="mm-header__title-group">
+            <h2 className="mm-header__title">Access Denied</h2>
+            <p className="mm-header__subtitle">
+              Please log in with admin credentials to manage membership settings
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="mm-container">
       <div className="mm-header">
@@ -142,7 +191,7 @@ export function MembershipManagement() {
                   type="checkbox"
                   checked={config.isOpen}
                   onChange={(e) =>
-                    setConfig({ ...config, isOpen: e.target.checked })
+                    handleConfigChange({ isOpen: e.target.checked })
                   }
                   placeholder="Application Status"
                 />
@@ -215,6 +264,18 @@ export function MembershipManagement() {
               </div>
             </div>
           </div>
+          {config.formUrl && (
+            <div className="mm-preview">
+              <h3 className="mm-preview__title">Form Preview</h3>
+              <div className="mm-preview__frame">
+                <iframe
+                  src={config.formUrl}
+                  className="mm-preview__iframe"
+                  title="Membership Application Form Preview"
+                />
+              </div>
+            </div>
+          )}
 
           {success && (
             <div className="mm-form__success">Settings saved successfully!</div>
@@ -223,26 +284,15 @@ export function MembershipManagement() {
           <div className="mm-form__actions">
             <button
               type="submit"
-              className={'button button--primary'}
-              disabled={loading || !!error}
+              disabled={!isDirty || loading}
+              className={`button button--primary save-button ${
+                !isDirty || loading ? "save-button--disabled" : ""
+              }`}
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
-
-        {config.formUrl && (
-          <div className="mm-preview">
-            <h3 className="mm-preview__title">Form Preview</h3>
-            <div className="mm-preview__frame">
-              <iframe
-                src={config.formUrl}
-                className="mm-preview__iframe"
-                title="Membership Application Form Preview"
-              />
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -2,15 +2,34 @@ import { motion } from "framer-motion";
 import { Benefits } from "../components/membership/Benefits";
 import { JoinProcess } from "../components/membership/JoinProcess";
 import { FAQ } from "../components/membership/FAQ";
-
-const APPLICATION_STATUS = {
-  isOpen: true,
-  formUrl:
-    "https://docs.google.com/forms/d/e/1FAIpQLSdctGsNgsBv22Arq5WuqJ2mg_hRNNwf866p164mVxllIiSSaw/viewform?embedded=true",
-  closeDate: "2024-06-30",
-};
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import { useEffect, useState } from "react";
+import { membershipApi } from "../services/membershipApi";
 
 export function MembershipPage() {
+  const [config, setConfig] = useState({
+    isOpen: true,
+    formUrl: "",
+    closeDate: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await membershipApi.getConfig();
+        setConfig(data);
+      } catch (error) {
+        console.error("Failed to fetch membership config:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <motion.div
       className="membership-page"
@@ -46,7 +65,7 @@ export function MembershipPage() {
 
       <section className="membership-form">
         <div className="membership-form__container">
-          {APPLICATION_STATUS.isOpen ? (
+          {config.isOpen ? (
             <motion.div
               className="membership-form__wrapper"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -58,13 +77,13 @@ export function MembershipPage() {
               </div>
               <iframe
                 title="Membership Application Form"
-                src={APPLICATION_STATUS.formUrl}
+                src={config.formUrl}
                 className="membership-form__iframe"
                 frameBorder="0"
                 marginHeight={0}
                 marginWidth={0}
               >
-                Loading...
+                <LoadingSpinner />
               </iframe>
             </motion.div>
           ) : (
@@ -77,7 +96,7 @@ export function MembershipPage() {
               <h3>Applications are currently closed</h3>
               <p>
                 Next intake will open on{" "}
-                {new Date(APPLICATION_STATUS.closeDate).toLocaleDateString()}
+                {new Date(config.closeDate).toLocaleDateString()}
               </p>
             </motion.div>
           )}
