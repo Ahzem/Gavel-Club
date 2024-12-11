@@ -1,43 +1,82 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Search, Trash2, Edit2, Image, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
+import { useAuth } from "../../context/AuthContext";
 
 interface GalleryImage {
-  id: string;
-  src: string;
+  _id: string;
+  src: {
+    url: string;
+    publicId: string;
+  };
   alt: string;
   captureDate: string;
 }
 
+interface GalleryFormData extends Partial<GalleryImage> {
+  file?: File;
+}
 export function GalleryManagement() {
+  const { token } = useAuth();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [search, setSearch] = useState("");
-  const [formData, setFormData] = useState<Partial<GalleryImage>>({
+  const [formData, setFormData] = useState<GalleryFormData>({
     alt: "",
     captureDate: new Date().toISOString().split("T")[0],
   });
 
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = async () => {
+    try {
+      const response = await fetch("/api/gallery");
+      if (!response.ok) throw new Error("Failed to fetch images");
+      const data = await response.json();
+      setImages(data);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const form = new FormData();
+    form.append("alt", formData.alt || "");
+    form.append("captureDate", formData.captureDate || "");
+
+    if (!selectedImage && formData.file) {
+      form.append("image", formData.file);
+    }
+
     try {
-      const response = await fetch("/api/gallery", {
-        method: selectedImage ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const url = selectedImage
+        ? `/api/gallery/${selectedImage._id}`
+        : "/api/gallery";
+
+      const method = selectedImage ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          ...(selectedImage && { "Content-Type": "application/json" }),
+          Authorization: `Bearer ${token}`,
+        },
+        body: selectedImage
+          ? JSON.stringify({
+              alt: formData.alt,
+              captureDate: formData.captureDate,
+            })
+          : form,
       });
 
       if (!response.ok) throw new Error("Failed to save image");
 
-      const savedImage = await response.json();
-      setImages((prev) =>
-        selectedImage
-          ? prev.map((img) => (img.id === selectedImage.id ? savedImage : img))
-          : [...prev, savedImage]
-      );
-
+      fetchImages();
       handleCloseForm();
     } catch (error) {
       console.error("Error saving image:", error);
@@ -48,8 +87,16 @@ export function GalleryManagement() {
     if (!window.confirm("Are you sure you want to delete this image?")) return;
 
     try {
-      await fetch(`/api/gallery/${id}`, { method: "DELETE" });
-      setImages((prev) => prev.filter((img) => img.id !== id));
+      const response = await fetch(`/api/gallery/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to delete image");
+
+      fetchImages();
     } catch (error) {
       console.error("Error deleting image:", error);
     }
@@ -61,6 +108,7 @@ export function GalleryManagement() {
     setFormData({
       alt: "",
       captureDate: new Date().toISOString().split("T")[0],
+      file: undefined,
     });
   };
 
@@ -118,12 +166,20 @@ export function GalleryManagement() {
                       Recommended size: 1200x800px (3:2)
                     </p>
                     <ImageUpload
-                      onImageChange={(file) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          src: file || undefined
-                        }))
-                      }
+                      currentImage={selectedImage?.src.url}
+                      onImageChange={(file) => {
+                        if (file instanceof File) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            file: file,
+                          }));
+                        } else if (typeof file === "object" && "url" in file) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            src: file,
+                          }));
+                        }
+                      }}
                     />
                   </div>
 
@@ -179,14 +235,14 @@ export function GalleryManagement() {
         <div className="gallery-management__grid">
           {filteredImages.map((image) => (
             <motion.div
-              key={image.id}
+              key={image._id}
               className="gallery-management__item"
               layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <img src={image.src} alt={image.alt} />
+              <img src={image.src.url} alt={image.alt} />
               <div className="gallery-management__item-overlay">
                 <h3>{image.alt}</h3>
                 <p>{new Date(image.captureDate).toLocaleDateString()}</p>
@@ -202,7 +258,7 @@ export function GalleryManagement() {
                     <Edit2 size={16} />
                   </button>
                   <button
-                    onClick={() => handleDelete(image.id)}
+                    onClick={() => handleDelete(image._id)}
                     title="Delete image"
                   >
                     <Trash2 size={16} />
