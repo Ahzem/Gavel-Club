@@ -475,7 +475,18 @@ export function EventsManagement() {
                       setIsFormOpen(false);
                       setIsEditing(false);
                       setSelectedEvent(null);
-                      setFormData({});
+                      setFormData({
+                        title: "",
+                        date: "",
+                        time: "",
+                        location: "",
+                        description: "",
+                        type: "Educational meeting",
+                        status: "upcoming",
+                        capacity: undefined,
+                        registrationUrl: "",
+                        image: null,
+                      });
                       setHasFormChanged(false);
                     }}
                     className="button button--secondary"
@@ -519,7 +530,7 @@ export function EventsManagement() {
             </thead>
             <tbody>
               {events.map((event, index) => (
-                <tr key={event.id || index}>
+                <tr key={event._id || index}>
                   <td>{event.title}</td>
                   <td>
                     <div className="events-table__datetime">

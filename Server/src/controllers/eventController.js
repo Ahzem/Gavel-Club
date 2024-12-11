@@ -72,8 +72,52 @@ const deleteEventById = async (req, res) => {
   }
 };
 
+const updateEventById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const eventData = req.body;
+
+    // Handle image update
+    if (req.file) {
+      // Delete old image if exists
+      const existingEvent = await Event.findById(id);
+      if (existingEvent?.image?.publicId) {
+        try {
+          await cloudinary.uploader.destroy(existingEvent.image.publicId);
+        } catch (cloudinaryError) {
+          console.error("Cloudinary deletion error:", cloudinaryError);
+        }
+      }
+
+      eventData.image = {
+        url: req.file.path,
+        publicId: req.file.filename,
+      };
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      id,
+      eventData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.json(updatedEvent);
+  } catch (error) {
+    console.error("Error updating event:", error);
+    res.status(500).json({ 
+      message: "Error updating event",
+      error: error.message 
+    });
+  }
+};
+
 module.exports = {
   createEvent,
   getAllEvents,
   deleteEventById,
+  updateEventById
 };
