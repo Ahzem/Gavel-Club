@@ -1,0 +1,113 @@
+.special-event-management {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.special-event-management__form {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.special-event-management__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.special-event-management__section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: var(--space-xl);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.special-event-management__section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.special-event-management__section h3 {
+  margin-bottom: var(--space-lg);
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  position: relative;
+  padding-bottom: var(--space-sm);
+}
+
+.special-event-management__section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--color-accent-1);
+  border-radius: 2px;
+}
+
+.special-event-management__text {
+  margin-top: var(--space-xl);
+}
+
+.special-event-management__text label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+}
+
+.special-event-management__text textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: var(--space-md);
+  border: 2px solid var(--color-gray-200);
+  border-radius: 12px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.special-event-management__text textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 65, 101, 0.1);
+}
+
+.special-event-management__char-count {
+  display: block;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--color-accent-2-dark);
+  margin-top: var(--space-sm);
+  font-weight: 500;
+}
+
+.button.button--primary .animate-spin {
+  margin-right: var(--space-sm);
+}
+
+@media (max-width: 768px) {
+  .special-event-management {
+    padding: var(--space-lg);
+  }
+
+  .special-event-management__form {
+    padding: var(--space-lg);
+    border-radius: 16px;
+  }
+
+  .special-event-management__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .special-event-management__section {
+    padding: var(--space-lg);
+  }
+}

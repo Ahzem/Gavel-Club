@@ -158,6 +158,51 @@ export const teamApi = {
   }
 };
 
+export const specialEventApi = {
+  getSpecialEvent: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/special-event`, {
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Failed to fetch special event');
+      return response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  },
+
+  createSpecialEvent: async (formData: FormData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/special-event`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+      if (!response.ok) throw new Error('Failed to create special event');
+      return response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  },
+
+  updateSpecialEvent: async (id: string, formData: FormData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/special-event/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: formData
+      });
+      if (!response.ok) throw new Error('Failed to update special event');
+      return response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
+};
+
 export async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const token = localStorage.getItem('adminToken');
   

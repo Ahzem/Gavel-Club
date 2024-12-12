@@ -6,7 +6,7 @@ import {
   Users,
   FileText,
   ImageIcon,
-  Phone,
+  Star,
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -17,6 +17,7 @@ import { MembershipManagement } from "./MembershipManagement";
 import { TeamManagement } from "./TeamManagement";
 import { BlogsManagement } from "./BlogsManagement";
 import { GalleryManagement } from "./GalleryManagement";
+import { SpecialEventManagement } from "./SpecialEventManagement";
 
 const DASHBOARD_ITEMS = [
   {
@@ -45,9 +46,9 @@ const DASHBOARD_ITEMS = [
     icon: ImageIcon,
   },
   {
-    id: "contact",
-    label: "Contact Info",
-    icon: Phone,
+    id: "special",
+    label: "Special Event",
+    icon: Star,
   },
 ];
 
@@ -157,6 +158,7 @@ export function AdminDashboard() {
           {activeSection === "team" && <TeamManagement />}
           {activeSection === "blogs" && <BlogsManagement />}
           {activeSection === "gallery" && <GalleryManagement />}
+          {activeSection === "special" && <SpecialEventManagement />}
         </main>
       </div>
     </motion.div>

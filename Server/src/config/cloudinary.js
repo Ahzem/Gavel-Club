@@ -48,11 +48,20 @@ const authorImageStorage = new CloudinaryStorage({
   },
 });
 
+const specialEventStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "special-event",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
+
 const uploadEvent = multer({ storage: eventStorage });
 const uploadGallery = multer({ storage: galleryStorage });
 const uploadTeam = multer({ storage: teamStorage });
 const uploadBlogCover = multer({ storage: blogCoverStorage });
 const uploadAuthorImage = multer({ storage: authorImageStorage });
+const uploadSpecialEvent = multer({ storage: specialEventStorage });
 
 module.exports = {
   uploadEvent,
@@ -61,4 +70,5 @@ module.exports = {
   uploadTeam,
   uploadBlogCover,
   uploadAuthorImage,
+  uploadSpecialEvent,
 };

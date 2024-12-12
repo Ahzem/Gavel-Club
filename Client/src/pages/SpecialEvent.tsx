@@ -1,6 +1,33 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { specialEventApi } from "../services/api";
+
+interface SpecialEventData {
+  image1: { url: string };
+  image2: { url: string };
+  text1: string;
+  text2: string;
+}
 
 export function SpecialEvent() {
+  const [specialEvent, setSpecialEvent] = useState<SpecialEventData | null>(
+    null
+  );
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await specialEventApi.getSpecialEvent();
+        setSpecialEvent(data);
+      } catch (error) {
+        console.error("Failed to fetch special event:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (!specialEvent) return null;
+
   return (
     <section className="special-event">
       <div className="section__container">
@@ -10,10 +37,7 @@ export function SpecialEvent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="section__title">10th Anniversary Celebration</h2>
-          <p className="section__description">
-            A milestone event that brought our community together
-          </p>
+          <h2 className="section__title">Special Event</h2>
         </motion.div>
 
         <div className="special-event__content">
@@ -26,18 +50,12 @@ export function SpecialEvent() {
           >
             <div className="special-event__image-wrapper">
               <img
-                src="/blog/public-speaking-2.jpg"
-                alt="Event celebration"
+                src={specialEvent.image1.url}
+                alt="Special event first image"
                 className="special-event__image"
               />
             </div>
-            <p className="special-event__text">
-              Our grand celebration brought together over 500 members, alumni,
-              and supporters for an unforgettable evening of reflection,
-              connection, and inspiration. Our grand celebration brought together over 500 members, alumni,
-              and supporters for an unforgettable evening of reflection,
-              connection, and inspiration. 
-            </p>
+            <p className="special-event__text">{specialEvent.text1}</p>
           </motion.div>
 
           <motion.div
@@ -47,17 +65,11 @@ export function SpecialEvent() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <p className="special-event__text">
-              The evening featured keynote speeches from industry leaders,
-              interactive workshops, and a showcase of our community's
-              achievements over the decade. The evening featured keynote speeches from industry leaders,
-              interactive workshops, and a showcase of our community's
-              achievements over the decade.
-            </p>
+            <p className="special-event__text">{specialEvent.text2}</p>
             <div className="special-event__image-wrapper">
               <img
-                src="/blog/public-speaking-2.jpg"
-                alt="Workshop session"
+                src={specialEvent.image2.url}
+                alt="Special event second image"
                 className="special-event__image"
               />
             </div>

@@ -9,6 +9,7 @@ const membershipRoutes = require("./src/routes/membershipRoutes");
 const galleryRoutes = require("./src/routes/galleryRoutes");
 const teamRoutes = require("./src/routes/teamRoutes");
 const blogRoutes = require("./src/routes/blogRoutes");
+const specialEventRoutes = require("./src/routes/specialEventRoutes");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/api/membership", membershipRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/special-event", specialEventRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

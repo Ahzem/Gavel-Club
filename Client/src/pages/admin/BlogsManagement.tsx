@@ -66,26 +66,6 @@ export function BlogsManagement() {
     const fetchBlogs = async () => {
       setIsLoading(true);
       try {
-        const fetchedBlogs = await blogService.getBlogs({
-          status: filters.status,
-          search: filters.search,
-        });
-        setBlogs(fetchedBlogs);
-      } catch {
-        toast.error("Failed to fetch blogs");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBlogs();
-  }, [filters.status, filters.search]);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      setIsLoading(true);
-      try {
-        // Only include filters if shouldSearch is true
         const fetchedBlogs = await blogService.getBlogs(
           shouldSearch
             ? {
@@ -104,7 +84,7 @@ export function BlogsManagement() {
     };
 
     fetchBlogs();
-  }, [shouldSearch]);
+  }, [shouldSearch, filters.status, filters.search]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({ ...prev, search: e.target.value }));
@@ -131,7 +111,7 @@ export function BlogsManagement() {
         setFormData(JSON.parse(draft));
       }
     }
-  }, [isFormOpen]);
+  }, [isFormOpen, selectedBlog]);
 
   const clearForm = () => {
     setFormData({
