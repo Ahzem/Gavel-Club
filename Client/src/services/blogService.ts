@@ -1,4 +1,4 @@
-import { Blog, BlogFormData } from '../types/Blog';
+import { Blog, BlogFormData, BlogPost } from '../types/Blog';
 import { fetchWithAuth } from './api';
 
 export const blogService = {
@@ -79,5 +79,29 @@ async updateBlog(id: string, data: BlogFormData) {
       body: JSON.stringify({ status }),
     });
     return response;
+  },
+
+    async getPublishedBlogs(): Promise<BlogPost[]> {
+    const BASE_URL = import.meta.env.VITE_API_URL;
+    const response = await fetch(`${BASE_URL}/api/blogs/published`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch blogs');
+    }
+    return response.json();
+    },
+
+  async getBlogBySlug(slug: string): Promise<BlogPost> {
+    const BASE_URL = import.meta.env.VITE_API_URL;
+    const response = await fetch(`${BASE_URL}/api/blogs/${slug}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch blog post');
+    }
+    return response.json();
+  },
+
+  async updateClaps(id: string): Promise<BlogPost> {
+    return await fetchWithAuth(`blogs/${id}/clap`, {
+      method: 'PUT',
+    });
   }
 };

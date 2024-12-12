@@ -203,6 +203,49 @@ const blogController = {
       res.status(400).json({ message: error.message });
     }
   },
+
+  getPublishedBlogs: async (req, res) => {
+    try {
+      const blogs = await Blog.find({ status: "published" })
+        .sort({ publishedDate: -1 })
+        .select("-content"); // Exclude content for performance
+      res.json(blogs);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  getBlogBySlug: async (req, res) => {
+    try {
+      const blog = await Blog.findOne({ slug: req.params.slug });
+
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      res.json(blog);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  updateClaps: async (req, res) => {
+    try {
+      const blog = await Blog.findByIdAndUpdate(
+        req.params.id,
+        { $inc: { claps: 1 } },
+        { new: true }
+      );
+
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      res.json(blog);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  },
 };
 
 module.exports = blogController;

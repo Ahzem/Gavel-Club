@@ -506,7 +506,7 @@ export function BlogsManagement() {
                     >
                       {isSaving ? (
                         <>
-                          <span className="loading-spinner" />
+                          <span />
                           {formData.status === "draft"
                             ? "Saving..."
                             : "Publishing..."}

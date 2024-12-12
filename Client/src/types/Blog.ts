@@ -29,3 +29,21 @@ export interface Blog {
   claps: number;
   slug: string;
 }
+
+export interface BlogPost {
+  _id: string;
+  title: string;
+  subtitle: string;
+  slug: string;
+  content: string;
+  coverImage: string;
+  author: {
+    name: string;
+    department: string;
+    email: string;
+    imageUrl: string;
+  };
+  publishedDate: string;
+  claps: number;
+  status: 'draft' | 'published';
+}

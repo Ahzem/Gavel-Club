@@ -1,29 +1,57 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BlogPost } from "../types/Blog";
+import { blogService } from "../services/blogService";
 import { ClapButton } from "../components/ClapButton";
-import { MOCK_BLOGS } from "./BlogsPage"; // Import mock data
+import { LoadingSpinner } from "../components/ui/LoadingSpinner";
+import { Twitter, Linkedin, Copy } from "lucide-react";
+import { toast } from "sonner";
 
 export function BlogPostPage() {
   const { slug } = useParams();
-  const navigate = useNavigate();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Find the blog post from mock data
-  const post = MOCK_BLOGS.find((blog: BlogPost) => blog.slug === slug);
+  useEffect(() => {
+    const fetchBlog = async () => {
+      if (!slug) return;
 
-  const handleClap = (newCount: number) => {
-    // Here you would update the backend
-    console.log("Clapped:", newCount);
+      try {
+        const blog = await blogService.getBlogBySlug(slug);
+        setPost(blog);
+      } catch (err) {
+        setError("Failed to load blog post");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [slug]);
+
+  const handleClap = async () => {
+    if (!post) return;
+
+    try {
+      const updatedBlog = await blogService.updateClaps(post._id);
+      setPost(updatedBlog);
+    } catch {
+      toast.error("Failed to update claps");
+    }
   };
 
   const handleShare = async (platform: "twitter" | "linkedin" | "copy") => {
+    if (!post) return;
+
     const url = window.location.href;
+    const text = encodeURIComponent(post.title);
 
     switch (platform) {
       case "twitter":
-        window.open(
-          `https://twitter.com/intent/tweet?url=${url}&text=${post?.title}`
-        );
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
         break;
       case "linkedin":
         window.open(
@@ -32,14 +60,26 @@ export function BlogPostPage() {
         break;
       case "copy":
         await navigator.clipboard.writeText(url);
-        // You could show a toast notification here
+        toast.success("Link copied to clipboard");
         break;
     }
   };
 
-  if (!post) {
-    navigate("/blog");
-    return null;
+  if (isLoading) {
+    return (
+      <div className="blog-post__loading">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="blog-post__error">
+        <h2>Error</h2>
+        <p>{error || "Blog post not found"}</p>
+      </div>
+    );
   }
 
   return (
@@ -60,35 +100,27 @@ export function BlogPostPage() {
         <div className="blog-post__meta">
           <div className="blog-post__author">
             <img
-              src={post.author.avatar}
+              src={post.author.imageUrl}
               alt={post.author.name}
               className="blog-post__author-avatar"
             />
             <div>
               <h4>{post.author.name}</h4>
-              <p>{post.author.title}</p>
+              <p>{post.author.department}</p>
             </div>
           </div>
           <div className="blog-post__info">
-            <time>{new Date(post.publishedAt).toLocaleDateString()}</time>
-            <span>·</span>
-            <span>{post.readTime} read</span>
+            <time>{new Date(post.publishedDate).toLocaleDateString()}</time>
           </div>
         </div>
 
         <h1 className="blog-post__title">{post.title}</h1>
+        <h2 className="blog-post__subtitle">{post.subtitle}</h2>
 
-        <div className="blog-post__tags">
-          {post.tags?.map((tag: string) => (
-            <span key={tag} className="blog-post__tag">
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="blog-post__content">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        </div>
+        <div
+          className="blog-post__content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
 
         <div className="blog-post__footer">
           <div className="blog-post__clap-container">
@@ -99,50 +131,39 @@ export function BlogPostPage() {
             <button
               onClick={() => handleShare("twitter")}
               className="share-button twitter"
+              title="Share on Twitter"
             >
+              <Twitter size={20} />
               Share on Twitter
             </button>
             <button
               onClick={() => handleShare("linkedin")}
               className="share-button linkedin"
+              title="Share on LinkedIn"
             >
+              <Linkedin size={20} />
               Share on LinkedIn
             </button>
             <button
               onClick={() => handleShare("copy")}
               className="share-button copy"
+              title="Copy Link"
             >
+              <Copy size={20} />
               Copy Link
             </button>
           </div>
 
-          <div className="blog-post__author">
-            <img src={post.author.avatar} alt={post.author.name} />
-            <div>
+          <div className="blog-post__author-bio">
+            <img
+              src={post.author.imageUrl}
+              alt={post.author.name}
+              className="blog-post__author-avatar"
+            />
+            <div className="blog-post__author-info">
               <h4>{post.author.name}</h4>
-              <p>{post.author.bio}</p>
-              {post.author.social && (
-                <div className="author-social">
-                  {post.author.social.twitter && (
-                    <a
-                      href={post.author.social.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Twitter
-                    </a>
-                  )}
-                  {post.author.social.linkedin && (
-                    <a
-                      href={post.author.social.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      LinkedIn
-                    </a>
-                  )}
-                </div>
-              )}
+              <p>{post.author.department}</p>
+              <p>{post.author.email}</p>
             </div>
           </div>
         </div>

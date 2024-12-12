@@ -4,10 +4,8 @@ const { validateAdmin } = require("../middleware/auth");
 const { uploadBlogCover, uploadAuthorImage } = require("../config/cloudinary");
 const blogController = require("../controllers/blogController");
 
-// Get all blogs
 router.get("/", blogController.getAllBlogs);
 
-// Create new blog
 router.post(
   "/",
   validateAdmin,
@@ -18,7 +16,6 @@ router.post(
   blogController.createBlog
 );
 
-// Update blog
 router.put(
   "/:id",
   validateAdmin,
@@ -29,8 +26,10 @@ router.put(
   blogController.updateBlog
 );
 
+router.get("/published", blogController.getPublishedBlogs);
 router.put("/:id/status", validateAdmin, blogController.updateBlogStatus);
-
 router.delete("/:id", validateAdmin, blogController.deleteBlog);
+router.get("/:slug", blogController.getBlogBySlug);
+router.put("/:id/clap", blogController.updateClaps);
 
 module.exports = router;
