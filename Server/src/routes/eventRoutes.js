@@ -8,7 +8,7 @@ const {
 } = require("../controllers/eventController");
 const { protect } = require("../middleware/auth");
 const { uploadEvent } = require("../config/cloudinary");
-const { validate } = require("../middleware/validate");
+const { validateSchema } = require("../middleware/validate");
 const { eventSchema } = require("../utils/validators");
 
 router.get("/", getAllEvents);
@@ -16,14 +16,14 @@ router.post(
   "/",
   protect,
   uploadEvent.single("image"),
-  validate(eventSchema),
+  validateSchema(eventSchema),
   createEvent
 );
 router.put(
   "/:id",
   protect,
   uploadEvent.single("image"),
-  validate(eventSchema),
+  validateSchema(eventSchema),
   updateEventById
 );
 router.delete("/:id", protect, deleteEventById);
