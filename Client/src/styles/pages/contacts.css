@@ -260,6 +260,47 @@
   box-shadow: var(--glass-shadow);
 }
 
+.contact-form__message {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-md);
+  animation: slideIn 0.3s ease-out;
+}
+
+.contact-form__success {
+  background: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.2);
+  color: rgb(0, 150, 62);
+}
+
+.contact-form__error {
+  background: rgba(255, 76, 76, 0.1);
+  border: 1px solid rgba(255, 76, 76, 0.2);
+  color: rgb(200, 0, 0);
+}
+
+.contact-form__message-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
     .contact-section__container {
         grid-template-columns: 1fr;
