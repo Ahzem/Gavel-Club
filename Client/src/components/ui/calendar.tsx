@@ -1,11 +1,12 @@
 import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { DayPicker } from "react-day-picker";
-import { events } from "../../lib/data";
 import { ClassNames } from "react-day-picker";
+import { eventsApi } from "../../services/api";
+import { Event } from "../../lib/types";
+import { LoadingSpinner } from "../ui/LoadingSpinner";
 import '../../styles/components/calendar.css';
 
-// Extend the ClassNames type to include our custom modifier
 interface ExtendedClassNames extends ClassNames {
   day_hasEvent?: string;
 }
@@ -18,6 +19,35 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const [events, setEvents] = React.useState<Event[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedEvents = await eventsApi.getAllEvents();
+        setEvents(fetchedEvents);
+      } catch (err) {
+        setError("Failed to load events");
+        console.error("Error fetching events:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <div className="calendar__error">{error}</div>;
+  }
+
   // Get all dates that have events
   const eventDates = events.map(event => new Date(event.date));
   
@@ -51,7 +81,7 @@ function Calendar({
     day_disabled: "calendar__day--disabled",
     day_hidden: "calendar__day--hidden",
     day_range_middle: "calendar__day--range-middle",
-    day_hasEvent: "calendar__day--has-event" // Add custom class for events
+    day_hasEvent: "calendar__day--has-event"
   };
 
   return (

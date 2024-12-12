@@ -212,6 +212,15 @@
   background-color: var(--color-accent-1);
 }
 
+.calendar__error {
+  color: var(--color-error);
+  text-align: center;
+  padding: var(--space-xl);
+  background: var(--glass-background);
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+}
+
 @media (min-width: 640px) {
   .calendar__months {
     flex-direction: row;
