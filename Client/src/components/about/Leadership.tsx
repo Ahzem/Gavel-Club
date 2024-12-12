@@ -1,56 +1,103 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { teamApi } from "../../services/api";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 
-const leaders = [
-  {
-    name: "Prof. James Wilson",
-    role: "Club Mentor",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80",
-    description: "Guiding the club with 15+ years of Toastmasters experience.",
-  },
-  {
-    name: "Lisa Chen",
-    role: "Vice President Education",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80",
-    description: "Dedicated to creating impactful educational programs.",
-  },
-  {
-    name: "Alex Kumar",
-    role: "Secretary",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80",
-    description: "Ensuring smooth club operations and communication.",
-  },
-];
+interface TeamMember {
+  _id: string;
+  name: string;
+  position: string;
+  year: string;
+  image?: {
+    url: string;
+    publicId: string;
+  };
+}
 
 export function Leadership() {
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const fetchedMembers = await teamApi.getAllMembers();
+        setMembers(fetchedMembers);
+      } catch {
+        setError("Failed to fetch team members");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+  // Group members by year and sort years in descending order
+  const groupedMembers = members.reduce((acc, member) => {
+    const year = member.year;
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(member);
+    return acc;
+  }, {} as Record<string, TeamMember[]>);
+
+  const sortedYears = Object.keys(groupedMembers).sort(
+    (a, b) => Number(b) - Number(a)
+  );
+
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <div className="error-message">{error}</div>;
+
   return (
     <section className="leadership-section">
       <div className="leadership-section__container">
-        <h2 className="leadership-section__title">Leadership Team</h2>
-        <div className="leadership-section__grid">
-          {leaders.map((leader, index) => (
-            <motion.div
-              key={leader.name}
-              className="leader-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="leader-card__avatar-wrapper">
-                <img
-                  src={leader.image}
-                  alt={leader.name}
-                  className="leader-card__avatar"
-                />
-              </div>
-              <h3 className="leader-card__name">{leader.name}</h3>
-              <p className="leader-card__role">{leader.role}</p>
-              <p className="leader-card__description">{leader.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div
+          className="section__header"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="leadership-section__title">Leadership Team</h2>
+          <p className="leadership-section__subtitle">
+            Meet the dedicated individuals who make it all possible
+          </p>
+        </motion.div>
+
+        {sortedYears.map((year) => (
+          <motion.div
+            key={year}
+            className="leadership-section__year-group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="leadership-section__year">Team {year}</h3>
+            <div className="leadership-section__grid">
+              {groupedMembers[year].map((member, index) => (
+                <motion.div
+                  key={member._id}
+                  className="leader-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="leader-card__avatar-wrapper">
+                    <img
+                      src={member.image?.url || "/placeholder.png"}
+                      alt={member.name}
+                      className="leader-card__avatar"
+                    />
+                  </div>
+                  <h3 className="leader-card__name">{member.name}</h3>
+                  <p className="leader-card__role">{member.position}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

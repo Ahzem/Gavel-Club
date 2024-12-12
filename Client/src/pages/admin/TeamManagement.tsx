@@ -1,66 +1,108 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Edit2, Trash2, Search, Users, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
+import { teamApi } from "../../services/api";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 
 interface TeamMember {
-  id: string;
+  _id: string;
   name: string;
   position: string;
   year: string;
-  thoughts: string;
-  imageUrl: string;
+  thoughts?: string;
+  image?: {
+    url: string;
+    publicId: string;
+  };
 }
 
+// Update formData state to include image as File
+interface FormState extends Omit<TeamMember, "image"> {
+  image?: File | { url: string; publicId: string } | null;
+}
 const POSITIONS = [
   "President",
-  "Vice President",
   "Secretary",
-  "Assistant Secretary",
+  "Vice President Education",
+  "Vice President Public Relations",
   "Treasurer",
-  "Editor",
-  "Committee Member",
+  "Sergeant at arms",
+  "Design Lead",
+  "Editorial Lead",
+  "Media Lead",
+  "Publicity Lead",
+  "Web Master",
+  "Design Committee member",
+  "Editorial Committee member",
+  "Media Committee member",
+  "Web development Committee member",
+  "Publicity Committee member",
 ] as const;
 
 export function TeamManagement() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [filters, setFilters] = useState({
     search: "",
     year: "all",
+    position: "all",
   });
-  const [formData, setFormData] = useState<Partial<TeamMember>>({
+  const [formData, setFormData] = useState<Partial<FormState>>({
     name: "",
     position: POSITIONS[0],
     year: new Date().getFullYear().toString(),
     thoughts: "",
-    imageUrl: "",
+    image: null,
   });
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedMembers = await teamApi.getAllMembers();
+        setMembers(fetchedMembers);
+      } catch (err) {
+        setError("Failed to fetch team members");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const endpoint = selectedMember
-        ? `/api/team/${selectedMember.id}`
-        : "/api/team";
+      const formDataObj = new FormData();
 
-      const method = selectedMember ? "PUT" : "POST";
+      // Add basic fields
+      if (formData.name) formDataObj.append("name", formData.name);
+      if (formData.position) formDataObj.append("position", formData.position);
+      if (formData.year) formDataObj.append("year", formData.year);
+      if (formData.thoughts) formDataObj.append("thoughts", formData.thoughts);
 
-      const response = await fetch(endpoint, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      // Handle image upload
+      if (formData.image instanceof File) {
+        formDataObj.append("image", formData.image);
+      }
 
-      if (!response.ok) throw new Error("Failed to save member");
-
-      const savedMember = await response.json();
+      const response = await (selectedMember
+        ? teamApi.updateMember(selectedMember._id, formDataObj)
+        : teamApi.createMember(formDataObj));
 
       setMembers((prev) =>
         selectedMember
-          ? prev.map((m) => (m.id === selectedMember.id ? savedMember : m))
-          : [...prev, savedMember]
+          ? prev.map((m) => (m._id === selectedMember._id ? response : m))
+          : [...prev, response]
       );
 
       handleCloseForm();
@@ -70,22 +112,31 @@ export function TeamManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to remove this member?")) return;
-
     try {
-      await fetch(`/api/team/${id}`, {
-        method: "DELETE",
-      });
-
-      setMembers((prev) => prev.filter((m) => m.id !== id));
+      await teamApi.deleteMember(id);
+      setMembers((prev) => prev.filter((m) => m._id !== id));
+      setShowDeleteConfirm(false);
+      setMemberToDelete(null);
     } catch (error) {
       console.error("Error deleting team member:", error);
+      setError("Failed to delete team member");
     }
+  };
+
+  const handleDeleteClick = (member: TeamMember) => {
+    setMemberToDelete(member);
+    setShowDeleteConfirm(true);
   };
 
   const handleEdit = (member: TeamMember) => {
     setSelectedMember(member);
-    setFormData(member);
+    setFormData({
+      name: member.name,
+      position: member.position,
+      year: member.year,
+      thoughts: member.thoughts,
+      image: member.image,
+    });
     setIsFormOpen(true);
   };
 
@@ -97,7 +148,7 @@ export function TeamManagement() {
       position: POSITIONS[0],
       year: new Date().getFullYear().toString(),
       thoughts: "",
-      imageUrl: "",
+      image: null,
     });
   };
 
@@ -106,14 +157,16 @@ export function TeamManagement() {
       .toLowerCase()
       .includes(filters.search.toLowerCase());
     const matchesYear = filters.year === "all" || member.year === filters.year;
-    return matchesSearch && matchesYear;
+    const matchesPosition =
+      filters.position === "all" || member.position === filters.position;
+    return matchesSearch && matchesYear && matchesPosition;
   });
 
   return (
     <div className="team-management">
       <div className="team-management__header">
-        <div className="team-management__filters">
-          <div className="team-management__search">
+        <div className="team-dashboard__filters">
+          <div className="team-dashboard__search">
             <Search size={20} />
             <input
               type="text"
@@ -124,31 +177,57 @@ export function TeamManagement() {
               }
             />
           </div>
-          <select
-            title="Year"
-            value={filters.year}
-            onChange={(e) => setFilters({ ...filters, year: e.target.value })}
-            className="team-management__year-filter"
+
+          <div className="team-dashboard__filter-group">
+            <select
+              title="Position"
+              value={filters.position}
+              onChange={(e) =>
+                setFilters({ ...filters, position: e.target.value })
+              }
+              className="team-dashboard__select"
+            >
+              <option value="all">All Positions</option>
+              {POSITIONS.map((position) => (
+                <option key={position} value={position}>
+                  {position}
+                </option>
+              ))}
+            </select>
+
+            <select
+              title="Year"
+              value={filters.year}
+              onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+              className="team-dashboard__select"
+            >
+              <option value="all">All Years</option>
+              {Array.from({ length: 5 }, (_, i) =>
+                (new Date().getFullYear() - i).toString()
+              ).map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            title="Add Member"
+            className="events-management__add-btn"
+            onClick={() => setIsFormOpen(true)}
           >
-            <option value="all">All Years</option>
-            {Array.from({ length: 5 }, (_, i) =>
-              (new Date().getFullYear() - i).toString()
-            ).map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
+            <Plus size={20} />
+            Add Member
+          </button>
         </div>
-        <button
-          title="Add Member"
-          className="events-management__add-btn"
-          onClick={() => setIsFormOpen(true)}
-        >
-          <Plus size={20} />
-          Add Member
-        </button>
       </div>
+
+      {error && (
+        <div className="team-management__error">
+          <p>{error}</p>
+          <button onClick={() => setError("")}>Dismiss</button>
+        </div>
+      )}
 
       <AnimatePresence>
         {isFormOpen && (
@@ -247,14 +326,18 @@ export function TeamManagement() {
 
                   <div className="events-form__field events-form__field--full">
                     <label>Profile Image</label>
-                    <p className="gallery-form__help-text"> Recommended size: 200x200px or square (1:1) image</p>
+                    <p className="gallery-form__help-text">
+                      {" "}
+                      Recommended size: 200x200px or square (1:1) image
+                    </p>
                     <ImageUpload
-                      onImageChange={(file) =>
+                      currentImage={selectedMember?.image?.url}
+                      onImageChange={(file) => {
                         setFormData((prev) => ({
                           ...prev,
-                          image: file || undefined
-                        }))
-                      }
+                          image: file instanceof File ? file : null,
+                        }));
+                      }}
                     />
                   </div>
 
@@ -281,53 +364,61 @@ export function TeamManagement() {
         )}
       </AnimatePresence>
 
-      <div className="team-management__list">
-        {filteredMembers.length > 0 ? (
-          <table className="team-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Year</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMembers.map((member) => (
-                <tr key={member.id}>
-                  <td>
-                    <img
-                      src={member.imageUrl}
-                      alt={member.name}
-                      className="team-table__image"
-                    />
-                  </td>
-                  <td>{member.name}</td>
-                  <td>{member.position}</td>
-                  <td>{member.year}</td>
-                  <td>
-                    <div className="team-table__actions">
-                      <button
-                        title="Edit Member"
-                        onClick={() => handleEdit(member)}
-                        className="team-table__action-btn"
-                      >
-                        <Edit2 size={16} />
-                      </button>
-                      <button
-                        title="Delete"
-                        onClick={() => handleDelete(member.id)}
-                        className="team-table__action-btn team-table__action-btn--delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <div>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : filteredMembers.length > 0 ? (
+          <div className="team-dashboard__grid">
+            {filteredMembers.map((member) => (
+              <motion.div
+                key={member._id}
+                className="team-member-card"
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <div className="team-member-card__image">
+                  <img
+                    src={member.image?.url || "/placeholder.png"}
+                    alt={member.name}
+                  />
+                </div>
+                <div className="team-member-card__content">
+                  <h3 className="team-member-card__name">{member.name}</h3>
+                  <div className="team-member-card__details">
+                    <span className="team-member-card__position">
+                      {member.position}
+                    </span>
+                    <span className="team-member-card__year">
+                      {member.year}
+                    </span>
+                  </div>
+                  <p className="team-member-card__thoughts">
+                    {member.thoughts}
+                  </p>
+                </div>
+                <div className="team-member-card__actions">
+                  <button
+                    onClick={() => handleEdit(member)}
+                    className="team-member-card__btn team-member-card__btn--edit"
+                    title="Edit Member"
+                  >
+                    <Edit2 size={16} />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(member)}
+                    className="team-member-card__btn team-member-card__btn--delete"
+                    title="Delete Member"
+                  >
+                    <Trash2 size={16} />
+                    Delete
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         ) : (
           <div className="team-management__empty">
             <Users size={48} />
@@ -336,6 +427,39 @@ export function TeamManagement() {
           </div>
         )}
       </div>
+      {showDeleteConfirm && (
+        <motion.div
+          className="delete-confirm-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="delete-confirm-modal">
+            <h3>Delete Team Member</h3>
+            <p>
+              Are you sure you want to remove "{memberToDelete?.name}" from the
+              team? This action cannot be undone.
+            </p>
+            <div className="delete-confirm-actions">
+              <button
+                className="button button--secondary"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setMemberToDelete(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="button button--delete"
+                onClick={() => handleDelete(memberToDelete?._id || "")}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }

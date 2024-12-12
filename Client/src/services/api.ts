@@ -106,3 +106,54 @@ export const eventsApi = {
     return await response.json();
   }
 };
+
+export const teamApi = {
+  getAllMembers: async () => {
+    const response = await fetch(`${BASE_URL}/api/team`, {
+      credentials: 'include'
+    });
+    if (!response.ok) throw new Error('Failed to fetch team members');
+    return response.json();
+  },
+
+  createMember: async (formData: FormData) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`${BASE_URL}/api/team`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData
+    });
+    if (!response.ok) throw new Error('Failed to create team member');
+    return response.json();
+  },
+
+  updateMember: async (id: string, formData: FormData) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`${BASE_URL}/api/team/${id}`, {
+      method: 'PUT', 
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData
+    });
+    if (!response.ok) throw new Error('Failed to update team member');
+    return response.json();
+  },
+
+  deleteMember: async (id: string) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`${BASE_URL}/api/team/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include'
+    });
+    if (!response.ok) throw new Error('Failed to delete team member');
+    return response.json();
+  }
+};

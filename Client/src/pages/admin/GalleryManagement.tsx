@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Plus, Search, Trash2, Edit2, Image, X, Filter, Calendar } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Trash2,
+  Edit2,
+  Image,
+  X,
+  Filter,
+  Calendar,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 import { useAuth } from "../../context/AuthContext";
@@ -31,6 +40,8 @@ export function GalleryManagement() {
     dateRange: "all",
     sortBy: "newest",
   });
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState<GalleryImage | null>(null);
 
   useEffect(() => {
     fetchImages();
@@ -88,8 +99,6 @@ export function GalleryManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this image?")) return;
-
     try {
       const response = await fetch(`/api/gallery/${id}`, {
         method: "DELETE",
@@ -100,10 +109,16 @@ export function GalleryManagement() {
 
       if (!response.ok) throw new Error("Failed to delete image");
 
+      setShowDeleteConfirm(false);
       fetchImages();
     } catch (error) {
       console.error("Error deleting image:", error);
     }
+  };
+
+  const handleDeleteClick = (image: GalleryImage) => {
+    setImageToDelete(image);
+    setShowDeleteConfirm(true);
   };
 
   const handleCloseForm = () => {
@@ -344,7 +359,7 @@ export function GalleryManagement() {
                     <Edit2 size={16} />
                   </button>
                   <button
-                    onClick={() => handleDelete(image._id)}
+                    onClick={() => handleDeleteClick(image)}
                     title="Delete image"
                   >
                     <Trash2 size={16} />
@@ -360,6 +375,40 @@ export function GalleryManagement() {
           <h3>No images found</h3>
           <p>Start by adding some images to the gallery</p>
         </div>
+      )}
+
+      {showDeleteConfirm && (
+        <motion.div
+          className="delete-confirm-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="delete-confirm-modal">
+            <h3>Delete Image</h3>
+            <p>
+              Are you sure you want to remove image from the
+              team? This action cannot be undone.
+            </p>
+            <div className="delete-confirm-actions">
+              <button
+                className="button button--secondary"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setImageToDelete(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="button button--delete"
+                onClick={() => handleDelete(imageToDelete?._id || "")}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </motion.div>
       )}
     </div>
   );
