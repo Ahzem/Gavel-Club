@@ -1,5 +1,5 @@
-const SpecialEvent = require('../models/SpecialEvent');
-const { cloudinary } = require('../config/cloudinary');
+const SpecialEvent = require("../models/SpecialEvent");
+const { cloudinary } = require("../config/cloudinary");
 
 exports.getSpecialEvent = async (req, res) => {
   try {
@@ -14,27 +14,29 @@ exports.createSpecialEvent = async (req, res) => {
   try {
     const existingEvent = await SpecialEvent.findOne();
     if (existingEvent) {
-      return res.status(400).json({ message: 'Special event already exists' });
+      return res.status(400).json({ message: "Special event already exists" });
     }
 
-    const { text1, text2 } = req.body;
+    const { title, subtitle, text1, text2 } = req.body;
     const images = req.files;
 
     if (!images.image1 || !images.image2) {
-      return res.status(400).json({ message: 'Both images are required' });
+      return res.status(400).json({ message: "Both images are required" });
     }
 
     const specialEvent = new SpecialEvent({
+      title,
+      subtitle,
       image1: {
         url: images.image1[0].path,
-        publicId: images.image1[0].filename
+        publicId: images.image1[0].filename,
       },
       image2: {
         url: images.image2[0].path,
-        publicId: images.image2[0].filename
+        publicId: images.image2[0].filename,
       },
       text1,
-      text2
+      text2,
     });
 
     await specialEvent.save();
@@ -47,15 +49,17 @@ exports.createSpecialEvent = async (req, res) => {
 exports.updateSpecialEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { text1, text2 } = req.body;
+    const { title, subtitle, text1, text2 } = req.body;
     const images = req.files;
-    
+
     const specialEvent = await SpecialEvent.findById(id);
     if (!specialEvent) {
-      return res.status(404).json({ message: 'Special event not found' });
+      return res.status(404).json({ message: "Special event not found" });
     }
 
     // Update texts
+    if (title) specialEvent.title = title;
+    if (subtitle) specialEvent.subtitle = subtitle;
     if (text1) specialEvent.text1 = text1;
     if (text2) specialEvent.text2 = text2;
 
@@ -65,7 +69,7 @@ exports.updateSpecialEvent = async (req, res) => {
       await cloudinary.uploader.destroy(specialEvent.image1.publicId);
       specialEvent.image1 = {
         url: images.image1[0].path,
-        publicId: images.image1[0].filename
+        publicId: images.image1[0].filename,
       };
     }
 
@@ -73,7 +77,7 @@ exports.updateSpecialEvent = async (req, res) => {
       await cloudinary.uploader.destroy(specialEvent.image2.publicId);
       specialEvent.image2 = {
         url: images.image2[0].path,
-        publicId: images.image2[0].filename
+        publicId: images.image2[0].filename,
       };
     }
 

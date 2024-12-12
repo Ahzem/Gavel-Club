@@ -2,6 +2,16 @@ const mongoose = require("mongoose");
 
 const specialEventSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true,
+      maxLength: 100,
+    },
+    subtitle: {
+      type: String,
+      required: true,
+      maxLength: 200,
+    },
     image1: {
       url: { type: String, required: true },
       publicId: { type: String, required: true },

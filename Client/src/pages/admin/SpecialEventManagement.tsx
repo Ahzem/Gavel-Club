@@ -6,6 +6,8 @@ import { toast } from "sonner";
 
 interface SpecialEvent {
   _id: string;
+  title: string;
+  subtitle: string;
   image1: { url: string; publicId: string };
   image2: { url: string; publicId: string };
   text1: string;
@@ -44,6 +46,11 @@ export function SpecialEventManagement() {
       const form = e.target as HTMLFormElement;
 
       // Add text fields
+      formData.append(
+        "title",
+        (form.title as unknown as HTMLInputElement).value
+      );
+      formData.append("subtitle", form.subtitle.value);
       formData.append("text1", form.text1.value);
       formData.append("text2", form.text2.value);
 
@@ -82,6 +89,39 @@ export function SpecialEventManagement() {
   return (
     <div className="special-event-management">
       <form onSubmit={handleSubmit} className="special-event-management__form">
+        <div className="special-event-management__header">
+          <div className="special-event-management__title-group">
+            <label htmlFor="title">Event Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              maxLength={100}
+              defaultValue={specialEvent?.title}
+              placeholder="Enter event title"
+              required
+            />
+            <span className="special-event-management__char-count">
+              {specialEvent?.title?.length || 0}/100
+            </span>
+          </div>
+
+          <div className="special-event-management__title-group">
+            <label htmlFor="subtitle">Event Subtitle</label>
+            <input
+              type="text"
+              id="subtitle"
+              name="subtitle"
+              maxLength={200}
+              defaultValue={specialEvent?.subtitle}
+              placeholder="Enter event subtitle"
+              required
+            />
+            <span className="special-event-management__char-count">
+              {specialEvent?.subtitle?.length || 0}/200
+            </span>
+          </div>
+        </div>
         <div className="special-event-management__grid">
           <div className="special-event-management__section">
             <h3>First Image</h3>
@@ -134,7 +174,7 @@ export function SpecialEventManagement() {
           disabled={loading}
         >
           {loading && <Loader2 className="animate-spin" />}
-          {exists ? "Save Changes" : "Create Special Event"}
+          <span>{exists ? "Save Changes" : "Create Special Event"}</span>
         </button>
       </form>
     </div>

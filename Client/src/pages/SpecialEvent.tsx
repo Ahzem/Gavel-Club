@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { specialEventApi } from "../services/api";
 
 interface SpecialEventData {
+  title: string;
+  subtitle: string;
   image1: { url: string };
   image2: { url: string };
   text1: string;
@@ -31,14 +33,24 @@ export function SpecialEvent() {
   return (
     <section className="special-event">
       <div className="section__container">
-        <motion.div
-          className="section__header"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="section__title">Special Event</h2>
-        </motion.div>
+        <div className="section__header">
+          <motion.h2
+            className="section__title"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {specialEvent.title}
+          </motion.h2>
+          <motion.p
+            className="section__subtitle"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            {specialEvent.subtitle}
+          </motion.p>
+        </div>
 
         <div className="special-event__content">
           <motion.div
