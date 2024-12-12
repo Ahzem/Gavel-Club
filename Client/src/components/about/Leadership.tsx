@@ -19,6 +19,15 @@ export function Leadership() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const LEADERSHIP_POSITIONS = [
+    "President",
+    "Secretary",
+    "Vice President Education",
+    "Vice President Public Relations",
+    "Treasurer",
+    "Sergeant at arms",
+  ];
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -34,15 +43,21 @@ export function Leadership() {
     fetchMembers();
   }, []);
 
-  // Group members by year and sort years in descending order
-  const groupedMembers = members.reduce((acc, member) => {
-    const year = member.year;
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(member);
-    return acc;
-  }, {} as Record<string, TeamMember[]>);
+  const groupedMembers = members
+    .filter((member) => LEADERSHIP_POSITIONS.includes(member.position))
+    .reduce((acc, member) => {
+      const year = member.year;
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(member);
+      acc[year].sort(
+        (a, b) =>
+          LEADERSHIP_POSITIONS.indexOf(a.position) -
+          LEADERSHIP_POSITIONS.indexOf(b.position)
+      );
+      return acc;
+    }, {} as Record<string, TeamMember[]>);
 
   const sortedYears = Object.keys(groupedMembers).sort(
     (a, b) => Number(b) - Number(a)
@@ -74,7 +89,7 @@ export function Leadership() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="leadership-section__year">Team {year}</h3>
+            <h3 className="leadership-section__year">Leadership Team of {year}</h3>
             <div className="leadership-section__grid">
               {groupedMembers[year].map((member, index) => (
                 <motion.div

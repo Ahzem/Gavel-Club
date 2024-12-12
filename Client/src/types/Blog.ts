@@ -1,22 +1,31 @@
-export interface BlogPost {
-  id: string;
+export interface BlogFormData {
   title: string;
-  slug: string;
-  excerpt: string;
+  subtitle: string;
   content: string;
-  coverImage: string;
   author: {
     name: string;
-    avatar: string;
-    bio: string;
-    title: string;
-    social?: {
-      twitter?: string;
-      linkedin?: string;
-    }
+    department: string;
+    email: string;
+    imageUrl: string | File;
   };
-  publishedAt: string;
+  coverImage: string | File;
+  status: 'draft' | 'published';
+}
+
+export interface Blog {
+  _id: string;
+  title: string;
+  subtitle: string;
+  content: string;
+  author: {
+    name: string;
+    department: string;
+    email: string;
+    imageUrl: string;
+  };
+  coverImage: string;
+  publishedDate: string;
+  status: 'draft' | 'published';
   claps: number;
-  readTime: string;
-  tags: string[];
+  slug: string;
 }

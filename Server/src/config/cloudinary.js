@@ -27,13 +27,38 @@ const galleryStorage = new CloudinaryStorage({
 const teamStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'team',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-  }
+    folder: "team",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
+
+const blogCoverStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "blogs/covers",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
+});
+
+const authorImageStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "blogs/authors",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  },
 });
 
 const uploadEvent = multer({ storage: eventStorage });
 const uploadGallery = multer({ storage: galleryStorage });
 const uploadTeam = multer({ storage: teamStorage });
+const uploadBlogCover = multer({ storage: blogCoverStorage });
+const uploadAuthorImage = multer({ storage: authorImageStorage });
 
-module.exports = { uploadEvent, uploadGallery, cloudinary, uploadTeam };
+module.exports = {
+  uploadEvent,
+  uploadGallery,
+  cloudinary,
+  uploadTeam,
+  uploadBlogCover,
+  uploadAuthorImage,
+};
