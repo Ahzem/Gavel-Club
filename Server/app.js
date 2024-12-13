@@ -19,8 +19,10 @@ app.use(helmet());
 app.use(
   cors({
     origin: [
-      "https://polite-dune-01a2ef300.4.azurestaticapps.net/",
+      process.env.CLIENT_URL,
+      "https://polite-dune-01a2ef300.4.azurestaticapps.net",
       "http://localhost:3000",
+      "http://localhost:5173",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
