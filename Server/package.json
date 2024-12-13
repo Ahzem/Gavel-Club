@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "npm install",
-    "dev": "nodemon index.js",
-    "create-admin": "node src/scripts/createAdmin.js"
+    "build": "npm ci --only=production",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",

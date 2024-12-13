@@ -29,15 +29,6 @@ const workshops = [
     location: "Room 105, ITUM Main Building",
     capacity: "Unlimited participants",
   },
-  {
-    id: "4",
-    title: "Speech Evaluation Workshop",
-    description:
-      "Learn the art of providing constructive feedback. Practice evaluating speeches using Toastmasters evaluation techniques while developing critical listening and analytical skills.",
-    time: "Every Friday, 4:00 PM",
-    location: "Room 105, ITUM Main Building",
-    capacity: "Unlimited participants",
-  },
 ];
 
 export function Workshops() {
