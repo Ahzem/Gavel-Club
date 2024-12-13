@@ -1,12 +1,12 @@
-import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 export function ContactInfo() {
   return (
     <section className="contact-info">
       <h2 className="contact-info__title">Contact Information</h2>
       <div className="contact-info__grid">
-        <motion.div 
+        <motion.div
           className="contact-info__item"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -18,14 +18,16 @@ export function ContactInfo() {
           <div className="contact-info__content">
             <h3 className="contact-info__label">Address</h3>
             <p className="contact-info__text">
-              Institute of Technology, University of Moratuwa<br />
-              Diyagama, Homagama<br />
+              Institute of Technology, University of Moratuwa
+              <br />
+              Diyagama, Homagama
+              <br />
               Sri Lanka
             </p>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="contact-info__item"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -36,11 +38,11 @@ export function ContactInfo() {
           </div>
           <div className="contact-info__content">
             <h3 className="contact-info__label">Email</h3>
-            <p className="contact-info__text">gavelclub@itum.mrt.ac.lk</p>
+            <p className="contact-info__text">gavelndt.official@gmail.com </p>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="contact-info__item"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

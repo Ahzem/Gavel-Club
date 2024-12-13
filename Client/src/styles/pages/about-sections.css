@@ -179,7 +179,7 @@
   content: "";
   position: absolute;
   left: -8px;
-  top: 0;
+  top: 10px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -203,9 +203,41 @@
   margin-bottom: var(--space-sm);
 }
 
+.history-timeline__milestone-button {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  text-align: left;
+}
+
 .history-timeline__description {
-  color: var(--color-primary);
+  overflow: hidden;
   line-height: 1.6;
+  transition: height 0.3s ease;
+}
+
+.history-timeline__icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  color: var(--color-primary);
+}
+
+.history-timeline__icon--active {
+  transform: rotate(180deg);
+}
+
+/* Ensure the collapsed text shows ellipsis */
+.history-timeline__description:not([style*="height: auto"]) {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Leadership Section */
@@ -311,7 +343,7 @@
     grid-template-columns: 1fr;
   }
   .leadership-section__grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .mission-section__container,
@@ -326,13 +358,6 @@
   .history-timeline__item,
   .leader-card {
     padding: var(--space-lg);
-  }
-
-  .mission-section__icon-wrapper,
-  .values-card__icon-wrapper,
-  .history-timeline__item::before,
-  .leader-card__avatar-wrapper {
-    padding: var(--space-sm);
   }
 
   .mission-section__icon {

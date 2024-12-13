@@ -100,10 +100,11 @@
 }
 
 .calendar-event-card {
-  width: 600px;
+  width: 100%;
+  padding: var(--space-md);
   background: var(--color-white);
   border-radius: 12px;
-  padding: var(--space-lg);
+  /* padding: var(--space-lg); */
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--glass-border);
   transition: all 0.3s ease;
@@ -360,22 +361,6 @@
   transition: transform 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .gallery-card__overlay {
-    opacity: 1;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.9) 0%,
-      rgba(0, 0, 0, 0.3) 70%,
-      rgba(0, 0, 0, 0.1) 100%
-    );
-  }
-
-  .gallery-card__content {
-    transform: translateY(0);
-  }
-}
-
 .gallery-seemore {
   display: flex;
   justify-content: center;
@@ -624,5 +609,19 @@
 
   .button--delete {
     padding: var(--space-sm) var(--space-md);
+  }
+
+  .gallery-card__overlay {
+    opacity: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.3) 70%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  }
+
+  .gallery-card__content {
+    transform: translateY(0);
   }
 }

@@ -4,28 +4,39 @@ import { motion } from "framer-motion";
 const workshops = [
   {
     id: "1",
-    title: "Public Speaking Fundamentals",
-    description: "Master the basics of effective public speaking",
+    title: "Prepared Speech Workshop",
+    description:
+      "Develop and deliver structured speeches on chosen topics. Learn speech crafting, body language, and vocal variety. Perfect for both beginners and experienced speakers looking to refine their skills.",
     time: "Every Tuesday, 5:00 PM",
     location: "Room 201, ITUM Main Building",
-    capacity: "20 participants",
+    capacity: "Unlimited participants",
   },
   {
     id: "2",
-    title: "Leadership Workshop Series",
+    title: "Table Topics Session",
     description:
-      "Develop essential leadership skills through practical exercises",
+      "Master the art of impromptu speaking through our Table Topics sessions. Enhance quick thinking and confidence by responding to unexpected questions and scenarios in 1-2 minutes.",
     time: "Every Thursday, 4:30 PM",
     location: "Conference Hall, ITUM",
-    capacity: "25 participants",
+    capacity: "Unlimited participants",
   },
   {
     id: "3",
-    title: "Impromptu Speaking Practice",
-    description: "Enhance your ability to think and speak on your feet",
+    title: "Round Robin Speaking",
+    description:
+      "Participate in our dynamic Round Robin sessions where everyone gets a chance to speak on rotating topics. Great for practicing quick responses and building confidence in a supportive environment.",
     time: "Every Wednesday, 3:00 PM",
     location: "Room 105, ITUM Main Building",
-    capacity: "15 participants",
+    capacity: "Unlimited participants",
+  },
+  {
+    id: "4",
+    title: "Speech Evaluation Workshop",
+    description:
+      "Learn the art of providing constructive feedback. Practice evaluating speeches using Toastmasters evaluation techniques while developing critical listening and analytical skills.",
+    time: "Every Friday, 4:00 PM",
+    location: "Room 105, ITUM Main Building",
+    capacity: "Unlimited participants",
   },
 ];
 
@@ -33,7 +44,7 @@ export function Workshops() {
   return (
     <section className="workshops-section">
       <div className="workshops-section__container">
-        <h2 className="workshops-section__title">Regular Workshops</h2>
+        <h2 className="workshops-section__title">Educational Meetings</h2>
         <div className="workshops-grid">
           {workshops.map((workshop, index) => (
             <motion.div

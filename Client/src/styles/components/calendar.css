@@ -226,3 +226,101 @@
     flex-direction: row;
   }
 }
+
+/* Small tablets and large phones (480px and up) */
+@media (min-width: 480px) {
+  .calendar-section__container {
+    padding: var(--space-lg);
+  }
+
+  .calendar {
+    padding: var(--space-lg);
+  }
+
+  .calendar__day {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+/* Tablets (768px and up) */
+@media (min-width: 768px) {
+  .calendar-section__container {
+    padding: var(--space-xl);
+    margin-top: -30px;
+  }
+
+  .calendar-grid {
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-xl);
+  }
+
+  .calendar-event-card {
+    width: auto;
+    padding: var(--space-lg);
+  }
+
+  .calendar-event-card__meta {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .calendar-event-card__time-location {
+    flex-direction: row;
+    gap: var(--space-md);
+  }
+
+  .calendar-event-card__register {
+    width: auto;
+  }
+}
+
+/* Large tablets and laptops (1024px and up) */
+@media (min-width: 1024px) {
+  .calendar-section__container {
+    padding: var(--space-2xl);
+    margin-top: -40px;
+  }
+
+  .calendar {
+    padding: var(--space-xl);
+  }
+
+  .calendar__day {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* Large screens (1280px and up) */
+@media (min-width: 1280px) {
+  .calendar-grid {
+    gap: var(--space-2xl);
+  }
+
+  .calendar {
+    max-width: 450px;
+  }
+
+  .calendar__day {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .calendar-section__container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .calendar-grid {
+    display: block;
+  }
+
+  .calendar-event-card__register {
+    display: none;
+  }
+}

@@ -128,19 +128,6 @@ export function BlogPostPage() {
           </div>
 
           <div className="blog-post__author-details-and-share">
-            <div className="blog-post__author-bio">
-              <img
-                src={post.author.imageUrl}
-                alt={post.author.name}
-                className="blog-post__author-avatar"
-              />
-              <div className="blog-post__author-info">
-                <h4>{post.author.name}</h4>
-                <p>{post.author.department}</p>
-                <a href={post.author.linkedin}>{post.author.linkedin}</a>
-              </div>
-            </div>
-
             <div className="blog-post__share">
               <button
                 onClick={() => handleShare("twitter")}
@@ -166,6 +153,18 @@ export function BlogPostPage() {
                 <Copy size={20} />
                 Copy Link
               </button>
+            </div>
+            <div className="blog-post__author-bio">
+              <img
+                src={post.author.imageUrl}
+                alt={post.author.name}
+                className="blog-post__author-avatar"
+              />
+              <div className="blog-post__author-info">
+                <h4>{post.author.name}</h4>
+                <p>{post.author.department}</p>
+                <a href={post.author.linkedin}>{post.author.linkedin}</a>
+              </div>
             </div>
           </div>
         </div>
