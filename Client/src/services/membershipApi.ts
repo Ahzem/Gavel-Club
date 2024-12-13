@@ -1,9 +1,9 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const BASE_URL = '/api';
 
 export const membershipApi = {
   getConfig: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/membership/config`, {
+      const response = await fetch(`${BASE_URL}/membership/config`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export const membershipApi = {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/membership/config`, {
+      const response = await fetch(`${BASE_URL}/membership/config`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

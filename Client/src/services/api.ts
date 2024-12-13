@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const BASE_URL = '/api';
 
 export const authApi = {
   login: async (email: string, password: string) => {
@@ -25,7 +25,7 @@ export const authApi = {
 export const eventsApi = {
   createEvent: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/events`, {
+    const response = await fetch(`${BASE_URL}/events`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -43,7 +43,7 @@ export const eventsApi = {
 
   getAllEvents: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/events`, {
+      const response = await fetch(`${BASE_URL}/events`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export const eventsApi = {
 
   updateEvent: async (id: string, formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/events/${id}`, {
+    const response = await fetch(`${BASE_URL}/events/${id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -89,7 +89,7 @@ export const eventsApi = {
     }
   
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/events/${id}`, {
+    const response = await fetch(`${BASE_URL}/events/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -109,7 +109,7 @@ export const eventsApi = {
 
 export const teamApi = {
   getAllMembers: async () => {
-    const response = await fetch(`${BASE_URL}/api/team`, {
+    const response = await fetch(`${BASE_URL}/team`, {
       credentials: 'include'
     });
     if (!response.ok) throw new Error('Failed to fetch team members');
@@ -118,7 +118,7 @@ export const teamApi = {
 
   createMember: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/team`, {
+    const response = await fetch(`${BASE_URL}/team`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -132,7 +132,7 @@ export const teamApi = {
 
   updateMember: async (id: string, formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/team/${id}`, {
+    const response = await fetch(`${BASE_URL}/team/${id}`, {
       method: 'PUT', 
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -146,7 +146,7 @@ export const teamApi = {
 
   deleteMember: async (id: string) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/api/team/${id}`, {
+    const response = await fetch(`${BASE_URL}/team/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -161,7 +161,7 @@ export const teamApi = {
 export const specialEventApi = {
   getSpecialEvent: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/special-event`, {
+      const response = await fetch(`${BASE_URL}/special-event`, {
         credentials: 'include'
       });
       if (!response.ok) throw new Error('Failed to fetch special event');
@@ -174,7 +174,7 @@ export const specialEventApi = {
 
   createSpecialEvent: async (formData: FormData) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/special-event`, {
+      const response = await fetch(`${BASE_URL}/special-event`, {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -189,7 +189,7 @@ export const specialEventApi = {
 
   updateSpecialEvent: async (id: string, formData: FormData) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/special-event/${id}`, {
+      const response = await fetch(`${BASE_URL}/special-event/${id}`, {
         method: 'PUT',
         credentials: 'include',
         body: formData
@@ -211,7 +211,7 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
     ...options.headers,
   };
 
-  const response = await fetch(`${BASE_URL}/api/${endpoint}`, {
+  const response = await fetch(`${BASE_URL}/${endpoint}`, {
     ...options,
     headers,
   });
@@ -222,3 +222,60 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
 
   return response.json();
 }
+
+export const galleryApi = {
+  getAllImages: async () => {
+    try {
+      const response = await fetch('/api/gallery', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch gallery images');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+      throw new Error('Failed to fetch gallery images');
+    }
+  },
+
+  uploadImage: async (formData: FormData) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('/api/gallery', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to upload image');
+    }
+    return response.json();
+  },
+
+  deleteImage: async (id: string) => {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`/api/gallery/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete image');
+    }
+    return response.json();
+  }
+};

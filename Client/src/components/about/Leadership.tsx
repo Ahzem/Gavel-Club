@@ -63,9 +63,6 @@ export function Leadership() {
     (a, b) => Number(b) - Number(a)
   );
 
-  if (isLoading) return <LoadingSpinner />;
-  if (error) return <div className="error-message">{error}</div>;
-
   return (
     <section className="leadership-section">
       <div className="leadership-section__container">
@@ -81,38 +78,53 @@ export function Leadership() {
           </p>
         </motion.div>
 
-        {sortedYears.map((year) => (
+        {isLoading ? (
           <motion.div
-            key={year}
-            className="leadership-section__year-group"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            className="leadership-section__loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <h3 className="leadership-section__year">Leadership Team of {year}</h3>
-            <div className="leadership-section__grid">
-              {groupedMembers[year].map((member, index) => (
-                <motion.div
-                  key={member._id}
-                  className="leader-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className="leader-card__avatar-wrapper">
-                    <img
-                      src={member.image?.url || "/placeholder.png"}
-                      alt={member.name}
-                      className="leader-card__avatar"
-                    />
-                  </div>
-                  <h3 className="leader-card__name">{member.name}</h3>
-                  <p className="leader-card__role">{member.position}</p>
-                </motion.div>
-              ))}
-            </div>
+            <LoadingSpinner />
           </motion.div>
-        ))}
+        ) : error ? (
+          <div className="leadership-section__error">{error}</div>
+        ) : (
+          sortedYears.map((year) => (
+            <motion.div
+              key={year}
+              className="leadership-section__year-group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="leadership-section__year">
+                Leadership Team of {year}
+              </h3>
+              <div className="leadership-section__grid">
+                {groupedMembers[year].map((member, index) => (
+                  <motion.div
+                    key={member._id}
+                    className="leader-card"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="leader-card__avatar-wrapper">
+                      <img
+                        src={member.image?.url || "/placeholder.png"}
+                        alt={member.name}
+                        className="leader-card__avatar"
+                      />
+                    </div>
+                    <h3 className="leader-card__name">{member.name}</h3>
+                    <p className="leader-card__role">{member.position}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))
+        )}
       </div>
     </section>
   );

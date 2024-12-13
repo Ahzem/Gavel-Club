@@ -3,21 +3,25 @@ import { motion } from "framer-motion";
 
 const values = [
   {
+    id: 1,
     icon: Award,
     title: "Excellence",
     description: "Striving for the highest standards in everything we do.",
   },
   {
+    id: 2,
     icon: Heart,
     title: "Integrity",
     description: "Acting with honesty and transparency in all interactions.",
   },
   {
+    id: 3,
     icon: Users,
     title: "Community",
     description: "Fostering a supportive and inclusive environment.",
   },
   {
+    id: 4,
     icon: Zap,
     title: "Innovation",
     description: "Embracing new ideas and approaches to learning.",
@@ -33,7 +37,7 @@ export function Values() {
           {values.map((value, index) => (
             <div className="values-card">
               <motion.div
-                key={value.title}
+                key={value.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}

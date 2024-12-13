@@ -69,6 +69,7 @@ export function BlogPostPage() {
     return (
       <div className="blog-post__loading">
         <LoadingSpinner />
+        <p>Loading blog post...</p>
       </div>
     );
   }

@@ -236,6 +236,7 @@
 .history-timeline__description:not([style*="height: auto"]) {
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -336,6 +337,33 @@
 .leader-card__role {
   font-size: 0.9rem;
   color: var(--color-accent-1);
+}
+
+.leadership-section__loading {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-2xl);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  margin: var(--space-xl) 0;
+}
+
+.leadership-section__error {
+  background: var(--glass-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--color-error);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  text-align: center;
+  color: var(--color-error);
+  margin: var(--space-xl) 0;
 }
 
 @media (max-width: 768px) {
