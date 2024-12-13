@@ -23,8 +23,8 @@ export function MapLocation() {
             width="100%"
             height="100%"
             allowFullScreen
+            loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            {...(HTMLIFrameElement.prototype.loading !== undefined ? { loading: "lazy" } : {})}
           ></iframe>
         </motion.div>
       </div>

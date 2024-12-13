@@ -126,8 +126,10 @@ export function SpecialEventManagement() {
           <div className="special-event-management__section">
             <h3>First Image</h3>
             <ImageUpload
-              onImageChange={(file) => setImage1File(file as File)}
-              currentImage={specialEvent?.image1.url}
+              currentImage={specialEvent?.image1?.url}
+              onImageChange={(file) => {
+                setImage1File(file instanceof File ? file : null);
+              }}
             />
             <div className="special-event-management__text">
               <label htmlFor="text1">First Description</label>
@@ -148,8 +150,10 @@ export function SpecialEventManagement() {
           <div className="special-event-management__section">
             <h3>Second Image</h3>
             <ImageUpload
-              onImageChange={(file) => setImage2File(file as File)}
-              currentImage={specialEvent?.image2.url}
+              currentImage={specialEvent?.image2?.url}
+              onImageChange={(file) => {
+                setImage2File(file instanceof File ? file : null);
+              }}
             />
             <div className="special-event-management__text">
               <label htmlFor="text2">Second Description</label>
