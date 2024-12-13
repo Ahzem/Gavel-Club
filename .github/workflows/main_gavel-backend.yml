@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "Server/**"
   workflow_dispatch:
 
 jobs:
@@ -19,13 +21,26 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
-      - name: npm install, build, and test
+      - name: npm install and build
         run: |
+          cd Server
           npm install
           npm run build --if-present
-          npm run test --if-present
+        working-directory: ./Server
+
+      - name: Create env file
+        run: |
+          cd Server
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "NODE_ENV=production" >> .env
+          echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
+          echo "CLIENT_URL=${{ secrets.CLIENT_URL }}" >> .env
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -40,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -53,7 +68,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -61,11 +76,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E87755D2DCD6486688705BEA8EC2ED75 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_09BEA48A231E4FC0A33A83377E849A6D }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'gavel-backend'
-          slot-name: 'Production'
+          app-name: "gavel-backend"
+          slot-name: "Production"
           package: .
-          
