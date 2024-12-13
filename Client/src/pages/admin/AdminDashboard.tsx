@@ -123,6 +123,7 @@ export function AdminDashboard() {
           <div className="admin-dashboard__developer">
             <div className="admin-dashboard__developer-links">
               <a
+                title="View Developer's GitHub"
                 href="https://github.com/Ahzem"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -131,6 +132,7 @@ export function AdminDashboard() {
                 <Github size={14} />
               </a>
               <a
+                title="Contact Developer"
                 href="mailto:muhammadhahzem1422@gmail.com"
                 className="admin-dashboard__developer-link"
               >

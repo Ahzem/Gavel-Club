@@ -23,7 +23,7 @@ async createBlog(data: BlogFormData) {
   formData.append('author', JSON.stringify({
     name: data.author.name,
     department: data.author.department,
-    email: data.author.email
+    linkedin: data.author.linkedin
   }));
 
   if (data.coverImage instanceof File) {
@@ -48,7 +48,7 @@ async updateBlog(id: string, data: BlogFormData) {
   formData.append('author', JSON.stringify({
     name: data.author.name,
     department: data.author.department,
-    email: data.author.email
+    linkedin: data.author.linkedin
   }));
 
   if (data.coverImage instanceof File) {

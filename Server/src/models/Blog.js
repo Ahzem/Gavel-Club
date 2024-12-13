@@ -25,7 +25,7 @@ const blogSchema = new mongoose.Schema({
       required: true
     },
     department: String,
-    email: {
+    linkedin: {
       type: String,
       required: true
     },

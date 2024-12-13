@@ -5,7 +5,7 @@ export interface BlogFormData {
   author: {
     name: string;
     department: string;
-    email: string;
+    linkedin: string;
     imageUrl: string | File;
   };
   coverImage: string | File;
@@ -20,7 +20,7 @@ export interface Blog {
   author: {
     name: string;
     department: string;
-    email: string;
+    linkedin: string;
     imageUrl: string;
   };
   coverImage: string;
@@ -40,7 +40,7 @@ export interface BlogPost {
   author: {
     name: string;
     department: string;
-    email: string;
+    linkedin: string;
     imageUrl: string;
   };
   publishedDate: string;

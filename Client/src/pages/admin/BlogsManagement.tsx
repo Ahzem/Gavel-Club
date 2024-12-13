@@ -23,7 +23,7 @@ interface FormState {
   content: string;
   author: {
     name: string;
-    email: string;
+    linkedin: string;
     department: string;
     imageUrl: string | File;
   };
@@ -49,7 +49,7 @@ export function BlogsManagement() {
     content: "",
     author: {
       name: "",
-      email: "",
+      linkedin: "",
       department: "",
       imageUrl: "",
     },
@@ -120,7 +120,7 @@ export function BlogsManagement() {
       content: "",
       author: {
         name: "",
-        email: "",
+        linkedin: "",
         department: "",
         imageUrl: "",
       },
@@ -144,7 +144,7 @@ export function BlogsManagement() {
         author: {
           name: formData.author.name,
           department: formData.author.department,
-          email: formData.author.email,
+          linkedin: formData.author.linkedin,
           imageUrl: formData.author.imageUrl,
         },
         coverImage: formData.coverImage,
@@ -174,10 +174,6 @@ export function BlogsManagement() {
       setIsSaving(false);
     }
   };
-
-  // if (isLoading) {
-  //   return <div className="blogs-management__loading">Loading blogs...</div>;
-  // }
 
   const handleStatusChange = async (
     blog: Blog,
@@ -360,7 +356,8 @@ export function BlogsManagement() {
                     />
                   </div>
 
-                  <div className="blog-form__author-section">
+                  <div className="blog-form__field blog-form__author-row blog-form__field--full">
+                    <div className="blog-form__author-info">
                     <h3>Author Details</h3>
                     <div className="blog-form__author-grid">
                       <div className="blog-form__field--group">
@@ -403,21 +400,21 @@ export function BlogsManagement() {
                         </div>
 
                         <div className="blog-form__field">
-                          <label>Email</label>
+                          <label>LinkedIn URL</label>
                           <input
-                            type="email"
-                            value={formData.author?.email}
+                            type="url"
+                            value={formData.author?.linkedin}
                             onChange={(e) =>
                               setFormData((prev) => ({
                                 ...prev,
                                 author: {
                                   ...prev.author!,
-                                  email: e.target.value,
+                                  linkedin: e.target.value,
                                 },
                               }))
                             }
                             required
-                            placeholder="e.g. example@email.com"
+                            placeholder="e.g. example@linkedin.com"
                           />
                         </div>
                       </div>
@@ -450,22 +447,29 @@ export function BlogsManagement() {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="blog-form__field blog-form__field--full">
-                    <label>Status</label>
-                    <select
-                      title="Select status"
-                      value={formData.status}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          status: e.target.value as "draft" | "published",
-                        }))
-                      }
-                    >
-                      <option value="draft">Draft</option>
-                      <option value="published">Published</option>
-                    </select>
+                    </div>
+                    
+                    <div className="blog-form__status">
+                      <label className="status-toggle">
+                        <span className="status-label">Status:</span>
+                        <div className="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked={formData.status === "published"}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                status: e.target.checked ? "published" : "draft",
+                              }))
+                            }
+                          />
+                          <span className="toggle-slider"></span>
+                          <span className={`status-text ${formData.status === "published" ? "published" : "draft"}`}>
+                            {formData.status === "published" ? "Published" : "Draft"}
+                          </span>
+                        </div>
+                      </label>
+                    </div>
                   </div>
 
                   <div className="blog-form__actions blog-form__field--full">

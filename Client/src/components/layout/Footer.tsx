@@ -11,10 +11,10 @@ export function Footer() {
             <h3 className="footer__title">About Us</h3>
             <p className="footer__text">{SITE_CONFIG.description}</p>
             <div className="footer__social">
-              <a href="https://facebook.com" className="footer__social-link">
+              <a title="Follow of Facebook" href="https://www.facebook.com/p/Gavel-Club-Of-ITUM-61558681727404/" className="footer__social-link">
                 <Facebook size={20} />
               </a>
-              <a href="https://instagram.com" className="footer__social-link">
+              <a title="Follow on Instagram" href="https://www.instagram.com/gavelndt_/" className="footer__social-link">
                 <Instagram size={20} />
               </a>
             </div>
@@ -52,7 +52,7 @@ export function Footer() {
               Sri Lanka
             </address>
             <a
-              href="mailto:gavelclub@itum.mrt.ac.lk"
+              href="mailto:gavelndt.official@gmail.com"
               className="footer__contact-link"
             >
               gavelclub@itum.mrt.ac.lk

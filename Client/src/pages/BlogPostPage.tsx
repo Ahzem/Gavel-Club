@@ -127,43 +127,45 @@ export function BlogPostPage() {
             <ClapButton initialCount={post.claps} onClap={handleClap} />
           </div>
 
-          <div className="blog-post__share">
-            <button
-              onClick={() => handleShare("twitter")}
-              className="share-button twitter"
-              title="Share on Twitter"
-            >
-              <Twitter size={20} />
-              Share on Twitter
-            </button>
-            <button
-              onClick={() => handleShare("linkedin")}
-              className="share-button linkedin"
-              title="Share on LinkedIn"
-            >
-              <Linkedin size={20} />
-              Share on LinkedIn
-            </button>
-            <button
-              onClick={() => handleShare("copy")}
-              className="share-button copy"
-              title="Copy Link"
-            >
-              <Copy size={20} />
-              Copy Link
-            </button>
-          </div>
+          <div className="blog-post__author-details-and-share">
+            <div className="blog-post__author-bio">
+              <img
+                src={post.author.imageUrl}
+                alt={post.author.name}
+                className="blog-post__author-avatar"
+              />
+              <div className="blog-post__author-info">
+                <h4>{post.author.name}</h4>
+                <p>{post.author.department}</p>
+                <a href={post.author.linkedin}>{post.author.linkedin}</a>
+              </div>
+            </div>
 
-          <div className="blog-post__author-bio">
-            <img
-              src={post.author.imageUrl}
-              alt={post.author.name}
-              className="blog-post__author-avatar"
-            />
-            <div className="blog-post__author-info">
-              <h4>{post.author.name}</h4>
-              <p>{post.author.department}</p>
-              <p>{post.author.email}</p>
+            <div className="blog-post__share">
+              <button
+                onClick={() => handleShare("twitter")}
+                className="share-button twitter"
+                title="Share on Twitter"
+              >
+                <Twitter size={20} />
+                Share on Twitter
+              </button>
+              <button
+                onClick={() => handleShare("linkedin")}
+                className="share-button linkedin"
+                title="Share on LinkedIn"
+              >
+                <Linkedin size={20} />
+                Share on LinkedIn
+              </button>
+              <button
+                onClick={() => handleShare("copy")}
+                className="share-button copy"
+                title="Copy Link"
+              >
+                <Copy size={20} />
+                Copy Link
+              </button>
             </div>
           </div>
         </div>
