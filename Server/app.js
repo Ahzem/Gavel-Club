@@ -50,10 +50,13 @@ app.use("/api/team", teamRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/special-event", specialEventRoutes);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Something went wrong!" });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy" });
 });
 
 module.exports = app;
