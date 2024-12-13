@@ -3,7 +3,7 @@ require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const app = require("./app");
 const connectWithRetry = require("./src/utils/dbRetry");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 connectWithRetry();
 
