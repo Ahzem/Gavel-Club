@@ -233,52 +233,62 @@ export const galleryApi = {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        },
-        credentials: 'include'
+        }
       });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch gallery images');
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to fetch gallery images');
       }
       
       return await response.json();
     } catch (error) {
       console.error('Error fetching gallery images:', error);
-      throw new Error('Failed to fetch gallery images');
+      throw error;
     }
   },
 
   uploadImage: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/gallery`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      credentials: 'include',
-      body: formData
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to upload image');
+    try {
+      const response = await fetch(`${BASE_URL}/gallery`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to upload image');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
     }
-    return response.json();
   },
 
   deleteImage: async (id: string) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`${BASE_URL}/gallery/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      credentials: 'include'
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to delete image');
+    try {
+      const response = await fetch(`${BASE_URL}/gallery/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to delete image');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      throw error;
     }
-    return response.json();
   }
 };
 
