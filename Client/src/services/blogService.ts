@@ -82,7 +82,9 @@ async updateBlog(id: string, data: BlogFormData) {
   },
 
     async getPublishedBlogs(): Promise<BlogPost[]> {
-    const BASE_URL = '/api';
+       const BASE_URL = import.meta.env.PROD 
+      ? 'https://gavel-club.azurewebsites.net/api'
+      : '/api';
     const response = await fetch(`${BASE_URL}/blogs/published`);
     if (!response.ok) {
         throw new Error('Failed to fetch blogs');
@@ -91,7 +93,9 @@ async updateBlog(id: string, data: BlogFormData) {
     },
 
   async getBlogBySlug(slug: string): Promise<BlogPost> {
-    const BASE_URL = '/api';
+        const BASE_URL = import.meta.env.PROD 
+      ? 'https://gavel-club.azurewebsites.net/api'
+      : '/api';
     const response = await fetch(`${BASE_URL}/blogs/${slug}`);
     if (!response.ok) {
       throw new Error('Failed to fetch blog post');

@@ -7,7 +7,7 @@ import {
   //   CheckCircle,
   //   XCircle,
 } from "lucide-react";
-import { membershipApi } from "../../services/membershipApi";
+import { membershipApi } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 

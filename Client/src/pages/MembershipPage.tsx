@@ -4,7 +4,7 @@ import { JoinProcess } from "../components/membership/JoinProcess";
 import { FAQ } from "../components/membership/FAQ";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
 import { useEffect, useState } from "react";
-import { membershipApi } from "../services/membershipApi";
+import { membershipApi } from "../services/api";
 
 export function MembershipPage() {
   const [config, setConfig] = useState({
