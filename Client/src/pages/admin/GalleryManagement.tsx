@@ -42,6 +42,7 @@ export function GalleryManagement() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [imageToDelete, setImageToDelete] = useState<GalleryImage | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchImages();
@@ -60,6 +61,7 @@ export function GalleryManagement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const form = new FormData();
     form.append("alt", formData.alt || "");
     form.append("captureDate", formData.captureDate || "");
@@ -95,6 +97,8 @@ export function GalleryManagement() {
       handleCloseForm();
     } catch (error) {
       console.error("Error saving image:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -321,8 +325,18 @@ export function GalleryManagement() {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="button button--primary">
-                      {selectedImage ? "Save Changes" : "Add Image"}
+                    <button
+                      type="submit"
+                      className="button button--primary"
+                      disabled={loading}
+                    >
+                      {loading
+                        ? selectedImage
+                          ? "Saving Changes..."
+                          : "Adding Image..."
+                        : selectedImage
+                        ? "Save Changes"
+                        : "Add Image"}
                     </button>
                   </div>
                 </div>
@@ -387,8 +401,8 @@ export function GalleryManagement() {
           <div className="delete-confirm-modal">
             <h3>Delete Image</h3>
             <p>
-              Are you sure you want to remove image from the
-              team? This action cannot be undone.
+              Are you sure you want to remove image from the team? This action
+              cannot be undone.
             </p>
             <div className="delete-confirm-actions">
               <button

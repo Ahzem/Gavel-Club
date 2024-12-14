@@ -60,6 +60,7 @@ export function TeamManagement() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -80,6 +81,7 @@ export function TeamManagement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const formDataObj = new FormData();
@@ -108,6 +110,8 @@ export function TeamManagement() {
       handleCloseForm();
     } catch (error) {
       console.error("Error saving team member:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -353,8 +357,20 @@ export function TeamManagement() {
                       type="submit"
                       title="Submit"
                       className="button button--primary"
+                      disabled={loading}
                     >
-                      {selectedMember ? "Save Changes" : "Add Member"}
+                      {loading ? (
+                        <span>
+                          {selectedMember
+                            ? "Saving Changes..."
+                            : "Adding Member..."}
+                          ...
+                        </span>
+                      ) : selectedMember ? (
+                        "Save Changes"
+                      ) : (
+                        "Add Member"
+                      )}
                     </button>
                   </div>
                 </div>
