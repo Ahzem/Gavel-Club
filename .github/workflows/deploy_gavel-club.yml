@@ -7,6 +7,14 @@ on:
   push:
     branches:
       - deploy
+    paths:
+      - 'Server/**'
+    
+  pull_request:
+    branches:
+      - deploy
+    paths:
+      - 'Server/**'
   workflow_dispatch:
 
 jobs:
