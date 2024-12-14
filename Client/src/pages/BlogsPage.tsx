@@ -27,27 +27,6 @@ export function BlogsPage() {
     fetchBlogs();
   }, []);
 
-  if (error) {
-    return (
-      <motion.div
-        className="blogs-page__error"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <AlertCircle size={48} className="blogs-page__error-icon" />
-        <h2>Oops! Something went wrong</h2>
-        <p>{error}</p>
-        <button
-          className="blogs-page__error-button"
-          onClick={() => window.location.reload()}
-        >
-          Try Again
-        </button>
-      </motion.div>
-    );
-  }
-
   return (
     <motion.div
       className="blogs-page"
@@ -77,6 +56,25 @@ export function BlogsPage() {
           </motion.p>
         </div>
       </section>
+
+      {error && (
+        <motion.div
+          className="blogs-page__error"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <AlertCircle size={48} className="blogs-page__error-icon" />
+          <h2>Oops! Something went wrong</h2>
+          <p>{error}</p>
+          <button
+            className="blogs-page__error-button"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </motion.div>
+      )}
 
       <div className="blogs-grid">
         {isLoading ? (

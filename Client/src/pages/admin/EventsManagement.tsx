@@ -148,6 +148,8 @@ export function EventsManagement() {
               new Date(updated[key] as string).toISOString().split("T")[0] !==
               new Date(selectedEvent[key]).toISOString().split("T")[0]
             );
+          } else if (key === "image") {
+            return updated.image !== selectedEvent.image;
           }
           return (
             updated[key as keyof EventFormData] !==
