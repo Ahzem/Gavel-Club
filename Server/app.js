@@ -16,23 +16,23 @@ const app = express();
 
 // CORS middleware
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://mango-bush-0b7a83b00.4.azurestaticapps.net',
-  'https://gavel-club.azurewebsites.net'
+  "http://localhost:5173",
+  "https://mango-bush-0b7a83b00.4.azurestaticapps.net",
+  "https://gavel-club.azurewebsites.net",
 ];
 
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // Security middleware
 app.use(
@@ -57,20 +57,6 @@ app.use(
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-});
-
-// Add this before your routes
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL || 'http://localhost:5173');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  // Handle OPTIONS method
-  if ('OPTIONS' === req.method) {
-    return res.sendStatus(200);
-  }
-  next();
 });
 
 // Body parsing middleware
