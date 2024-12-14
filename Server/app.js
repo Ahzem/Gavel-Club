@@ -15,14 +15,23 @@ const errorHandler = require("./src/middleware/error-handler");
 const app = express();
 
 // CORS middleware
-// CORS middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://mango-bush-0b7a83b00.4.azurestaticapps.net',
+  'https://gavel-club.azurewebsites.net'
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add OPTIONS
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  maxAge: 600 // Increase preflight cache time
 }));
 
 // Security middleware

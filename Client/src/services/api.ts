@@ -1,8 +1,10 @@
-const BASE_URL = '/api';
+const BASE_URL = import.meta.env.PROD 
+  ? 'https://gavel-club.azurewebsites.net/api'
+  : '/api';
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include', // Important for cookies
@@ -13,7 +15,7 @@ export const authApi = {
   },
   
   logout: async () => {
-    const response = await fetch('/api/auth/logout', {
+    const response = await fetch(`${BASE_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include', // Important for cookies
     });
@@ -226,7 +228,7 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
 export const galleryApi = {
   getAllImages: async () => {
     try {
-      const response = await fetch('/api/gallery', {
+      const response = await fetch(`${BASE_URL}/gallery`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -248,7 +250,7 @@ export const galleryApi = {
 
   uploadImage: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch('/api/gallery', {
+    const response = await fetch(`${BASE_URL}/gallery`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -265,7 +267,7 @@ export const galleryApi = {
 
   deleteImage: async (id: string) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`/api/gallery/${id}`, {
+    const response = await fetch(`${BASE_URL}/gallery/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
