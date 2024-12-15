@@ -1,7 +1,7 @@
 # 🎤 Gavel Club of ITUM - Official Website
 
 <p align="center">
-  <img src="./Client/src/assets/logowithname.png" alt="Gavel Club Logo" width="200"/>
+  <img src="./Client/src/assets/logowithname.png" alt="Gavel Club Logo" width="600"/>
 </p>
 
 > A modern web platform for the Gavel Club of Institute of Technology, University of Moratuwa, built with React, Node.js, and MongoDB.
