@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App
 on:
   push:
     branches:
-      - deploy
+      - main
     paths:
       - "Server/**"
       - "!Server/**.md"
@@ -17,7 +17,7 @@ on:
 
   pull_request:
     branches:
-      - deploy
+      - main
     paths:
       - "Server/**"
       - "!Server/**.md"
