@@ -14,7 +14,6 @@ const errorHandler = require("./src/middleware/error-handler");
 
 const app = express();
 
-// CORS middleware
 const allowedOrigins = [
   "http://localhost:5173",
   "https://mango-bush-0b7a83b00.4.azurestaticapps.net",
@@ -73,7 +72,6 @@ app.use("/api/team", teamRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/special-event", specialEventRoutes);
 
-// Health check endpoint
 app.get("/health", (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
@@ -85,7 +83,6 @@ app.get("/health", (req, res) => {
   res.status(200).json(healthcheck);
 });
 
-// Error handling middleware (should be last)
 app.use(errorHandler);
 
 module.exports = app;
