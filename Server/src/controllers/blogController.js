@@ -30,7 +30,14 @@ const blogController = {
   // Create blog
   createBlog: async (req, res) => {
     try {
-      const blogData = req.body;
+      const isPublicSubmission = req.originalUrl.includes("submit-draft");
+
+      const blogData = {
+        ...req.body,
+        // Override status only for public submissions
+        status: isPublicSubmission ? "draft" : req.body.status,
+        author: JSON.parse(req.body.author),
+      };
 
       // Generate unique slug
       let slug = slugify(blogData.title);
@@ -43,19 +50,14 @@ const blogController = {
         counter++;
       }
 
-      // Handle cover image
-      if (req.files && req.files.coverImage) {
+      if (req.files?.coverImage) {
         blogData.coverImage = req.files.coverImage[0].path;
         blogData.coverImagePublicId = req.files.coverImage[0].filename;
       }
 
-      // Handle author image
-      if (req.files && req.files.authorImage) {
-        blogData.author = {
-          ...JSON.parse(blogData.author),
-          imageUrl: req.files.authorImage[0].path,
-          imagePublicId: req.files.authorImage[0].filename,
-        };
+      if (req.files?.authorImage) {
+        blogData.author.imageUrl = req.files.authorImage[0].path;
+        blogData.author.imagePublicId = req.files.authorImage[0].filename;
       }
 
       const blog = new Blog({

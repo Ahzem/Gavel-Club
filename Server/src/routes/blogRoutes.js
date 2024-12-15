@@ -16,6 +16,14 @@ router.post(
   blogController.createBlog
 );
 
+router.post('/submit-draft',
+  uploadBlogCover.fields([
+    { name: 'coverImage', maxCount: 1 },
+    { name: 'authorImage', maxCount: 1 }
+  ]),
+  blogController.createBlog
+);
+
 router.put(
   "/:id",
   validateAdmin,

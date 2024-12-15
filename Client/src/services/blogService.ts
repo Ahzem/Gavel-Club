@@ -82,7 +82,9 @@ async updateBlog(id: string, data: BlogFormData) {
   },
 
     async getPublishedBlogs(): Promise<BlogPost[]> {
-    const BASE_URL = '/api';
+       const BASE_URL = import.meta.env.PROD 
+      ? 'https://gavel-club.azurewebsites.net/api'
+      : '/api';
     const response = await fetch(`${BASE_URL}/blogs/published`);
     if (!response.ok) {
         throw new Error('Failed to fetch blogs');
@@ -91,7 +93,9 @@ async updateBlog(id: string, data: BlogFormData) {
     },
 
   async getBlogBySlug(slug: string): Promise<BlogPost> {
-    const BASE_URL = '/api';
+        const BASE_URL = import.meta.env.PROD 
+      ? 'https://gavel-club.azurewebsites.net/api'
+      : '/api';
     const response = await fetch(`${BASE_URL}/blogs/${slug}`);
     if (!response.ok) {
       throw new Error('Failed to fetch blog post');
@@ -103,5 +107,59 @@ async updateBlog(id: string, data: BlogFormData) {
     return await fetchWithAuth(`blogs/${id}/clap`, {
       method: 'PUT',
     });
+  },
+
+  // create blog without authentication
+  async createBlogWithoutAuth(data: BlogFormData) {
+    const formData = new FormData();
+    
+    // Required fields
+    formData.append('title', data.title);
+    formData.append('subtitle', data.subtitle || '');
+    formData.append('content', data.content);
+    formData.append('status', 'draft');
+    
+    // Author information
+    const authorData = {
+      name: data.author.name,
+      department: data.author.department || '',
+      linkedin: data.author.linkedin || '',
+      imageUrl: ''
+    };
+    formData.append('author', JSON.stringify(authorData));
+  
+    // Handle file uploads
+    if (data.coverImage instanceof File) {
+      formData.append('coverImage', data.coverImage);
+    } else if (typeof data.coverImage === 'string') {
+      formData.append('coverImageUrl', data.coverImage);
+    }
+  
+    if (data.author.imageUrl instanceof File) {
+      formData.append('authorImage', data.author.imageUrl);
+    } else if (typeof data.author.imageUrl === 'string') {
+      formData.append('authorImageUrl', data.author.imageUrl);
+    }
+  
+    const BASE_URL = import.meta.env.PROD 
+      ? 'https://gavel-club.azurewebsites.net/api'
+      : '/api';
+  
+    try {
+      const response = await fetch(`${BASE_URL}/blogs/submit-draft`, {
+        method: 'POST',
+        body: formData
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit draft');
+      }
+  
+      return response.json();
+    } catch (error) {
+      console.error('Submit draft error:', error);
+      throw error;
+    }
   }
 };

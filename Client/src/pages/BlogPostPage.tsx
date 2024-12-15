@@ -43,24 +43,32 @@ export function BlogPostPage() {
     }
   };
 
-  const handleShare = async (platform: "twitter" | "linkedin" | "copy") => {
-    if (!post) return;
-
-    const url = window.location.href;
-    const text = encodeURIComponent(post.title);
-
+  const handleShare = (platform: string) => {
+    const currentUrl = window.location.href;
+    const title = post?.title || "Check out this blog post!";
+  
     switch (platform) {
       case "twitter":
-        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
+        window.open(
+          `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}`,
+          "_blank"
+        );
+        break;
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(title)}`,
+          "_blank"
+        );
         break;
       case "linkedin":
         window.open(
-          `https://www.linkedin.com/sharing/share-offsite/?url=${url}`
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
+          "_blank"
         );
         break;
       case "copy":
-        await navigator.clipboard.writeText(url);
-        toast.success("Link copied to clipboard");
+        navigator.clipboard.writeText(currentUrl);
+        // Optionally show a toast notification that the link was copied
         break;
     }
   };
@@ -161,11 +169,13 @@ export function BlogPostPage() {
                 alt={post.author.name}
                 className="blog-post__author-avatar"
               />
-              <div className="blog-post__author-info">
+                <div className="blog-post__author-info">
                 <h4>{post.author.name}</h4>
                 <p>{post.author.department}</p>
-                <a href={post.author.linkedin}>{post.author.linkedin}</a>
-              </div>
+                <a href={post.author.linkedin} target="_blank" rel="noopener noreferrer">
+                  <Linkedin size={16} /> Connect on LinkedIn
+                </a>
+                </div>
             </div>
           </div>
         </div>

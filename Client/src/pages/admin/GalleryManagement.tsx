@@ -12,6 +12,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageUpload } from "./ImageUpload";
 import { useAuth } from "../../context/AuthContext";
+import { galleryApi } from "../../services/api";
 
 interface GalleryImage {
   _id: string;
@@ -42,6 +43,7 @@ export function GalleryManagement() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [imageToDelete, setImageToDelete] = useState<GalleryImage | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchImages();
@@ -49,9 +51,7 @@ export function GalleryManagement() {
 
   const fetchImages = async () => {
     try {
-      const response = await fetch("/api/gallery");
-      if (!response.ok) throw new Error("Failed to fetch images");
-      const data = await response.json();
+      const data = await galleryApi.getAllImages();
       setImages(data);
     } catch (error) {
       console.error("Error fetching images:", error);
@@ -60,57 +60,50 @@ export function GalleryManagement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const form = new FormData();
-    form.append("alt", formData.alt || "");
-    form.append("captureDate", formData.captureDate || "");
-
-    if (!selectedImage && formData.file) {
-      form.append("image", formData.file);
-    }
+    setLoading(true);
 
     try {
-      const url = selectedImage
-        ? `/api/gallery/${selectedImage._id}`
-        : "/api/gallery";
+      if (selectedImage) {
+        // Update image logic here
+        const response = await fetch(`/api/gallery/${selectedImage._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            alt: formData.alt,
+            captureDate: formData.captureDate,
+          }),
+        });
 
-      const method = selectedImage ? "PUT" : "POST";
+        if (!response.ok) throw new Error("Failed to update image");
+      } else {
+        // New image upload
+        const form = new FormData();
+        form.append("alt", formData.alt || "");
+        form.append("captureDate", formData.captureDate || "");
+        if (formData.file) {
+          form.append("image", formData.file);
+        }
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          ...(selectedImage && { "Content-Type": "application/json" }),
-          Authorization: `Bearer ${token}`,
-        },
-        body: selectedImage
-          ? JSON.stringify({
-              alt: formData.alt,
-              captureDate: formData.captureDate,
-            })
-          : form,
-      });
+        await galleryApi.uploadImage(form);
+      }
 
-      if (!response.ok) throw new Error("Failed to save image");
-
-      fetchImages();
+      await fetchImages();
       handleCloseForm();
     } catch (error) {
       console.error("Error saving image:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/gallery/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error("Failed to delete image");
-
+      await galleryApi.deleteImage(id);
       setShowDeleteConfirm(false);
-      fetchImages();
+      await fetchImages();
     } catch (error) {
       console.error("Error deleting image:", error);
     }
@@ -321,8 +314,18 @@ export function GalleryManagement() {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="button button--primary">
-                      {selectedImage ? "Save Changes" : "Add Image"}
+                    <button
+                      type="submit"
+                      className="button button--primary"
+                      disabled={loading}
+                    >
+                      {loading
+                        ? selectedImage
+                          ? "Saving Changes..."
+                          : "Adding Image..."
+                        : selectedImage
+                        ? "Save Changes"
+                        : "Add Image"}
                     </button>
                   </div>
                 </div>
@@ -387,8 +390,8 @@ export function GalleryManagement() {
           <div className="delete-confirm-modal">
             <h3>Delete Image</h3>
             <p>
-              Are you sure you want to remove image from the
-              team? This action cannot be undone.
+              Are you sure you want to remove image from the team? This action
+              cannot be undone.
             </p>
             <div className="delete-confirm-actions">
               <button

@@ -148,6 +148,8 @@ export function EventsManagement() {
               new Date(updated[key] as string).toISOString().split("T")[0] !==
               new Date(selectedEvent[key]).toISOString().split("T")[0]
             );
+          } else if (key === "image") {
+            return updated.image !== selectedEvent.image;
           }
           return (
             updated[key as keyof EventFormData] !==
@@ -200,6 +202,7 @@ export function EventsManagement() {
     setSelectedEvent(event);
     setIsEditing(true);
     setIsFormOpen(true);
+    setSelectedImage(event);
     setFormData({
       title: event.title,
       date: new Date(event.date).toISOString().split("T")[0],
@@ -458,17 +461,19 @@ export function EventsManagement() {
                       Recommended size: 1200x800px (3:2)
                     </p>
                     <ImageUpload
-                      currentImage={selectedImage?.image?.url}
+                      currentImage={
+                        selectedEvent?.image?.url || selectedImage?.image?.url
+                      }
                       onImageChange={(file) => {
                         if (file instanceof File) {
                           setFormData((prev) => ({
                             ...prev,
-                            file: file,
+                            image: file,
                           }));
                         } else if (typeof file === "object" && "url" in file) {
                           setFormData((prev) => ({
                             ...prev,
-                            src: file,
+                            image: file,
                           }));
                         }
                       }}

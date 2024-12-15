@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import { BlogPost } from "../types/Blog";
 import { blogService } from "../services/blogService";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Edit3 } from "lucide-react";
+import { WriteDialog } from "./WriteDialog";
 
 export function BlogsPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isWriteDialogOpen, setIsWriteDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -26,27 +28,6 @@ export function BlogsPage() {
 
     fetchBlogs();
   }, []);
-
-  if (error) {
-    return (
-      <motion.div
-        className="blogs-page__error"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <AlertCircle size={48} className="blogs-page__error-icon" />
-        <h2>Oops! Something went wrong</h2>
-        <p>{error}</p>
-        <button
-          className="blogs-page__error-button"
-          onClick={() => window.location.reload()}
-        >
-          Try Again
-        </button>
-      </motion.div>
-    );
-  }
 
   return (
     <motion.div
@@ -77,6 +58,30 @@ export function BlogsPage() {
           </motion.p>
         </div>
       </section>
+
+      {error && (
+        <motion.div
+          className="blogs-page__error"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <AlertCircle size={48} className="blogs-page__error-icon" />
+          <h2>Oops! Something went wrong</h2>
+          <p>{error}</p>
+          <button
+            className="blogs-page__error-button"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </motion.div>
+      )}
+
+      <WriteDialog
+        isOpen={isWriteDialogOpen}
+        onClose={() => setIsWriteDialogOpen(false)}
+      />
 
       <div className="blogs-grid">
         {isLoading ? (
@@ -148,6 +153,16 @@ export function BlogsPage() {
           </div>
         )}
       </div>
+      <motion.button
+        className="write-blog-button"
+        onClick={() => setIsWriteDialogOpen(true)}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <Edit3 size={32} />
+        <div className="write-blog-button__text">Write Blog</div>
+      </motion.button>
     </motion.div>
   );
 }

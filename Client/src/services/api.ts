@@ -1,8 +1,10 @@
-const BASE_URL = '/api';
+const BASE_URL = import.meta.env.PROD 
+  ? 'https://gavel-club.azurewebsites.net/api'
+  : '/api';
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include', // Important for cookies
@@ -13,7 +15,7 @@ export const authApi = {
   },
   
   logout: async () => {
-    const response = await fetch('/api/auth/logout', {
+    const response = await fetch(`${BASE_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include', // Important for cookies
     });
@@ -226,56 +228,121 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
 export const galleryApi = {
   getAllImages: async () => {
     try {
-      const response = await fetch('/api/gallery', {
+      const response = await fetch(`${BASE_URL}/gallery`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        },
-        credentials: 'include'
+        }
       });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch gallery images');
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to fetch gallery images');
       }
       
       return await response.json();
     } catch (error) {
       console.error('Error fetching gallery images:', error);
-      throw new Error('Failed to fetch gallery images');
+      throw error;
     }
   },
 
   uploadImage: async (formData: FormData) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch('/api/gallery', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      credentials: 'include',
-      body: formData
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to upload image');
+    try {
+      const response = await fetch(`${BASE_URL}/gallery`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to upload image');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
     }
-    return response.json();
   },
 
   deleteImage: async (id: string) => {
     const token = localStorage.getItem('adminToken');
-    const response = await fetch(`/api/gallery/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      credentials: 'include'
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to delete image');
+    try {
+      const response = await fetch(`${BASE_URL}/gallery/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to delete image');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      throw error;
     }
-    return response.json();
+  }
+};
+
+export const membershipApi = {
+  getConfig: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/membership/config`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch config');
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching config:', error);
+      throw error;
+    }
+  },
+
+  updateConfig: async (config: {
+    isOpen: boolean;
+    formUrl: string;
+    closeDate: string;
+  }, token: string) => {
+    if (!token) {
+      throw new Error('No authentication token provided');
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/membership/config`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(config)
+      });
+
+      if (response.status === 403) {
+        throw new Error('Not authorized - please login again');
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update config');
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Error updating config:', error);
+      throw error;
+    }
   }
 };
