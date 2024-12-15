@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import { BlogPost } from "../types/Blog";
 import { blogService } from "../services/blogService";
 import { LoadingSpinner } from "../components/ui/LoadingSpinner";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Edit3 } from "lucide-react";
+import { WriteDialog } from "./WriteDialog";
 
 export function BlogsPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isWriteDialogOpen, setIsWriteDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -75,6 +77,11 @@ export function BlogsPage() {
           </button>
         </motion.div>
       )}
+
+      <WriteDialog
+        isOpen={isWriteDialogOpen}
+        onClose={() => setIsWriteDialogOpen(false)}
+      />
 
       <div className="blogs-grid">
         {isLoading ? (
@@ -146,6 +153,16 @@ export function BlogsPage() {
           </div>
         )}
       </div>
+      <motion.button
+        className="write-blog-button"
+        onClick={() => setIsWriteDialogOpen(true)}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <Edit3 size={32} />
+        <div className="write-blog-button__text">Write Blog</div>
+      </motion.button>
     </motion.div>
   );
 }

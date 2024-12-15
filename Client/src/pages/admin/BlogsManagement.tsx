@@ -16,6 +16,7 @@ import { blogService } from "../../services/blogService";
 import { toast } from "sonner";
 import { Blog, BlogFormData } from "../../types/Blog";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { DeleteConfirmModal } from "../../components/DeleteConfirmModal";
 
 interface FormState {
   title: string;
@@ -61,6 +62,9 @@ export function BlogsManagement() {
   const [shouldSearch, setShouldSearch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [blogToDelete, setBlogToDelete] = useState<Blog | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -197,15 +201,25 @@ export function BlogsManagement() {
     }
   };
 
-  const handleDelete = async (blog: Blog) => {
-    if (!window.confirm("Are you sure you want to delete this blog?")) return;
+
+  const handleDeleteClick = (blog: Blog) => {
+    setBlogToDelete(blog);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!blogToDelete?._id) return;
 
     try {
-      await blogService.deleteBlog(blog._id);
-      setBlogs((prev) => prev.filter((b) => b._id !== blog._id));
-      toast.success("Blog deleted successfully");
-    } catch {
-      toast.error("Failed to delete blog");
+      setIsDeleting(true);
+      await blogService.deleteBlog(blogToDelete._id);
+      setBlogs((prev) => prev.filter((b) => b._id !== blogToDelete._id));
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      console.error("Delete failed:", error);
+    } finally {
+      setIsDeleting(false);
+      setBlogToDelete(null);
     }
   };
 
@@ -358,97 +372,97 @@ export function BlogsManagement() {
 
                   <div className="blog-form__field blog-form__author-row blog-form__field--full">
                     <div className="blog-form__author-info">
-                    <h3>Author Details</h3>
-                    <div className="blog-form__author-grid">
-                      <div className="blog-form__field--group">
-                        <div className="blog-form__field">
-                          <label>Name</label>
-                          <input
-                            type="text"
-                            value={formData.author?.name}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                author: {
-                                  ...prev.author!,
-                                  name: e.target.value,
-                                },
-                              }))
-                            }
-                            required
-                            placeholder="e.g. John Doe"
-                          />
-                        </div>
+                      <h3>Author Details</h3>
+                      <div className="blog-form__author-grid">
+                        <div className="blog-form__field--group">
+                          <div className="blog-form__field">
+                            <label>Name</label>
+                            <input
+                              type="text"
+                              value={formData.author?.name}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  author: {
+                                    ...prev.author!,
+                                    name: e.target.value,
+                                  },
+                                }))
+                              }
+                              required
+                              placeholder="e.g. John Doe"
+                            />
+                          </div>
 
-                        <div className="blog-form__field">
-                          <label>Department</label>
-                          <input
-                            type="text"
-                            value={formData.author?.department}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                author: {
-                                  ...prev.author!,
-                                  department: e.target.value,
-                                },
-                              }))
-                            }
-                            required
-                            placeholder="e.g. Marketing, Engineering"
-                          />
-                        </div>
+                          <div className="blog-form__field">
+                            <label>Department</label>
+                            <input
+                              type="text"
+                              value={formData.author?.department}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  author: {
+                                    ...prev.author!,
+                                    department: e.target.value,
+                                  },
+                                }))
+                              }
+                              required
+                              placeholder="e.g. Marketing, Engineering"
+                            />
+                          </div>
 
+                          <div className="blog-form__field">
+                            <label>LinkedIn URL</label>
+                            <input
+                              type="url"
+                              value={formData.author?.linkedin}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  author: {
+                                    ...prev.author!,
+                                    linkedin: e.target.value,
+                                  },
+                                }))
+                              }
+                              required
+                              placeholder="e.g. example@linkedin.com"
+                            />
+                          </div>
+                        </div>
                         <div className="blog-form__field">
-                          <label>LinkedIn URL</label>
-                          <input
-                            type="url"
-                            value={formData.author?.linkedin}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                author: {
-                                  ...prev.author!,
-                                  linkedin: e.target.value,
-                                },
-                              }))
+                          <label>Author Image</label>
+                          <p className="blog-form__help-text">
+                            {" "}
+                            Recommended size: 200x200px or Square Image
+                          </p>
+                          <ImageUpload
+                            onImageChange={(file) => {
+                              if (
+                                file instanceof File ||
+                                typeof file === "string"
+                              ) {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  author: {
+                                    ...prev.author,
+                                    imageUrl: file,
+                                  },
+                                }));
+                              }
+                            }}
+                            currentImage={
+                              typeof formData.author.imageUrl === "string"
+                                ? formData.author.imageUrl
+                                : undefined
                             }
-                            required
-                            placeholder="e.g. example@linkedin.com"
                           />
                         </div>
                       </div>
-                      <div className="blog-form__field">
-                        <label>Author Image</label>
-                        <p className="blog-form__help-text">
-                          {" "}
-                          Recommended size: 200x200px or Square Image
-                        </p>
-                        <ImageUpload
-                          onImageChange={(file) => {
-                            if (
-                              file instanceof File ||
-                              typeof file === "string"
-                            ) {
-                              setFormData((prev) => ({
-                                ...prev,
-                                author: {
-                                  ...prev.author,
-                                  imageUrl: file,
-                                },
-                              }));
-                            }
-                          }}
-                          currentImage={
-                            typeof formData.author.imageUrl === "string"
-                              ? formData.author.imageUrl
-                              : undefined
-                          }
-                        />
-                      </div>
                     </div>
-                    </div>
-                    
+
                     <div className="blog-form__status">
                       <label className="status-toggle">
                         <span className="status-label">Status:</span>
@@ -459,13 +473,23 @@ export function BlogsManagement() {
                             onChange={(e) =>
                               setFormData((prev) => ({
                                 ...prev,
-                                status: e.target.checked ? "published" : "draft",
+                                status: e.target.checked
+                                  ? "published"
+                                  : "draft",
                               }))
                             }
                           />
                           <span className="toggle-slider"></span>
-                          <span className={`status-text ${formData.status === "published" ? "published" : "draft"}`}>
-                            {formData.status === "published" ? "Published" : "Draft"}
+                          <span
+                            className={`status-text ${
+                              formData.status === "published"
+                                ? "published"
+                                : "draft"
+                            }`}
+                          >
+                            {formData.status === "published"
+                              ? "Published"
+                              : "Draft"}
                           </span>
                         </div>
                       </label>
@@ -572,7 +596,7 @@ export function BlogsManagement() {
                   </button>
                   <button
                     title="Delete Blog"
-                    onClick={() => handleDelete(blog)}
+                    onClick={() => handleDeleteClick(blog)}
                     className="blog-card__action-btn blog-card__action-btn--delete"
                   >
                     <Trash2 size={16} />
@@ -613,6 +637,20 @@ export function BlogsManagement() {
           </div>
         )}
       </div>
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <DeleteConfirmModal
+            title="Delete Blog"
+            message={`Are you sure you want to delete "${blogToDelete?.title}"? This action cannot be undone.`}
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => {
+              setShowDeleteConfirm(false);
+              setBlogToDelete(null);
+            }}
+            isLoading={isDeleting}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

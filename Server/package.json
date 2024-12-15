@@ -4,6 +4,7 @@
   "description": "Gavel Club of ITUM Website",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "start": "node index.js",
     "build": "npm ci --only=production",
     "test": "jest",
