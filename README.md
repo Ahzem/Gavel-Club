@@ -185,12 +185,36 @@ Deployment is automated through GitHub Actions workflows:
 
 This project is licensed under the MIT License - see the LICENSE file for details
 
-## 👥 Team
+## � Developer
 
-- Frontend Developer - [Name]
-- Backend Developer - [Name]
-- UI/UX Designer - [Name]
-- Project Manager - [Name]
+This project is individually developed and maintained by:
+
+### Ahzem
+- Full Stack Developer
+- Institute of Technology, University of Moratuwa
+- [GitHub](https://github.com/Ahzem)
+
+> This is a solo project showcasing full-stack development capabilities including:
+> - Frontend Development (React/TypeScript)
+> - Backend Development (Node.js/Express)
+> - Cloud Infrastructure (Azure/Cloudinary)
+> - CI/CD Implementation
+> - Database Design & Management
+> - Security Implementation
+
+## 🌱 Project Background
+
+This project was developed as part of modernizing the Gavel Club of ITUM's online presence. As a solo developer, I handled:
+
+- Requirements gathering from stakeholders
+- System architecture design
+- Full development lifecycle
+- Deployment and maintenance
+- Documentation
+
+## 💡 Future Development
+
+While this project is individually maintained, contributions are welcome. Please see the contributing guidelines for more information.
 
 ## 🙏 Acknowledgments
 
@@ -202,7 +226,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Contact
 
 For any queries or support, please contact:
-- Email: muhammadhahzem1422@gmail.com
-- Website: [https://ahzem.github.io/Portfolio/]
-- LinkedIn: [https://www.linkedin.com/in/Ahzem/]
-- Twitter: [@_ahzem_]
+- Email: [Muhammadh Ahzem](muhammadhahzem1422@gmail.com)
+- [Website](https://ahzem.github.io/Portfolio/)
+- LinkedIn: [Muhammadh Ahzem](https://www.linkedin.com/in/Ahzem/)
