@@ -153,7 +153,7 @@ export function BlogPostPage() {
                   title="Share on Twitter"
                 >
                   <Twitter size={20} />
-                  Share on Twitter
+                  <div className="share-button-text">Share on Twitter</div>
                 </button>
                 <button
                   onClick={() => handleShare("linkedin")}
@@ -161,7 +161,7 @@ export function BlogPostPage() {
                   title="Share on LinkedIn"
                 >
                   <Linkedin size={20} />
-                  Share on LinkedIn
+                  <div className="share-button-text">Share on LinkedIn</div>
                 </button>
                 <button
                   onClick={() => handleShare("copy")}
@@ -169,7 +169,7 @@ export function BlogPostPage() {
                   title="Copy Link"
                 >
                   <Copy size={20} />
-                  Copy Link
+                  <div className="share-button-text">Copy Link</div>
                 </button>
               </div>
               <div className="blog-post__author-bio">

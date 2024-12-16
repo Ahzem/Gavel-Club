@@ -35,9 +35,8 @@ export function Values() {
         <h2 className="values-section__title">Our Values</h2>
         <div className="values-section__grid">
           {values.map((value, index) => (
-            <div className="values-card">
+            <div className="values-card" key={value.id}>
               <motion.div
-                key={value.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}

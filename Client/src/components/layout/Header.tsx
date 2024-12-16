@@ -42,7 +42,7 @@ export function Header() {
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''} ${isVisible ? 'visible' : 'hidden'}`}>
       <div className="nav-container">
-        <div className="logo">
+        <div className="logo" onClick={() => window.location.href = "/"}>
           <img src="/logo.png" alt={SITE_CONFIG.name} />
           <span>{SITE_CONFIG.name}</span>
         </div>

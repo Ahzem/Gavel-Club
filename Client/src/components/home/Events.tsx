@@ -69,7 +69,16 @@ export function Events() {
               <LoadingSpinner />
             </motion.div>
           ) : error ? (
-            <div className="events__error">{error}</div>
+            <div className="events-management__error">{error}</div>
+          ) : upcomingEvents.length === 0 ? (
+            <div className="events__empty-state">
+              <div className="events__empty-state-icon"><CalendarIcon /></div>
+              <h3 className="events__empty-state-title">No Upcoming Events</h3>
+              <p className="events__empty-state-description">
+                Stay tuned! New events will be announced soon. Check back later
+                for exciting speaking opportunities and workshops.
+              </p>
+            </div>
           ) : (
             displayedEvents.map((item, index) => (
               <motion.div

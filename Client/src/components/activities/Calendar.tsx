@@ -81,6 +81,7 @@ export function Calendar() {
           <div className="calendar-events">
             {isLoading ? (
               <motion.div
+                key="loading-state"
                 className="calendar-events__loading"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -103,8 +104,9 @@ export function Calendar() {
                     transition={{ duration: 0.3 }}
                     className="calendar-events__list"
                   >
-                    {selectedDateEvents.map((event) => (
+                    {selectedDateEvents.map((event, index) => (
                       <motion.div
+                        key={`${event.date}-${event.title}-${index}`}
                         className="calendar-event-card"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}

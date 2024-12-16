@@ -227,6 +227,23 @@
   }
 }
 
+/* Small phones (320px and up) */
+@media (min-width: 320px) {
+  .calendar-section__container {
+    padding: var(--space-md);
+  }
+
+  .calendar {
+    padding: var(--space-md);
+  }
+
+  .calendar__day {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
 /* Small tablets and large phones (480px and up) */
 @media (min-width: 480px) {
   .calendar-section__container {

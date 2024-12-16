@@ -11,15 +11,13 @@ export function ClapButton({ initialCount, onClap }: ClapButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
-    if (count < 50) {
-      const newCount = count + 1;
-      setCount(newCount);
-      setIsClicked(true);
-      onClap(newCount);
+    const newCount = count + 1;
+    setCount(newCount);
+    setIsClicked(true);
+    onClap(newCount);
 
-      // Reset animation state
-      setTimeout(() => setIsClicked(false), 300);
-    }
+    // Reset animation state
+    setTimeout(() => setIsClicked(false), 300);
   };
 
   return (

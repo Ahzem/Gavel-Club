@@ -120,6 +120,25 @@
   transform: scale(1.1);
 }
 
+/* Small phones (320px and up) */
+@media (min-width: 320px) and (max-width: 420px) {
+  .nav-container {
+    padding: 0 var(--space-lg);
+  }
+
+  .nav-menu {
+    gap: var(--space-md);
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+  }
+
+  .logo span {
+    font-size: 1.1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-menu {
     visibility: hidden;
