@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 interface FormData {
@@ -28,6 +28,15 @@ export function ContactForm() {
       [e.target.id]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    console.log("Environment Variables:", {
+      VITE_EMAILJS_SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      VITE_EMAILJS_TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      VITE_EMAILJS_PUBLIC_KEY:
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY?.substring(0, 4) + "...",
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

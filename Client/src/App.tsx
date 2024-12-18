@@ -4,7 +4,7 @@ import {
   Route,
   useNavigate,
 } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout } from "./components/layout/Layout";
 import { HomePage } from "./pages/HomePage";
 import { AboutPage } from "./pages/AboutPage";
@@ -16,6 +16,7 @@ import { BlogPostPage } from "./pages/BlogPostPage";
 import { AdminLogin } from "./pages/AdminLogin";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import emailjs from "@emailjs/browser";
 import "./index.css";
 import "./styles/hero.css";
 import "./styles/pages/home.css";
@@ -65,6 +66,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
+  useEffect(() => {
+    if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
+      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+    }
+  }, []);
   return (
     <AuthProvider>
       <Router>
