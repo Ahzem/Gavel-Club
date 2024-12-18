@@ -39,30 +39,44 @@ async createBlog(data: BlogFormData) {
   });
 },
 
-async updateBlog(id: string, data: BlogFormData) {
-  const formData = new FormData();
-  formData.append('title', data.title);
-  formData.append('subtitle', data.subtitle);
-  formData.append('content', data.content);
-  formData.append('status', data.status);
-  formData.append('author', JSON.stringify({
-    name: data.author.name,
-    department: data.author.department,
-    linkedin: data.author.linkedin
-  }));
-
-  if (data.coverImage instanceof File) {
-    formData.append('coverImage', data.coverImage);
-  }
-  if (data.author.imageUrl instanceof File) {
-    formData.append('authorImage', data.author.imageUrl);
-  }
-
-  return await fetchWithAuth(`blogs/${id}`, {
-    method: 'PUT',
-    body: formData,
-  });
-},
+  async updateBlog(id: string, data: BlogFormData) {
+    // Validate author data
+    if (!data.author?.name || !data.author?.linkedin) {
+      throw new Error('Author name and LinkedIn are required');
+    }
+  
+    const formData = new FormData();
+  
+    // Blog fields
+    formData.append('title', data.title);
+    formData.append('subtitle', data.subtitle || '');
+    formData.append('content', data.content);
+    formData.append('status', data.status);
+  
+    // Author data as separate fields, not nested
+    formData.append('author.name', data.author.name.trim());
+    formData.append('author.department', data.author.department || '');
+    formData.append('author.linkedin', data.author.linkedin.trim());
+    
+    if (typeof data.author.imageUrl === 'string') {
+      formData.append('author.imageUrl', data.author.imageUrl);
+    }
+  
+    // File handling
+    if (data.coverImage instanceof File) {
+      formData.append('coverImage', data.coverImage);
+    }
+    if (data.author.imageUrl instanceof File) {
+      formData.append('authorImage', data.author.imageUrl);
+    }
+  
+    const response = await fetchWithAuth(`blogs/${id}`, {
+      method: 'PUT',
+      body: formData
+    });
+  
+    return response;
+  },
 
   async deleteBlog(id: string) {
     await fetchWithAuth(`blogs/${id}`, {

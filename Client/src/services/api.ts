@@ -208,22 +208,28 @@ export const specialEventApi = {
 export async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const token = localStorage.getItem('adminToken');
   
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    ...options.headers,
-  };
+  // Don't set Content-Type for FormData
+  const headers = options.body instanceof FormData 
+    ? { 'Authorization': `Bearer ${token}` }
+    : {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...options.headers,
+      };
 
   const response = await fetch(`${BASE_URL}/${endpoint}`, {
     ...options,
     headers,
+    credentials: 'include', // Add credentials
   });
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    const errorData = await response.json();
+    throw new Error(`API Error: ${errorData.message || response.statusText}`);
   }
 
   return response.json();
-}
+};
 
 export const galleryApi = {
   getAllImages: async () => {

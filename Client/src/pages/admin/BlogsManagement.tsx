@@ -201,7 +201,6 @@ export function BlogsManagement() {
     }
   };
 
-
   const handleDeleteClick = (blog: Blog) => {
     setBlogToDelete(blog);
     setShowDeleteConfirm(true);
