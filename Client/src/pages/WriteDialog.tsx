@@ -54,18 +54,21 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
       !formData.author.department.trim() ||
       !formData.author.linkedin.trim()
     ) {
-      toast.error(
-        "Please fill in all required fields (Name, Department, LinkedIn)"
-      );
+      toast.error("Please fill in all required fields");
       return;
     }
 
     setIsSaving(true);
+    toast.loading("Submitting your blog...");
     try {
-      await blogService.createBlogWithoutAuth({
+      const blogResponse = await blogService.createBlogWithoutAuth({
         ...formData,
         status: "draft",
       });
+
+      if (!blogResponse) {
+        throw new Error("Failed to create blog post");
+      }
 
       // Format the email data
       const emailData = {
