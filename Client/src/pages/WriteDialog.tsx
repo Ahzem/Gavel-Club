@@ -46,12 +46,17 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
       return;
     }
 
+    // Validate all required fields
     if (
       !formData.title.trim() ||
       !formData.content.trim() ||
-      !formData.author.name.trim()
+      !formData.author.name.trim() ||
+      !formData.author.department.trim() ||
+      !formData.author.linkedin.trim()
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(
+        "Please fill in all required fields (Name, Department, LinkedIn)"
+      );
       return;
     }
 
@@ -62,25 +67,21 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
         status: "draft",
       });
 
-      if (
-        !import.meta.env.VITE_EMAILJS_SERVICE_ID ||
-        !import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG ||
-        !import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      ) {
-        throw new Error("Missing EmailJS configuration");
-      }
+      // Format the email data
+      const emailData = {
+        from_name: formData.author.name,
+        from_department: formData.author.department || "Not specified",
+        from_linkedin: formData.author.linkedin || "Not specified",
+        blog_title: formData.title,
+        blog_subtitle: formData.subtitle || "Not specified",
+        submission_time: new Date().toLocaleString(),
+        to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL,
+      };
 
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG,
-        {
-          from_name: formData.author.name,
-          from_department: formData.author.department,
-          from_linkedin: formData.author.linkedin,
-          blog_title: formData.title,
-          blog_subtitle: formData.subtitle,
-          to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL,
-        },
+        emailData,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
@@ -211,7 +212,7 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
                   <div className="form-field">
                     <label>Department</label>
                     <input
-                      title="Department"
+                      title="Your Department"
                       type="text"
                       value={formData.author.department}
                       onChange={(e) =>
@@ -230,7 +231,7 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
                   <div className="form-field">
                     <label>LinkedIn Profile</label>
                     <input
-                      title="LinkedIn Profile"
+                      title="Your LinkedIn Profile"
                       type="url"
                       value={formData.author.linkedin}
                       onChange={(e) =>
