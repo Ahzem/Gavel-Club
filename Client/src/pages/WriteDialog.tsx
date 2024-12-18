@@ -81,14 +81,6 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
         to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL,
       };
 
-      await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG,
-        emailData,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-      );
-
-      toast.success("Blog submitted for review successfully!");
       // Clear form and localStorage
       localStorage.removeItem("draftBlog");
       setFormData({
@@ -106,6 +98,14 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
       });
       setHasAgreed(false);
       onClose();
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG,
+        emailData,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      toast.success("Blog submitted for review successfully!");
     } catch (error) {
       console.error("Error submitting blog:", error);
       toast.error("Failed to submit blog. Please try again.");
