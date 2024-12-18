@@ -3,14 +3,6 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
-    'import.meta.env.VITE_EMAILJS_PUBLIC_KEY': JSON.stringify(process.env.VITE_EMAILJS_PUBLIC_KEY),
-    'import.meta.env.VITE_EMAILJS_SERVICE_ID': JSON.stringify(process.env.VITE_EMAILJS_SERVICE_ID),
-    'import.meta.env.VITE_EMAILJS_TEMPLATE_ID': JSON.stringify(process.env.VITE_EMAILJS_TEMPLATE_ID),
-    'import.meta.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG': JSON.stringify(process.env.VITE_EMAILJS_TEMPLATE_ID_FOR_BLOG),
-    'import.meta.env.VITE_EMAILJS_TO_EMAIL': JSON.stringify(process.env.VITE_EMAILJS_TO_EMAIL)
-  },
   server: {
     port: 5173,
     proxy: {

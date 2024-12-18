@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
 interface FormData {
@@ -29,34 +29,17 @@ export function ContactForm() {
     }));
   };
 
-  useEffect(() => {
-    console.log("Environment Variables:", {
-      VITE_EMAILJS_SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      VITE_EMAILJS_TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      VITE_EMAILJS_PUBLIC_KEY:
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY?.substring(0, 4) + ".....",
-    });
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus({ loading: true, error: "", success: false });
 
     try {
-      console.log("Env variables check:", {
-        serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        hasPublicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-      });
       if (
         !import.meta.env.VITE_EMAILJS_SERVICE_ID ||
         !import.meta.env.VITE_EMAILJS_TEMPLATE_ID ||
         !import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       ) {
-        throw new Error(`Missing EmailJS configuration: 
-          ${!import.meta.env.VITE_EMAILJS_SERVICE_ID ? "SERVICE_ID" : ""} 
-          ${!import.meta.env.VITE_EMAILJS_TEMPLATE_ID ? "TEMPLATE_ID" : ""} 
-          ${!import.meta.env.VITE_EMAILJS_PUBLIC_KEY ? "PUBLIC_KEY" : ""}`);
+        throw new Error("Missing EmailJS configuration");
       }
 
       await emailjs.send(
@@ -140,16 +123,10 @@ export function ContactForm() {
           {status.loading ? "Sending..." : "Send Message"}
         </button>
 
-        {status.error && (
-          <p className="contact-form__message contact-form__error">
-            {status.error}
-          </p>
-        )}
+        {status.error && <p className="contact-form__message contact-form__error">{status.error}</p>}
 
         {status.success && (
-          <p className="contact-form__message contact-form__success">
-            Message sent successfully!
-          </p>
+          <p className="contact-form__message contact-form__success">Message sent successfully!</p>
         )}
       </form>
     </motion.div>
