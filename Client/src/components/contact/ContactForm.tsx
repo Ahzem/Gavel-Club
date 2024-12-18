@@ -34,12 +34,20 @@ export function ContactForm() {
     setStatus({ loading: true, error: "", success: false });
 
     try {
+      console.log("Env variables check:", {
+        serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        hasPublicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      });
       if (
         !import.meta.env.VITE_EMAILJS_SERVICE_ID ||
         !import.meta.env.VITE_EMAILJS_TEMPLATE_ID ||
         !import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       ) {
-        throw new Error("Missing EmailJS configuration");
+        throw new Error(`Missing EmailJS configuration: 
+          ${!import.meta.env.VITE_EMAILJS_SERVICE_ID ? "SERVICE_ID" : ""} 
+          ${!import.meta.env.VITE_EMAILJS_TEMPLATE_ID ? "TEMPLATE_ID" : ""} 
+          ${!import.meta.env.VITE_EMAILJS_PUBLIC_KEY ? "PUBLIC_KEY" : ""}`);
       }
 
       await emailjs.send(
@@ -123,10 +131,16 @@ export function ContactForm() {
           {status.loading ? "Sending..." : "Send Message"}
         </button>
 
-        {status.error && <p className="contact-form__message contact-form__error">{status.error}</p>}
+        {status.error && (
+          <p className="contact-form__message contact-form__error">
+            {status.error}
+          </p>
+        )}
 
         {status.success && (
-          <p className="contact-form__message contact-form__success">Message sent successfully!</p>
+          <p className="contact-form__message contact-form__success">
+            Message sent successfully!
+          </p>
         )}
       </form>
     </motion.div>
