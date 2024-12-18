@@ -67,9 +67,21 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function App() {
   useEffect(() => {
-    if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-    }
+    const initEmailJS = () => {
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      if (!publicKey) {
+        console.error("EmailJS public key is missing");
+        return;
+      }
+      try {
+        emailjs.init(publicKey);
+        console.log("EmailJS initialized successfully");
+      } catch (error) {
+        console.error("Failed to initialize EmailJS:", error);
+      }
+    };
+
+    initEmailJS();
   }, []);
   return (
     <AuthProvider>
