@@ -33,6 +33,11 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
           status: "draft" as const,
         };
   });
+  const [status, setStatus] = useState({
+    loading: false,
+    error: "",
+    success: false,
+  });
 
   useEffect(() => {
     localStorage.setItem("draftBlog", JSON.stringify(formData));
@@ -40,6 +45,7 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus({ loading: true, error: "", success: false });
 
     if (!hasAgreed) {
       toast.error("Please accept the declaration");
@@ -81,6 +87,8 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
         to_email: import.meta.env.VITE_EMAILJS_TO_EMAIL,
       };
 
+      setStatus({ loading: false, error: "", success: true });
+
       // Clear form and localStorage
       localStorage.removeItem("draftBlog");
       setFormData({
@@ -107,6 +115,11 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
 
       toast.success("Blog submitted for review successfully!");
     } catch (error) {
+      setStatus({
+        loading: false,
+        error: "Failed to send message. Please try again.",
+        success: false,
+      });
       console.error("Error submitting blog:", error);
       toast.error("Failed to submit blog. Please try again.");
     } finally {
@@ -298,6 +311,17 @@ export function WriteDialog({ isOpen, onClose }: WriteDialogProps) {
                   {isSaving ? "Submitting..." : "Submit for Review"}
                 </button>
               </div>
+              {status.error && (
+                <p className="contact-form__message contact-form__error">
+                  {status.error}
+                </p>
+              )}
+
+              {status.success && (
+                <p className="contact-form__message contact-form__success">
+                  Message sent successfully!
+                </p>
+              )}
             </form>
           </div>
         </motion.div>
